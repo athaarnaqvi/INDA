@@ -16,7 +16,7 @@ class WorkerThread(QThread):
         self.script_path = script_path
 
     def run(self):
-        process = subprocess.Popen(['bash', self.script_path], cwd=os.path.expanduser("~/VisioGns3"),
+        process = subprocess.Popen(['bash', self.script_path], cwd=os.path.expanduser("~/INDA/VisioGns3"),
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
         for line in iter(process.stdout.readline, ''):
