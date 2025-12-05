@@ -1,134 +1,38 @@
 [
     {
-        "from": "atm_router",
-        "to": "atm_router-5",
+        "from": "S4128F-ONFrontView94",
+        "to": "S5212F-ONFrontView(ACPower)72",
         "from_adapter_number": 0,
         "to_adapter_number": 0
     },
     {
-        "from": "atm_router",
-        "to": "atm_router-2",
-        "from_adapter_number": 1,
+        "from": "N3248TE-ONFrontView88",
+        "to": "S5224F-ONFrontView75",
+        "from_adapter_number": 0,
         "to_adapter_number": 0
     },
     {
-        "from": "atm_router",
-        "to": "atm_router-4",
+        "from": "N3248TE-ONFrontView88",
+        "to": "S5212F-ONFrontView(ACPower)72",
+        "from_adapter_number": 1,
+        "to_adapter_number": 1
+    },
+    {
+        "from": "N3248TE-ONFrontView88",
+        "to": "S4128F-ONFrontView94",
         "from_adapter_number": 2,
-        "to_adapter_number": 0
+        "to_adapter_number": 1
     },
     {
-        "from": "atm_router",
-        "to": "atm_router-3",
-        "from_adapter_number": 3,
-        "to_adapter_number": 0
+        "from": "S4128F-ONFrontView94",
+        "to": "S5224F-ONFrontView75",
+        "from_adapter_number": 2,
+        "to_adapter_number": 1
     },
     {
-        "from": "atm_router",
-        "to": "cloud",
-        "from_adapter_number": 4,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_router-2",
-        "to": "hub",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_router-3",
-        "to": "hub-2",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_router-4",
-        "to": "atm_switch",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_router-5",
-        "to": "atm_switch-2",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_router-5",
-        "to": "atm_router-2",
+        "from": "S5212F-ONFrontView(ACPower)72",
+        "to": "S5224F-ONFrontView75",
         "from_adapter_number": 2,
         "to_adapter_number": 2
-    },
-    {
-        "from": "atm_router-4",
-        "to": "atm_router-2",
-        "from_adapter_number": 2,
-        "to_adapter_number": 3
-    },
-    {
-        "from": "atm_router-5",
-        "to": "atm_router-3",
-        "from_adapter_number": 3,
-        "to_adapter_number": 2
-    },
-    {
-        "from": "atm_router-4",
-        "to": "atm_router-3",
-        "from_adapter_number": 3,
-        "to_adapter_number": 3
-    },
-    {
-        "from": "hub",
-        "to": "pc-7",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "hub",
-        "to": "pc-8",
-        "from_adapter_number": 2,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "hub-2",
-        "to": "pc-4",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "hub-2",
-        "to": "pc-3",
-        "from_adapter_number": 2,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_switch",
-        "to": "pc-6",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_switch",
-        "to": "pc-5",
-        "from_adapter_number": 2,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_switch-2",
-        "to": "pc-2",
-        "from_adapter_number": 1,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_switch-2",
-        "to": "pc",
-        "from_adapter_number": 2,
-        "to_adapter_number": 0
-    },
-    {
-        "from": "atm_router",
-        "to": "communications_server",
-        "from_adapter_number": 5,
-        "to_adapter_number": 0
     }
 ]

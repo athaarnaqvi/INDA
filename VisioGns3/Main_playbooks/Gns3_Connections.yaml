@@ -4,7 +4,7 @@
   gather_facts: no
   vars:
     gns3_server: "http://127.0.0.1:3080"
-    project_name: "d4.drawio"
+    project_name: "Final_Testing"
     
   tasks:
     - name: Get all projects from GNS3
@@ -41,7 +41,7 @@
         return_content: yes
       register: gns3_nodes
     
-    - name: Create link atm_router to atm_router-5
+    - name: Create link from S4128F-ONFrontView94 to S5212F-ONFrontView(ACPower)72
       vars:
         device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -53,14 +53,14 @@
         status_code: [200, 201]
         body:
           nodes:
-          - node_id: "{{ device_map['atm_router'] | default('') }}"
+          - node_id: "{{ device_map['S4128F-ONFrontView94'] | default('') }}"
             adapter_number: 0
             port_number: 0
-          - node_id: "{{ device_map['atm_router-5'] | default('') }}"
+          - node_id: "{{ device_map['S5212F-ONFrontView(ACPower)72'] | default('') }}"
             adapter_number: 0
             port_number: 0
         
-    - name: Create link atm_router to atm_router-2
+    - name: Create link from N3248TE-ONFrontView88 to S5224F-ONFrontView75
       vars:
         device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -72,90 +72,33 @@
         status_code: [200, 201]
         body:
           nodes:
-          - node_id: "{{ device_map['atm_router'] | default('') }}"
+          - node_id: "{{ device_map['N3248TE-ONFrontView88'] | default('') }}"
+            adapter_number: 0
+            port_number: 0
+          - node_id: "{{ device_map['S5224F-ONFrontView75'] | default('') }}"
+            adapter_number: 0
+            port_number: 0
+        
+    - name: Create link from N3248TE-ONFrontView88 to S5212F-ONFrontView(ACPower)72
+      vars:
+        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+          - node_id: "{{ device_map['N3248TE-ONFrontView88'] | default('') }}"
             adapter_number: 1
             port_number: 0
-          - node_id: "{{ device_map['atm_router-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_router to atm_router-4
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router'] | default('') }}"
-            adapter_number: 2
-            port_number: 0
-          - node_id: "{{ device_map['atm_router-4'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_router to atm_router-3
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router'] | default('') }}"
-            adapter_number: 3
-            port_number: 0
-          - node_id: "{{ device_map['atm_router-3'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_router to cloud
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router'] | default('') }}"
-            adapter_number: 4
-            port_number: 0
-          - node_id: "{{ device_map['cloud'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_router-2 to hub
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router-2'] | default('') }}"
+          - node_id: "{{ device_map['S5212F-ONFrontView(ACPower)72'] | default('') }}"
             adapter_number: 1
             port_number: 0
-          - node_id: "{{ device_map['hub'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
         
-    - name: Create link atm_router-3 to hub-2
+    - name: Create link from N3248TE-ONFrontView88 to S4128F-ONFrontView94
       vars:
         device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -167,14 +110,14 @@
         status_code: [200, 201]
         body:
           nodes:
-          - node_id: "{{ device_map['atm_router-3'] | default('') }}"
+          - node_id: "{{ device_map['N3248TE-ONFrontView88'] | default('') }}"
+            adapter_number: 2
+            port_number: 0
+          - node_id: "{{ device_map['S4128F-ONFrontView94'] | default('') }}"
             adapter_number: 1
             port_number: 0
-          - node_id: "{{ device_map['hub-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
         
-    - name: Create link atm_router-4 to atm_switch
+    - name: Create link from S4128F-ONFrontView94 to S5224F-ONFrontView75
       vars:
         device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -186,14 +129,14 @@
         status_code: [200, 201]
         body:
           nodes:
-          - node_id: "{{ device_map['atm_router-4'] | default('') }}"
+          - node_id: "{{ device_map['S4128F-ONFrontView94'] | default('') }}"
+            adapter_number: 2
+            port_number: 0
+          - node_id: "{{ device_map['S5224F-ONFrontView75'] | default('') }}"
             adapter_number: 1
             port_number: 0
-          - node_id: "{{ device_map['atm_switch'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
         
-    - name: Create link atm_router-5 to atm_switch-2
+    - name: Create link from S5212F-ONFrontView(ACPower)72 to S5224F-ONFrontView75
       vars:
         device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -205,257 +148,10 @@
         status_code: [200, 201]
         body:
           nodes:
-          - node_id: "{{ device_map['atm_router-5'] | default('') }}"
-            adapter_number: 1
-            port_number: 0
-          - node_id: "{{ device_map['atm_switch-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_router-5 to atm_router-2
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router-5'] | default('') }}"
+          - node_id: "{{ device_map['S5212F-ONFrontView(ACPower)72'] | default('') }}"
             adapter_number: 2
             port_number: 0
-          - node_id: "{{ device_map['atm_router-2'] | default('') }}"
+          - node_id: "{{ device_map['S5224F-ONFrontView75'] | default('') }}"
             adapter_number: 2
-            port_number: 0
-        
-    - name: Create link atm_router-4 to atm_router-2
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router-4'] | default('') }}"
-            adapter_number: 2
-            port_number: 0
-          - node_id: "{{ device_map['atm_router-2'] | default('') }}"
-            adapter_number: 3
-            port_number: 0
-        
-    - name: Create link atm_router-5 to atm_router-3
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router-5'] | default('') }}"
-            adapter_number: 3
-            port_number: 0
-          - node_id: "{{ device_map['atm_router-3'] | default('') }}"
-            adapter_number: 2
-            port_number: 0
-        
-    - name: Create link atm_router-4 to atm_router-3
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router-4'] | default('') }}"
-            adapter_number: 3
-            port_number: 0
-          - node_id: "{{ device_map['atm_router-3'] | default('') }}"
-            adapter_number: 3
-            port_number: 0
-        
-    - name: Create link hub to pc-7
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['hub'] | default('') }}"
-            adapter_number: 0
-            port_number: 1
-          - node_id: "{{ device_map['pc-7'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link hub to pc-8
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['hub'] | default('') }}"
-            adapter_number: 0
-            port_number: 2
-          - node_id: "{{ device_map['pc-8'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link hub-2 to pc-4
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['hub-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 1
-          - node_id: "{{ device_map['pc-4'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link hub-2 to pc-3
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['hub-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 2
-          - node_id: "{{ device_map['pc-3'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_switch to pc-6
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_switch'] | default('') }}"
-            adapter_number: 0
-            port_number: 1
-          - node_id: "{{ device_map['pc-6'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_switch to pc-5
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_switch'] | default('') }}"
-            adapter_number: 0
-            port_number: 2
-          - node_id: "{{ device_map['pc-5'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_switch-2 to pc-2
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_switch-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 1
-          - node_id: "{{ device_map['pc-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_switch-2 to pc
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_switch-2'] | default('') }}"
-            adapter_number: 0
-            port_number: 2
-          - node_id: "{{ device_map['pc'] | default('') }}"
-            adapter_number: 0
-            port_number: 0
-        
-    - name: Create link atm_router to communications_server
-      vars:
-        device_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-          - node_id: "{{ device_map['atm_router'] | default('') }}"
-            adapter_number: 5
-            port_number: 0
-          - node_id: "{{ device_map['communications_server'] | default('') }}"
-            adapter_number: 0
             port_number: 0
         

@@ -12,7 +12,7 @@ GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
 
 class WorkerThread(QThread):
     output_signal = pyqtSignal(str)
-    finished_signal = pyqtSignal()  # NEW: Signal when automation completes
+    finished_signal = pyqtSignal()
 
     def __init__(self, script_path):
         super().__init__()
@@ -28,7 +28,6 @@ class WorkerThread(QThread):
 
         process.stdout.close()
         process.wait()
-        # NEW: Emit finished signal when automation completes
         self.finished_signal.emit()
 
 
@@ -36,8 +35,11 @@ class VisioGNS3App(QWidget):
     def __init__(self):
         super().__init__()
         self.selected_file = None
-        self.chat_messages = []  # <CHANGE> Store chat messages for the chatbot interface
-        self.automation_completed = False  # NEW: Track if automation has completed
+        self.chat_messages = []
+        self.automation_completed = False
+        self.server_configured = False  # NEW: Track if server has been configured
+        self.server_ip = ""  # Store server IP
+        self.server_port = ""  # Store server port
         self.initUI()
 
     def initUI(self):
@@ -59,16 +61,205 @@ class VisioGNS3App(QWidget):
         self.stacked_widget = QStackedWidget()
         
         # Create pages
+        self.setup_page = self.create_setup_page()  # NEW: Initial setup page
         self.landing_page = self.create_landing_page()
         self.console_page = self.create_console_page()
-        self.chatbot_page = self.create_chatbot_page()  # <CHANGE> Add new chatbot page
+        self.chatbot_page = self.create_chatbot_page()
         
-        self.stacked_widget.addWidget(self.landing_page)
-        self.stacked_widget.addWidget(self.console_page)
-        self.stacked_widget.addWidget(self.chatbot_page)  # <CHANGE> Add to stacked widget
+        self.stacked_widget.addWidget(self.setup_page)  # Index 0
+        self.stacked_widget.addWidget(self.landing_page)  # Index 1
+        self.stacked_widget.addWidget(self.console_page)  # Index 2
+        self.stacked_widget.addWidget(self.chatbot_page)  # Index 3
         
         main_layout.addWidget(self.stacked_widget)
         self.setLayout(main_layout)
+
+    def create_setup_page(self):
+        """NEW: Create initial setup page for IP and Port configuration"""
+        page = QWidget()
+        layout = QVBoxLayout()
+        layout.setContentsMargins(40, 40, 40, 40)
+        layout.setSpacing(30)
+        
+        # Center content vertically
+        layout.addStretch()
+        
+        # Title
+        title = QLabel("🚀 Initial Setup")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setStyleSheet("""
+            color: white;
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        """)
+        
+        # Subtitle
+        subtitle = QLabel("Configure your GNS3 Server connection")
+        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        subtitle.setStyleSheet("""
+            color: #A0AEC0;
+            font-size: 16px;
+            margin-bottom: 40px;
+        """)
+        
+        layout.addWidget(title)
+        layout.addWidget(subtitle)
+        
+        # Setup container
+        setup_container = QFrame()
+        setup_container.setMaximumWidth(500)
+        setup_container.setStyleSheet("""
+            QFrame {
+                background-color: #2D3748;
+                border-radius: 12px;
+                padding: 40px;
+            }
+        """)
+        setup_layout = QVBoxLayout()
+        setup_layout.setSpacing(20)
+        
+        # Server IP Section
+        ip_label = QLabel("⚙️  GNS3 Server IP Address:")
+        ip_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold;")
+        
+        self.setup_input_ip = QLineEdit()
+        self.setup_input_ip.setPlaceholderText("e.g., 127.0.0.1")
+        self.setup_input_ip.setText("127.0.0.1")  # Default value
+        self.setup_input_ip.setStyleSheet("""
+            QLineEdit {
+                background-color: #1A202C;
+                color: white;
+                border: 1px solid #4A5568;
+                border-radius: 6px;
+                padding: 12px;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #4299E1;
+            }
+        """)
+        
+        # Server Port Section
+        port_label = QLabel("🔌 GNS3 Server Port:")
+        port_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold; margin-top: 10px;")
+        
+        self.setup_input_port = QLineEdit()
+        self.setup_input_port.setPlaceholderText("e.g., 3080")
+        self.setup_input_port.setText("3080")  # Default value
+        self.setup_input_port.setStyleSheet("""
+            QLineEdit {
+                background-color: #1A202C;
+                color: white;
+                border: 1px solid #4A5568;
+                border-radius: 6px;
+                padding: 12px;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #4299E1;
+            }
+        """)
+        
+        # Status message
+        self.setup_status = QLabel("")
+        self.setup_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setup_status.setStyleSheet("color: #A0AEC0; font-size: 13px; margin-top: 5px;")
+        
+        # Continue Button
+        continue_button = QPushButton("Continue to Application")
+        continue_button.setStyleSheet("""
+            QPushButton {
+                background-color: #48BB78;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                padding: 14px;
+                font-size: 15px;
+                font-weight: bold;
+                margin-top: 20px;
+            }
+            QPushButton:hover {
+                background-color: #38A169;
+            }
+            QPushButton:pressed {
+                background-color: #2F855A;
+            }
+        """)
+        continue_button.clicked.connect(self.complete_setup)
+        continue_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        
+        setup_layout.addWidget(ip_label)
+        setup_layout.addWidget(self.setup_input_ip)
+        setup_layout.addWidget(port_label)
+        setup_layout.addWidget(self.setup_input_port)
+        setup_layout.addWidget(self.setup_status)
+        setup_layout.addWidget(continue_button)
+        
+        setup_container.setLayout(setup_layout)
+        
+        # Center the container horizontally
+        container_layout = QHBoxLayout()
+        container_layout.addStretch()
+        container_layout.addWidget(setup_container)
+        container_layout.addStretch()
+        
+        layout.addLayout(container_layout)
+        layout.addStretch()
+        
+        page.setLayout(layout)
+        return page
+
+    def complete_setup(self):
+        """NEW: Save configuration and proceed to landing page"""
+        ip = self.setup_input_ip.text().strip()
+        port = self.setup_input_port.text().strip()
+
+        if not ip or not port:
+            self.setup_status.setText("⚠️  Please enter both IP and port.")
+            self.setup_status.setStyleSheet("color: #FC8181; font-size: 13px; margin-top: 5px;")
+            return
+
+        try:
+            # Store IP and port for future use
+            self.server_ip = ip
+            self.server_port = port
+            
+            # Save configuration
+            self.save_gns3_config(ip, port)
+
+            self.setup_status.setText(f"✅ Configuration saved successfully!")
+            self.setup_status.setStyleSheet("color: #68D391; font-size: 13px; margin-top: 5px;")
+
+            # Mark as configured
+            self.server_configured = True
+            
+            # Show landing page after a brief moment
+            from PyQt6.QtCore import QTimer
+            QTimer.singleShot(500, self.show_landing_page)
+        
+        except Exception as e:
+            self.setup_status.setText(f"❌ Error: {str(e)}")
+            self.setup_status.setStyleSheet("color: #FC8181; font-size: 13px; margin-top: 5px;")
+    
+    def save_gns3_config(self, ip, port):
+        """Save GNS3 configuration and restart server"""
+        try:
+            # Ensure config directory exists
+            config_dir = os.path.dirname(GNS3_CONF_PATH)
+            os.makedirs(config_dir, exist_ok=True)
+            
+            # Save configuration
+            with open(GNS3_CONF_PATH, "w") as file:
+                file.write(f"[Server]\nhost = {ip}\nport = {port}\n")
+
+            # Restart GNS3 server
+            subprocess.run(["pkill", "-f", "gns3server"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.Popen(["gns3server"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            return True
+        except Exception as e:
+            raise e
 
     def create_landing_page(self):
         """Create the landing page with two cards"""
@@ -103,8 +294,7 @@ class VisioGNS3App(QWidget):
         cards_layout = QHBoxLayout()
         cards_layout.setSpacing(20)
         
-        # Card 1 - Setup GNS3 Server
-        # <CHANGE> Updated callback to show chatbot page instead of setup dialog
+        # Card 1 - Instruction Orchestrator
         card1 = self.create_card(
             "⚙️",
             "Instruction Orchestrator",
@@ -112,11 +302,11 @@ class VisioGNS3App(QWidget):
             self.show_chatbot_page
         )
         
-        # Card 2 - Automation Console
+        # Card 2 - Topology Interpreter
         card2 = self.create_card(
             "🖥️",
             "Topology Interpreter",
-            "Configure server, upload files, and stream live logs",
+            "Upload topology files and stream live automation logs",
             self.show_console_page
         )
         
@@ -138,9 +328,6 @@ class VisioGNS3App(QWidget):
                 border-radius: 12px;
                 padding: 30px;
             }
-            # QFrame:hover {
-            #     background-color: #374151;
-            # }
         """)
         card.setCursor(Qt.CursorShape.PointingHandCursor)
         
@@ -182,7 +369,6 @@ class VisioGNS3App(QWidget):
         
         return card
 
-    # <CHANGE> New method to create chatbot interface page
     def create_chatbot_page(self):
         """Create the chatbot interface page for NLP instructions"""
         page = QWidget()
@@ -212,7 +398,7 @@ class VisioGNS3App(QWidget):
         back_button.clicked.connect(self.show_landing_page)
         back_button.setCursor(Qt.CursorShape.PointingHandCursor)
         
-        title = QLabel("Instruction Orchestator Console")
+        title = QLabel("Instruction Orchestrator Console")
         title.setStyleSheet("""
             color: white;
             font-size: 24px;
@@ -232,7 +418,7 @@ class VisioGNS3App(QWidget):
         content_layout.setSpacing(20)
         
         # Welcome message
-        welcome_label = QLabel("💬 Chat with the assistant to configure your GNS3 server")
+        welcome_label = QLabel("💬 Chat with the assistant to configure your network topology")
         welcome_label.setStyleSheet("""
             color: #A0AEC0;
             font-size: 14px;
@@ -259,12 +445,12 @@ class VisioGNS3App(QWidget):
         self.chat_display.setHtml("""
             <div style='color: #A0AEC0; margin-bottom: 15px;'>
                 <span style='color: #4299E1; font-weight: bold;'>🤖 Assistant:</span><br/>
-                Hello! I'm here to help you set up your GNS3 server. You can ask me things like:<br/>
+                Hello! I'm here to help you design your network topology. You can ask me things like:<br/>
                 <ul style='margin-top: 10px; color: #718096;'>
-                    <li>Configure my GNS3 server with IP 192.168.1.100</li>
-                    <li>Set the server port to 3080</li>
-                    <li>Show me the current configuration</li>
-                    <li>Help me troubleshoot connection issues</li>
+                    <li>Create a network with 3 routers and 2 switches</li>
+                    <li>Add a firewall between Router1 and Router2</li>
+                    <li>Configure VLAN segmentation</li>
+                    <li>Design a redundant network topology</li>
                 </ul>
             </div>
         """)
@@ -340,7 +526,6 @@ class VisioGNS3App(QWidget):
         page.setLayout(layout)
         return page
 
-    # <CHANGE> New method to handle sending messages in chatbot
     def send_message(self):
         """Handle sending a message in the chatbot interface"""
         message = self.chat_input.text().strip()
@@ -375,7 +560,7 @@ class VisioGNS3App(QWidget):
         self.chat_input.clear()
 
     def create_console_page(self):
-        """Create the automation console page"""
+        """Create the automation console page (simplified without IP/Port)"""
         page = QWidget()
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -422,71 +607,9 @@ class VisioGNS3App(QWidget):
         content_layout.setContentsMargins(40, 30, 40, 30)
         content_layout.setSpacing(20)
         
-        # Server IP Section
-        ip_label = QLabel("⚙️  Enter GNS3 Server IP:")
-        ip_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold;")
-        
-        self.input_ip = QLineEdit()
-        self.input_ip.setPlaceholderText("e.g., 127.0.0.1")
-        self.input_ip.setStyleSheet("""
-            QLineEdit {
-                background-color: #2D3748;
-                color: white;
-                border: 1px solid #4A5568;
-                border-radius: 6px;
-                padding: 12px;
-                font-size: 14px;
-            }
-            QLineEdit:focus {
-                border: 1px solid #4299E1;
-            }
-        """)
-        
-        # Server Port Section
-        port_label = QLabel("Enter GNS3 Server Port:")
-        port_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold; margin-top: 10px;")
-        
-        self.input_port = QLineEdit()
-        self.input_port.setPlaceholderText("e.g., 3080")
-        self.input_port.setStyleSheet("""
-            QLineEdit {
-                background-color: #2D3748;
-                color: white;
-                border: 1px solid #4A5568;
-                border-radius: 6px;
-                padding: 12px;
-                font-size: 14px;
-            }
-            QLineEdit:focus {
-                border: 1px solid #4299E1;
-            }
-        """)
-        
-        # Save & Apply Button
-        self.save_button = QPushButton("⚙️  Save & Apply")
-        self.save_button.setStyleSheet("""
-            QPushButton {
-                background-color: #4299E1;
-                color: white;
-                border: none;
-                border-radius: 6px;
-                padding: 14px;
-                font-size: 15px;
-                font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #3182CE;
-            }
-            QPushButton:pressed {
-                background-color: #2C5282;
-            }
-        """)
-        self.save_button.clicked.connect(self.save_gns3_config)
-        self.save_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        
         # Upload File Section
-        upload_label = QLabel("⬆️  Upload File")
-        upload_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold; margin-top: 10px;")
+        upload_label = QLabel("⬆️  Upload Topology File")
+        upload_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold;")
         
         upload_container = QFrame()
         upload_container.setStyleSheet("""
@@ -566,14 +689,9 @@ class VisioGNS3App(QWidget):
                 font-size: 13px;
             }
         """)
-        self.output_text.setMinimumHeight(200)
+        self.output_text.setMinimumHeight(400)
         
         # Add all widgets to content layout
-        content_layout.addWidget(ip_label)
-        content_layout.addWidget(self.input_ip)
-        content_layout.addWidget(port_label)
-        content_layout.addWidget(self.input_port)
-        content_layout.addWidget(self.save_button)
         content_layout.addWidget(upload_label)
         content_layout.addWidget(upload_container)
         content_layout.addWidget(self.run_button)
@@ -591,56 +709,27 @@ class VisioGNS3App(QWidget):
 
     def show_landing_page(self):
         """Switch to landing page"""
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(1)
 
     def show_console_page(self):
         """Switch to console page"""
-        self.stacked_widget.setCurrentIndex(1)
+        self.stacked_widget.setCurrentIndex(2)
 
-    # <CHANGE> New method to show chatbot page
     def show_chatbot_page(self):
         """Switch to chatbot page"""
-        self.stacked_widget.setCurrentIndex(2)
+        self.stacked_widget.setCurrentIndex(3)
         self.chat_input.setFocus()
 
-    def show_setup_dialog(self):
-        """Show setup directly on console page"""
-        self.show_console_page()
-        self.input_ip.setFocus()
-
-    def save_gns3_config(self):
-        ip = self.input_ip.text().strip()
-        port = self.input_port.text().strip()
-
-        if not ip or not port:
-            self.output_text.append("⚠️  Please enter both IP and port.")
-            return
-
-        try:
-            with open(GNS3_CONF_PATH, "w") as file:
-                file.write(f"[Server]\nhost = {ip}\nport = {port}\n")
-
-            self.output_text.append(f"✅ GNS3 Server configured with IP={ip}, Port={port}")
-
-            subprocess.run(["pkill", "-f", "gns3server"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            subprocess.Popen(["gns3server"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-            self.output_text.append("🚀 GNS3 Server restarted with new settings.")
-        
-        except Exception as e:
-            self.output_text.append(f"❌ Error saving configuration: {e}")
-
     def upload_file(self):
-
-        # NEW: Clear logs if automation was previously completed
+        # Don't clear logs on first upload, only on subsequent ones after completion
         if self.automation_completed:
             self.output_text.clear()
-            self.output_text.append("🧹 Logs cleared for new upload.")
+            self.output_text.append("🧹 Logs cleared for new upload.\n")
             self.automation_completed = False
 
         file_path, _ = QFileDialog.getOpenFileName(self, "Select a File", "", "All Files (*)")
         if file_path:
-            # --- File extension validation ---
+            # File extension validation
             valid_extensions = (".vsdx", ".xml", ".svg")
             if not file_path.lower().endswith(valid_extensions):
                 QMessageBox.critical(self, "Invalid File", 
@@ -650,7 +739,6 @@ class VisioGNS3App(QWidget):
                 self.output_text.append("❌ Invalid file type. Please upload a .vsdx, .xml, or .svg file.")
                 self.selected_file = None
                 return
-            # ----------------------------------
 
             self.selected_file = file_path
             filename = os.path.basename(file_path)
@@ -662,39 +750,40 @@ class VisioGNS3App(QWidget):
             os.system(f"cp '{file_path}' '{upload_folder}'")
             self.output_text.append(f"✅ File uploaded: {filename}")
 
-
     def run_script(self):
+        # Re-apply server configuration before running automation
+        if self.server_configured and self.server_ip and self.server_port:
+            try:
+                self.save_gns3_config(self.server_ip, self.server_port)
+                self.output_text.append(f"🔧 Re-applied server configuration: {self.server_ip}:{self.server_port}")
+            except Exception as e:
+                self.output_text.append(f"⚠️  Warning: Could not re-apply config: {e}")
+        
         script_path = os.path.expanduser("~/INDA/VisioGns3/automation_final.sh")
         
-        self.output_text.clear()
         self.output_text.append("🚀 Starting automation script...\n")
-        self.automation_completed = False  # NEW: Reset flag when starting new automation
+        self.automation_completed = False
 
         self.worker = WorkerThread(script_path)
         self.worker.output_signal.connect(self.update_output)
-        self.worker.finished_signal.connect(self.on_automation_finished)  # NEW: Connect finished signal
+        self.worker.finished_signal.connect(self.on_automation_finished)
         self.worker.start()
 
     def update_output(self, text):
         self.output_text.append(text)
         self.output_text.ensureCursorVisible()
         
-    # NEW: Method to handle automation completion
     def on_automation_finished(self):
-        """Clear input fields when automation completes"""
+        """Handle automation completion"""
         self.output_text.append("\n✅ Automation completed successfully!")
-        
-        # Clear IP and Port fields
-        self.input_ip.clear()
-        self.input_port.clear()
         
         # Clear file selection
         self.selected_file = None
         self.file_label.setText("No file selected.")
         self.file_label.setStyleSheet("color: #A0AEC0; font-size: 13px;")
         
-        self.output_text.append("🧹 Input fields cleared and ready for next task.")
-        self.automation_completed = True  # NEW: Set flag to indicate automation completed
+        self.output_text.append("🧹 Ready for next task.")
+        self.automation_completed = True
 
 # Run the application
 if __name__ == "__main__":

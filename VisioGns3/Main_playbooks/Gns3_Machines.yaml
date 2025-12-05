@@ -13,7 +13,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "d4.drawio"
+            "name": "Final_Testing"
           }
         body_format: json
         return_content: yes
@@ -24,7 +24,7 @@
       debug:
         var: project_result
 
-    - name: Add atm_router to the project
+    - name: Add N3248TE-ONFrontView88 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -32,13 +32,13 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "atm_router",
+            "name": "N3248TE-ONFrontView88",
             "x": 100,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "a53ede8e-b641-42c6-96a8-8aaab4dde3d9",
+            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
             "properties": {
@@ -63,11 +63,11 @@
         status_code: 201
       register: machine_result
 
-    - name: Debug atm_router creation result
+    - name: Debug N3248TE-ONFrontView88 creation result
       debug:
         var: machine_result
 
-    - name: Add atm_router-2 to the project
+    - name: Add S4128F-ONFrontView94 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -75,13 +75,13 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "atm_router-2",
+            "name": "S4128F-ONFrontView94",
             "x": 150,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "a53ede8e-b641-42c6-96a8-8aaab4dde3d9",
+            "template_id": "8f3c730b-e725-47eb-8e8e-b76fe36d4222",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
             "properties": {
@@ -93,7 +93,7 @@
               "hda_disk_interface": "sata",
               "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
               "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk",
+              "hdc_disk_image": "OS10-platform-S4128F-10.5.5.5.105.vmdk",
               "hdc_disk_interface": "virtio",
               "ram": 4096,
               "boot_priority": "d",
@@ -106,11 +106,11 @@
         status_code: 201
       register: machine_result
 
-    - name: Debug atm_router-2 creation result
+    - name: Debug S4128F-ONFrontView94 creation result
       debug:
         var: machine_result
 
-    - name: Add atm_router-3 to the project
+    - name: Add S5212F-ONFrontView(ACPower)72 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -118,99 +118,13 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "atm_router-3",
-            "x": 200,
-            "y": 100,
-            "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": ":/symbols/router.svg",
-            "template_id": "a53ede8e-b641-42c6-96a8-8aaab4dde3d9",
-            "first_port_name": "mgmt 1/1/1",
-            "port_name_format": "eth 1/1/{port1}",
-            "properties": {
-              "adapter_type": "e1000",
-              "adapters": 10,
-              "console_type": "telnet",
-              "cpus": 1,
-              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
-              "hda_disk_interface": "sata",
-              "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
-              "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk",
-              "hdc_disk_interface": "virtio",
-              "ram": 4096,
-              "boot_priority": "d",
-              "qemu_path": "/bin/qemu-system-x86_64",
-              "replicate_network_connection_state": true
-            }
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug atm_router-3 creation result
-      debug:
-        var: machine_result
-
-    - name: Add atm_router-4 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "atm_router-4",
-            "x": 250,
-            "y": 100,
-            "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": ":/symbols/router.svg",
-            "template_id": "a53ede8e-b641-42c6-96a8-8aaab4dde3d9",
-            "first_port_name": "mgmt 1/1/1",
-            "port_name_format": "eth 1/1/{port1}",
-            "properties": {
-              "adapter_type": "e1000",
-              "adapters": 10,
-              "console_type": "telnet",
-              "cpus": 1,
-              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
-              "hda_disk_interface": "sata",
-              "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
-              "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk",
-              "hdc_disk_interface": "virtio",
-              "ram": 4096,
-              "boot_priority": "d",
-              "qemu_path": "/bin/qemu-system-x86_64",
-              "replicate_network_connection_state": true
-            }
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug atm_router-4 creation result
-      debug:
-        var: machine_result
-
-    - name: Add atm_router-5 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "atm_router-5",
+            "name": "S5212F-ONFrontView(ACPower)72",
             "x": 100,
             "y": 150,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "a53ede8e-b641-42c6-96a8-8aaab4dde3d9",
+            "template_id": "e7988e20-0fbb-424d-b09b-70238e7326cc",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
             "properties": {
@@ -222,7 +136,7 @@
               "hda_disk_interface": "sata",
               "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
               "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk",
+              "hdc_disk_image": "OS10-platform-S5212F-10.5.5.5.105.vmdk",
               "hdc_disk_interface": "virtio",
               "ram": 4096,
               "boot_priority": "d",
@@ -235,11 +149,11 @@
         status_code: 201
       register: machine_result
 
-    - name: Debug atm_router-5 creation result
+    - name: Debug S5212F-ONFrontView(ACPower)72 creation result
       debug:
         var: machine_result
 
-    - name: Add hub to the project
+    - name: Add S5224F-ONFrontView75 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -247,354 +161,29 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "hub",
+            "name": "S5224F-ONFrontView75",
             "x": 150,
             "y": 150,
-            "compute_id": "local",
-            "node_type": "ethernet_hub",
-            "symbol": ":/symbols/hub.svg",
-            "template_id": "b4503ea9-d6b6-3695-9fe4-1db3b39290b0"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug hub creation result
-      debug:
-        var: machine_result
-
-    - name: Add hub-2 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "hub-2",
-            "x": 200,
-            "y": 150,
-            "compute_id": "local",
-            "node_type": "ethernet_hub",
-            "symbol": ":/symbols/hub.svg",
-            "template_id": "b4503ea9-d6b6-3695-9fe4-1db3b39290b0"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug hub-2 creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc",
-            "x": 250,
-            "y": 150,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc-2 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc-2",
-            "x": 100,
-            "y": 200,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc-2 creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc-3 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc-3",
-            "x": 150,
-            "y": 200,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc-3 creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc-4 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc-4",
-            "x": 200,
-            "y": 200,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc-4 creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc-5 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc-5",
-            "x": 250,
-            "y": 200,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc-5 creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc-6 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc-6",
-            "x": 100,
-            "y": 250,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc-6 creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc-7 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc-7",
-            "x": 150,
-            "y": 250,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc-7 creation result
-      debug:
-        var: machine_result
-
-    - name: Add pc-8 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc-8",
-            "x": 200,
-            "y": 250,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug pc-8 creation result
-      debug:
-        var: machine_result
-
-    - name: Add atm_switch to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "atm_switch",
-            "x": 250,
-            "y": 250,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug atm_switch creation result
-      debug:
-        var: machine_result
-
-    - name: Add atm_switch-2 to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "atm_switch-2",
-            "x": 100,
-            "y": 300,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug atm_switch-2 creation result
-      debug:
-        var: machine_result
-
-    - name: Add cloud to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "cloud",
-            "x": 150,
-            "y": 300,
-            "compute_id": "local",
-            "node_type": "cloud",
-            "symbol": ":/symbols/cloud.svg",
-            "template_id": "39e257dc-8412-3174-b6b3-0ee3ed6a43e9"
-          }
-        body_format: json
-        return_content: yes
-        status_code: 201
-      register: machine_result
-
-    - name: Debug cloud creation result
-      debug:
-        var: machine_result
-
-    - name: Add communications_server to the project
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "communications_server",
-            "x": 200,
-            "y": 300,
             "compute_id": "local",
             "node_type": "qemu",
-            "symbol": "alpine-virt-qemu.svg",
-            "template_id": "c6ec49fd-3ba7-4553-a55d-b65ac5eaea03",
-            "first_port_name": "",
-            "port_name_format": "eth{0}",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "167240a6-e2b8-4a00-ac03-b77c35e52b2a",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
             "properties": {
-              "adapter_type": "virtio-net-pci",
+              "adapter_type": "e1000",
               "adapters": 10,
               "console_type": "telnet",
               "cpus": 1,
-              "hda_disk_image": "alpine-virt-3.18.4.qcow2",
-              "hda_disk_interface": "virtio",
-              "hdb_disk_image": "",
-              "hdb_disk_interface": "none",
-              "hdc_disk_image": "",
-              "hdc_disk_interface": "none",
-              "ram": 128,
-              "boot_priority": "c",
-              "qemu_path": "/usr/bin/qemu-system-x86_64",
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
+              "hdb_disk_interface": "virtio",
+              "hdc_disk_image": "OS10-platform-S5224F-10.5.5.5.105.vmdk",
+              "hdc_disk_interface": "virtio",
+              "ram": 4096,
+              "boot_priority": "d",
+              "qemu_path": "/bin/qemu-system-x86_64",
               "replicate_network_connection_state": true
             }
           }
@@ -603,6 +192,6 @@
         status_code: 201
       register: machine_result
 
-    - name: Debug communications_server creation result
+    - name: Debug S5224F-ONFrontView75 creation result
       debug:
         var: machine_result
