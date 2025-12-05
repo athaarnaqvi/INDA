@@ -2,3 +2,6 @@ PyQt6==6.10.0
 PyQt6-Qt6==6.10.0
 PyQt6_sip==13.10.2
 PyYAML==6.0.3
+transformers>=4.30.0
+torch>=2.0.0
+peft>=0.4.0
