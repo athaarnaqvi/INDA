@@ -9,7 +9,7 @@ from typing import Dict, Optional
 from inference import TopologyInference
 
 class NLPHandler:
-    def __init__(self, model_path: str = "./NLP1/trained_topology_model"):
+    def __init__(self, model_path = os.path.expanduser("~/INDA/VisioGns3/NLP1/trained_topology_model")):
         """
         Initialize NLP handler with topology inference model
         
