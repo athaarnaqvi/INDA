@@ -43,7 +43,7 @@ def setup_environment():
         sys.exit(1)
 
     # Quick phi3.5 presence hint (non-fatal)
-    print("[SETUP] Using phi3.5 via Ollama\n")
+    print("[SETUP] Using mistral via Ollama\n")
 
 
 # ----------------------------------------------------

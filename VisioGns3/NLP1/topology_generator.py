@@ -3,7 +3,7 @@ import json
 import re
 from rag_pipeline import RAGPipeline
 from prompt_builder import build_prompt
-from llm_client import query_phi35
+from llm_client import query_llm
 
 
 class TopologyGenerator:
@@ -63,7 +63,7 @@ class TopologyGenerator:
         llm_prompt = build_prompt(user_prompt, context)
 
         # 3. LLM inference
-        raw_output = query_phi35(llm_prompt)
+        raw_output = query_llm(llm_prompt)
 
         # 4. Parse JSON safely
         try:

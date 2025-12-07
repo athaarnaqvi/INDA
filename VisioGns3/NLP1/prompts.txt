@@ -1,1 +1,5 @@
  2 switches, 2 routers, all switches connected to both routers, routers connected to each other
+ 5 routers in a ring configuration.
+ 4 routers in a star configuration with router 1 at the center
+ 5 computers all connected to one switch
+ 2 routers connected to each other, each with 2 computers
