@@ -1,0 +1,1 @@
+ 2 switches, 2 routers, all switches connected to both routers, routers connected to each other

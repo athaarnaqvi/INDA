@@ -1,0 +1,22 @@
+[
+    {
+        "from": "switch 1",
+        "to": "router 1"
+    },
+    {
+        "from": "switch 1",
+        "to": "router 2"
+    },
+    {
+        "from": "switch 2",
+        "to": "router 1"
+    },
+    {
+        "from": "switch 2",
+        "to": "router 2"
+    },
+    {
+        "from": "router 1",
+        "to": "router 2"
+    }
+]

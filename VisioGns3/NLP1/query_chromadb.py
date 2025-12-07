@@ -37,7 +37,7 @@ rag = RAGPipeline(
     model_path="all-MiniLM-L6-v2"
 )
 
-results = rag.search("build a topology using 3 routers")
+results = rag.search("Draw a topology containing 3 switches and 2 routers with all the switches connected to both routers and routers connected to each other")
 context = rag.format_context(results)
 
 print(context)
