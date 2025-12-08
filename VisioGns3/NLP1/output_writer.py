@@ -1,17 +1,15 @@
-# output_writer.py
+import os
 import json
 
-def write_outputs(result: dict, machines_path="machines.txt", connections_path="connections.json"):
-    machines = result.get("machines", [])
-    connections = result.get("connections", [])
+def write_outputs(result, output_dir):
+    machines_path = os.path.join(output_dir, "machine_names.txt")
+    connections_path = os.path.join(output_dir, "Connections.json")
 
-    # Write machines.txt
     with open(machines_path, "w") as f:
-        for m in machines:
-            f.write(f"{m}\n")
+        for m in result["machines"]:
+            f.write(m + "\n")
 
-    # Write connections.json (pretty)
     with open(connections_path, "w") as f:
-        json.dump(connections, f, indent=4)
+        json.dump(result["connections"], f, indent=2)
 
     return machines_path, connections_path

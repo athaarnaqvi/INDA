@@ -1,9 +1,0 @@
-router 1
-switch 1
-switch 2
-pc 1
-pc 2
-pc 3
-pc 4
-pc 5
-pc 6

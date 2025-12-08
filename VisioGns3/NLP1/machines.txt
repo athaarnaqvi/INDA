@@ -1,6 +1,0 @@
-switch 1
-pc 1
-pc 2
-pc 3
-pc 4
-pc 5

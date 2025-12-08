@@ -17,13 +17,21 @@ import traceback
 from topology_generator import TopologyGenerator
 from output_writer import write_outputs
 
-
 # ----------------------------------------------------
 # CONFIG (edit ONLY if paths change)
 # ----------------------------------------------------
-CHROMA_PATH = "/home/fiza-wajid/INDA/VisioGns3/NLP1/chroma_db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
+
+CHROMA_PATH = os.path.join(BASE_DIR, "chroma_db")
+GENERATED_FILES_DIR = os.path.join(
+    PROJECT_ROOT,
+    "Generated_files"
+)
+
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
-LLM_BACKEND = "ollama"   # auto-set
+LLM_BACKEND = "ollama"
 TOP_K = 3
 
 
@@ -83,8 +91,10 @@ def main():
         return
 
     # Step 5: Write outputs
-    machines_path, connections_path = write_outputs(result)
-
+    machines_path, connections_path = write_outputs(
+    result,
+    output_dir=GENERATED_FILES_DIR
+)
     print("\n[SUCCESS] Topology generated!")
     print(f"→ Machines file: {machines_path}")
     print(f"→ Connections file: {connections_path}")
