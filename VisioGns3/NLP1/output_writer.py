@@ -3,7 +3,7 @@ import json
 
 def write_outputs(result, output_dir):
     machines_path = os.path.join(output_dir, "machine_names.txt")
-    connections_path = os.path.join(output_dir, "Connections.json")
+    connections_path = os.path.join(output_dir, "pre_Connections.json")
 
     with open(machines_path, "w") as f:
         for m in result["machines"]:
