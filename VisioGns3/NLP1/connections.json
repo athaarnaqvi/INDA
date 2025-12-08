@@ -1,0 +1,22 @@
+[
+    {
+        "from": "switch 1",
+        "to": "pc 1"
+    },
+    {
+        "from": "switch 1",
+        "to": "pc 2"
+    },
+    {
+        "from": "switch 1",
+        "to": "pc 3"
+    },
+    {
+        "from": "switch 1",
+        "to": "pc 4"
+    },
+    {
+        "from": "switch 1",
+        "to": "pc 5"
+    }
+]

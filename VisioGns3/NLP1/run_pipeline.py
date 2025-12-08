@@ -21,7 +21,7 @@ from output_writer import write_outputs
 # ----------------------------------------------------
 # CONFIG (edit ONLY if paths change)
 # ----------------------------------------------------
-CHROMA_PATH = "/home/athaar/INDA/VisioGns3/NLP1/chroma_db"
+CHROMA_PATH = "/home/fiza-wajid/INDA/VisioGns3/NLP1/chroma_db"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 LLM_BACKEND = "ollama"   # auto-set
 TOP_K = 3

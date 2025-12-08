@@ -1,17 +1,16 @@
 import sys
 import os
 import subprocess
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
-                              QPushButton, QLabel, QLineEdit, QTextEdit, 
-                              QFileDialog, QMessageBox, QFrame, QStackedWidget, QScrollArea)
+import traceback
+from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
+                              QPushButton, QLabel, QLineEdit, QTextEdit,
+                              QFileDialog, QMessageBox, QFrame, QStackedWidget)
 from PyQt6.QtGui import QPalette, QColor, QFont
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
 
-# Import NLP handler from your version
-from nlp_handler import NLPHandler
-
 # GNS3 Config File Path
 GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
+
 
 class WorkerThread(QThread):
     output_signal = pyqtSignal(str)
@@ -22,7 +21,7 @@ class WorkerThread(QThread):
         self.script_path = script_path
 
     def run(self):
-        process = subprocess.Popen(['bash', self.script_path], 
+        process = subprocess.Popen(['bash', self.script_path],
                                    cwd=os.path.expanduser("~/INDA/VisioGns3"),
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
@@ -34,24 +33,55 @@ class WorkerThread(QThread):
         self.finished_signal.emit()
 
 
-class NLPWorkerThread(QThread):
-    """Thread for processing NLP commands"""
-    response_signal = pyqtSignal(dict)
-    
-    def __init__(self, nlp_handler, command):
+class ScriptRunnerThread(QThread):
+    """Run VisioGns3/NLP1/run_pipeline.py with the user's prompt and capture output."""
+    output_signal = pyqtSignal(str)
+    finished_signal = pyqtSignal()
+
+    def __init__(self, script_path, user_prompt):
         super().__init__()
-        self.nlp_handler = nlp_handler
-        self.command = command
-    
+        self.script_path = script_path
+        self.user_prompt = user_prompt
+
     def run(self):
-        result = self.nlp_handler.process_command(self.command)
-        self.response_signal.emit(result)
+        try:
+            # Ensure we run with the correct working directory so imports within run_pipeline work
+            cwd = os.path.dirname(self.script_path)
+            # Use same python interpreter
+            proc = subprocess.Popen([sys.executable, self.script_path],
+                                    cwd=cwd,
+                                    stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT,
+                                    text=True)
+
+            # Send the user's prompt to the script's stdin (run_pipeline uses input())
+            try:
+                stdout, _ = proc.communicate(self.user_prompt + "\n", timeout=None)
+            except Exception:
+                # Fallback - if communicate fails for any reason, try writing and then reading
+                try:
+                    if proc.stdin:
+                        proc.stdin.write(self.user_prompt + "\n")
+                        proc.stdin.flush()
+                        proc.stdin.close()
+                except Exception:
+                    pass
+                stdout = proc.stdout.read() if proc.stdout is not None else ""
+
+            if stdout is None:
+                stdout = ""
+
+            # Emit full output once finished
+            self.output_signal.emit(stdout)
+        except Exception as e:
+            tb = traceback.format_exc()
+            self.output_signal.emit(f"Error running pipeline: {e}\n{tb}")
+        finally:
+            self.finished_signal.emit()
 
 
 class VisioGNS3App(QWidget):
-    # FIX A: Add signal for NLP status updates
-    nlp_status_signal = pyqtSignal(str)
-    
     def __init__(self):
         super().__init__()
         self.selected_file = None
@@ -60,90 +90,13 @@ class VisioGNS3App(QWidget):
         self.server_configured = False
         self.server_ip = ""
         self.server_port = ""
-        
-        # Initialize NLP handler
-        self.nlp_handler = None
-        self.nlp_loading = False
-        
-        # FIX B: Connect signal in constructor
-        self.nlp_status_signal.connect(self.update_chatbot_status)
-        
+
         self.initUI()
-        
-        # Load NLP model in background
-        self.load_nlp_model()
-
-    def load_nlp_model(self):
-        """Load NLP model in background - FIXED VERSION"""
-        def init_nlp():
-            try:
-                model_path = os.path.expanduser("~/INDA/VisioGns3/NLP1/trained_topology_model")
-                
-                # Check if model directory exists
-                if not os.path.exists(model_path):
-                    self.nlp_status_signal.emit(f"❌ Model path not found: {model_path}")
-                    self.nlp_handler = None
-                    self.nlp_loading = False
-                    return
-                
-                # FIX C: Create handler in thread, then assign to self in main thread via signal
-                print(f"🔄 Loading NLP model from: {model_path}")
-                handler = NLPHandler(model_path=model_path)
-                
-                # Update attributes - these are thread-safe as they're simple assignments
-                self.nlp_handler = handler
-                self.nlp_loading = False
-
-                # FIX D: EMIT signal instead of directly updating GUI
-                self.nlp_status_signal.emit("✅ NLP model loaded successfully!")
-                print("✅ NLP model loaded successfully in background thread")
-
-            except ImportError as e:
-                self.nlp_handler = None
-                self.nlp_loading = False
-                self.nlp_status_signal.emit(f"❌ Missing dependency: {e}")
-                print(f"❌ Missing dependency: {e}")
-            except Exception as e:
-                self.nlp_handler = None
-                self.nlp_loading = False
-                # FIX D: EMIT signal instead of directly updating GUI
-                self.nlp_status_signal.emit(f"⚠️ Error loading NLP model: {e}")
-                print(f"❌ Error loading NLP model in background thread: {e}")
-
-        self.nlp_loading = True
-        # FIX D: Initialize with thread-safe signal
-        self.nlp_status_signal.emit("🔄 Loading NLP model, please wait...")
-        
-        from threading import Thread
-        Thread(target=init_nlp, daemon=True).start()
-
-    def update_chatbot_status(self, message):
-        """Update chatbot display with status message - THREAD-SAFE"""
-        # This method is called via signal, so it's already in the main thread
-        if hasattr(self, 'chat_display'):
-            # Use QTimer.singleShot to ensure we're in the main event loop
-            QTimer.singleShot(0, lambda: self._update_chat_display(message))
-
-    def _update_chat_display(self, message):
-        """Internal method to update chat display - runs in main thread"""
-        try:
-            current_html = self.chat_display.toHtml()
-            status_html = f"""
-                <div style='margin-bottom: 15px; padding: 10px; background-color: #2D3748; border-radius: 6px;'>
-                    <span style='color: #9F7AEA; font-weight: bold;'>⚙️ System:</span><br/>
-                    <span style='color: #A0AEC0;'>{message}</span>
-                </div>
-            """
-            self.chat_display.setHtml(current_html + status_html)
-            scrollbar = self.chat_display.verticalScrollBar()
-            scrollbar.setValue(scrollbar.maximum())
-        except Exception as e:
-            print(f"Error updating chat display: {e}")
 
     def initUI(self):
         self.setWindowTitle("Visio to GNS3")
         self.setGeometry(100, 100, 900, 700)
-        
+
         # Set dark mode styling
         self.setAutoFillBackground(True)
         palette = self.palette()
@@ -157,18 +110,18 @@ class VisioGNS3App(QWidget):
 
         # Stacked widget for pages
         self.stacked_widget = QStackedWidget()
-        
+
         # Create pages
         self.setup_page = self.create_setup_page()
         self.landing_page = self.create_landing_page()
         self.console_page = self.create_console_page()
         self.chatbot_page = self.create_chatbot_page()
-        
+
         self.stacked_widget.addWidget(self.setup_page)
         self.stacked_widget.addWidget(self.landing_page)
         self.stacked_widget.addWidget(self.console_page)
         self.stacked_widget.addWidget(self.chatbot_page)
-        
+
         main_layout.addWidget(self.stacked_widget)
         self.setLayout(main_layout)
 
@@ -178,10 +131,10 @@ class VisioGNS3App(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(40, 40, 40, 40)
         layout.setSpacing(30)
-        
+
         # Center content vertically
         layout.addStretch()
-        
+
         # Title
         title = QLabel("🚀 Initial Setup")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -191,7 +144,7 @@ class VisioGNS3App(QWidget):
             font-weight: bold;
             margin-bottom: 10px;
         """)
-        
+
         # Subtitle
         subtitle = QLabel("Configure your GNS3 Server connection")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -200,10 +153,10 @@ class VisioGNS3App(QWidget):
             font-size: 16px;
             margin-bottom: 40px;
         """)
-        
+
         layout.addWidget(title)
         layout.addWidget(subtitle)
-        
+
         # Setup container
         setup_container = QFrame()
         setup_container.setMaximumWidth(500)
@@ -216,11 +169,11 @@ class VisioGNS3App(QWidget):
         """)
         setup_layout = QVBoxLayout()
         setup_layout.setSpacing(20)
-        
+
         # Server IP Section
         ip_label = QLabel("⚙️  GNS3 Server IP Address:")
         ip_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold;")
-        
+
         self.setup_input_ip = QLineEdit()
         self.setup_input_ip.setPlaceholderText("e.g., 127.0.0.1")
         self.setup_input_ip.setText("127.0.0.1")
@@ -237,11 +190,11 @@ class VisioGNS3App(QWidget):
                 border: 1px solid #4299E1;
             }
         """)
-        
+
         # Server Port Section
         port_label = QLabel("🔌 GNS3 Server Port:")
         port_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold; margin-top: 10px;")
-        
+
         self.setup_input_port = QLineEdit()
         self.setup_input_port.setPlaceholderText("e.g., 3080")
         self.setup_input_port.setText("3080")
@@ -258,12 +211,12 @@ class VisioGNS3App(QWidget):
                 border: 1px solid #4299E1;
             }
         """)
-        
+
         # Status message
         self.setup_status = QLabel("")
         self.setup_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setup_status.setStyleSheet("color: #A0AEC0; font-size: 13px; margin-top: 5px;")
-        
+
         # Continue Button
         continue_button = QPushButton("Continue to Application")
         continue_button.setStyleSheet("""
@@ -286,25 +239,25 @@ class VisioGNS3App(QWidget):
         """)
         continue_button.clicked.connect(self.complete_setup)
         continue_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         setup_layout.addWidget(ip_label)
         setup_layout.addWidget(self.setup_input_ip)
         setup_layout.addWidget(port_label)
         setup_layout.addWidget(self.setup_input_port)
         setup_layout.addWidget(self.setup_status)
         setup_layout.addWidget(continue_button)
-        
+
         setup_container.setLayout(setup_layout)
-        
+
         # Center the container horizontally
         container_layout = QHBoxLayout()
         container_layout.addStretch()
         container_layout.addWidget(setup_container)
         container_layout.addStretch()
-        
+
         layout.addLayout(container_layout)
         layout.addStretch()
-        
+
         page.setLayout(layout)
         return page
 
@@ -322,7 +275,7 @@ class VisioGNS3App(QWidget):
             # Store IP and port for future use
             self.server_ip = ip
             self.server_port = port
-            
+
             # Save configuration
             self.save_gns3_config(ip, port)
 
@@ -331,10 +284,10 @@ class VisioGNS3App(QWidget):
 
             # Mark as configured
             self.server_configured = True
-            
+
             # Show landing page after a brief moment
             QTimer.singleShot(500, self.show_landing_page)
-        
+
         except Exception as e:
             self.setup_status.setText(f"❌ Error: {str(e)}")
             self.setup_status.setStyleSheet("color: #FC8181; font-size: 13px; margin-top: 5px;")
@@ -345,7 +298,7 @@ class VisioGNS3App(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(40, 40, 40, 40)
         layout.setSpacing(30)
-        
+
         # Title
         title = QLabel(" INDA ")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -355,7 +308,7 @@ class VisioGNS3App(QWidget):
             font-weight: bold;
             margin-bottom: 20px;
         """)
-        
+
         # Subtitle
         subtitle = QLabel("Intelligent Network Design Automation")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -364,14 +317,14 @@ class VisioGNS3App(QWidget):
             font-size: 16px;
             margin-bottom: 40px;
         """)
-        
+
         layout.addWidget(title)
         layout.addWidget(subtitle)
-        
+
         # Cards container
         cards_layout = QHBoxLayout()
         cards_layout.setSpacing(20)
-        
+
         # Card 1 - Instruction Orchestrator
         card1 = self.create_card(
             "⚙️",
@@ -379,7 +332,7 @@ class VisioGNS3App(QWidget):
             "Describe your network in plain language and get instant topology generation",
             self.show_chatbot_page
         )
-        
+
         # Card 2 - Topology Interpreter
         card2 = self.create_card(
             "🖥️",
@@ -387,13 +340,13 @@ class VisioGNS3App(QWidget):
             "Upload Visio/XML/SVG files and automate GNS3 project creation",
             self.show_console_page
         )
-        
+
         cards_layout.addWidget(card1)
         cards_layout.addWidget(card2)
-        
+
         layout.addLayout(cards_layout)
         layout.addStretch()
-        
+
         page.setLayout(layout)
         return page
 
@@ -408,15 +361,15 @@ class VisioGNS3App(QWidget):
             }
         """)
         card.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         card_layout = QVBoxLayout()
         card_layout.setSpacing(15)
-        
+
         # Emoji
         emoji_label = QLabel(emoji)
         emoji_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         emoji_label.setStyleSheet("font-size: 48px;")
-        
+
         # Title
         title_label = QLabel(title)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -425,7 +378,7 @@ class VisioGNS3App(QWidget):
             font-size: 20px;
             font-weight: bold;
         """)
-        
+
         # Description
         desc_label = QLabel(description)
         desc_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -434,17 +387,17 @@ class VisioGNS3App(QWidget):
             color: #A0AEC0;
             font-size: 14px;
         """)
-        
+
         card_layout.addWidget(emoji_label)
         card_layout.addWidget(title_label)
         card_layout.addWidget(desc_label)
         card_layout.addStretch()
-        
+
         card.setLayout(card_layout)
-        
+
         # Make card clickable
         card.mousePressEvent = lambda e: callback()
-        
+
         return card
 
     def create_chatbot_page(self):
@@ -453,12 +406,12 @@ class VisioGNS3App(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
-        
+
         # Header
         header = QFrame()
         header.setStyleSheet("background-color: #1A202C; padding: 20px;")
         header_layout = QHBoxLayout()
-        
+
         back_button = QPushButton("← Back to Home")
         back_button.setStyleSheet("""
             QPushButton {
@@ -475,26 +428,26 @@ class VisioGNS3App(QWidget):
         """)
         back_button.clicked.connect(self.show_landing_page)
         back_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         title = QLabel("Instruction Orchestrator Console")
         title.setStyleSheet("""
             color: white;
             font-size: 24px;
             font-weight: bold;
         """)
-        
+
         header_layout.addWidget(back_button)
         header_layout.addStretch()
         header_layout.addWidget(title)
         header_layout.addStretch()
         header.setLayout(header_layout)
-        
+
         # Content area
         content = QWidget()
         content_layout = QVBoxLayout()
         content_layout.setContentsMargins(40, 30, 40, 30)
         content_layout.setSpacing(20)
-        
+
         # Welcome message
         welcome_label = QLabel("💬 Describe your network topology in natural language")
         welcome_label.setStyleSheet("""
@@ -502,7 +455,7 @@ class VisioGNS3App(QWidget):
             font-size: 14px;
             margin-bottom: 10px;
         """)
-        
+
         # Chat display area
         self.chat_display = QTextEdit()
         self.chat_display.setReadOnly(True)
@@ -518,7 +471,7 @@ class VisioGNS3App(QWidget):
             }
         """)
         self.chat_display.setMinimumHeight(400)
-        
+
         # Add initial welcome message
         self.chat_display.setHtml("""
             <div style='color: #A0AEC0; margin-bottom: 15px;'>
@@ -533,9 +486,7 @@ class VisioGNS3App(QWidget):
                 </ul>
             </div>
         """)
-        
-        # NLP loading status will be updated via signal
-        
+
         # Input area container
         input_container = QFrame()
         input_container.setStyleSheet("""
@@ -548,7 +499,7 @@ class VisioGNS3App(QWidget):
         input_layout = QHBoxLayout()
         input_layout.setContentsMargins(0, 0, 0, 0)
         input_layout.setSpacing(10)
-        
+
         # Chat input field
         self.chat_input = QLineEdit()
         self.chat_input.setPlaceholderText("Describe your network topology...")
@@ -566,7 +517,7 @@ class VisioGNS3App(QWidget):
             }
         """)
         self.chat_input.returnPressed.connect(self.send_message)
-        
+
         # Send button
         send_button = QPushButton("Send")
         send_button.setStyleSheet("""
@@ -588,91 +539,92 @@ class VisioGNS3App(QWidget):
         """)
         send_button.clicked.connect(self.send_message)
         send_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         input_layout.addWidget(self.chat_input)
         input_layout.addWidget(send_button)
         input_container.setLayout(input_layout)
-        
+
         # Add all widgets to content layout
         content_layout.addWidget(welcome_label)
         content_layout.addWidget(self.chat_display)
         content_layout.addWidget(input_container)
-        
+
         content.setLayout(content_layout)
-        
+
         # Add header and content to page
         layout.addWidget(header)
         layout.addWidget(content)
-        
+
         page.setLayout(layout)
         return page
 
     def send_message(self):
-        """Handle sending a message in the chatbot interface"""
+        """Handle sending a message in the chatbot interface.
+
+        Instead of using the previous in-app model, this will run the existing
+        run_pipeline.py script (VisioGns3/NLP1/run_pipeline.py), send the user's
+        instruction as stdin, and display the script output below the user's message.
+        """
         message = self.chat_input.text().strip()
-        
+
         if not message:
             return
-        
-        # Check if NLP is still loading
-        if self.nlp_loading:
-            self.add_chat_message("user", message)
-            self.add_chat_message("bot", "⏳ NLP model is still loading. Please wait a moment...")
-            self.chat_input.clear()
-            return
-        
-        # Check if NLP handler is ready
-        if self.nlp_handler is None:
-            self.add_chat_message("user", message)
-            self.add_chat_message("bot", "❌ NLP model is not available. Please check the model path.")
-            self.chat_input.clear()
-            return
-        
+
         # Add user message
         self.add_chat_message("user", message)
-        
-        # Add loading indicator
+
+        # Add loading indicator (we will replace this text with pipeline output)
         self.add_chat_message("bot", "🔮 Processing your request...")
-        
-        # Clear input
+
+        # Clear and disable input to prevent overlapping requests
         self.chat_input.clear()
         self.chat_input.setEnabled(False)
-        
-        # Process in background thread
-        self.nlp_worker = NLPWorkerThread(self.nlp_handler, message)
-        self.nlp_worker.response_signal.connect(self.handle_nlp_response)
-        self.nlp_worker.start()
-    
-    def handle_nlp_response(self, result):
-        """Handle NLP response from worker thread - FIXED for thread safety"""
-        # Use QTimer.singleShot to ensure GUI update happens in main thread
-        QTimer.singleShot(0, lambda: self._update_nlp_response(result))
-    
-    def _update_nlp_response(self, result):
-        """Update NLP response in main thread"""
+
+        # Prepare script path
+        script_path = os.path.expanduser("~/INDA/VisioGns3/NLP1/run_pipeline.py")
+
+        # Start script runner thread
+        self.script_runner = ScriptRunnerThread(script_path, message)
+        self.script_runner.output_signal.connect(self.handle_script_output)
+        self.script_runner.finished_signal.connect(self.on_script_finished)
+        self.script_runner.start()
+
+    def handle_script_output(self, output_text):
+        """Receive the captured stdout from run_pipeline and display it in the chat."""
         try:
-            # Remove loading message
-            html = self.chat_display.toHtml()
-            html = html.replace("🔮 Processing your request...", result.get('message', 'No response'))
-            self.chat_display.setHtml(html)
-            
+            # Escape HTML to safely insert into the QTextEdit using setHtml
+            import html as _html
+            escaped = _html.escape(output_text)
+            # Format as monospace block for readability
+            formatted = f"<pre style='color: #E2E8F0; background-color:#1A202C; padding:10px; border-radius:6px;'>{escaped}</pre>"
+
+            # Replace the loading indicator with the formatted output.
+            # Note: this replaces the literal marker we added earlier.
+            current_html = self.chat_display.toHtml()
+            if "🔮 Processing your request..." in current_html:
+                new_html = current_html.replace("🔮 Processing your request...", formatted, 1)
+                self.chat_display.setHtml(new_html)
+            else:
+                # Fallback: append at the end
+                self.chat_display.append(formatted)
+
             # Scroll to bottom
             scrollbar = self.chat_display.verticalScrollBar()
             scrollbar.setValue(scrollbar.maximum())
-            
-            # Re-enable input
-            self.chat_input.setEnabled(True)
-            self.chat_input.setFocus()
         except Exception as e:
-            print(f"Error updating NLP response: {e}")
-            self.chat_input.setEnabled(True)
-            self.chat_input.setFocus()
-    
+            print(f"Error handling script output: {e}")
+            self.chat_display.append(f"Error displaying output: {e}")
+
+    def on_script_finished(self):
+        """Re-enable input after pipeline finishes."""
+        self.chat_input.setEnabled(True)
+        self.chat_input.setFocus()
+
     def add_chat_message(self, role, content):
         """Add a message to the chat display"""
         try:
             current_html = self.chat_display.toHtml()
-            
+
             if role == "user":
                 message_html = f"""
                     <div style='margin-bottom: 15px;'>
@@ -681,15 +633,25 @@ class VisioGNS3App(QWidget):
                     </div>
                 """
             else:  # bot
-                message_html = f"""
-                    <div style='margin-bottom: 15px;'>
-                        <span style='color: #4299E1; font-weight: bold;'>🤖 Assistant:</span><br/>
-                        {content}
-                    </div>
-                """
-            
+                # content may contain raw HTML (e.g., our formatted pre block)
+                # If it's plain text, we wrap it appropriately.
+                if content.strip().startswith("<pre") or "<div" in content or "<span" in content:
+                    message_html = f"""
+                        <div style='margin-bottom: 15px;'>
+                            <span style='color: #4299E1; font-weight: bold;'>🤖 Assistant:</span><br/>
+                            {content}
+                        </div>
+                    """
+                else:
+                    message_html = f"""
+                        <div style='margin-bottom: 15px;'>
+                            <span style='color: #4299E1; font-weight: bold;'>🤖 Assistant:</span><br/>
+                            <span style='color: #E2E8F0;'>{content}</span>
+                        </div>
+                    """
+
             self.chat_display.setHtml(current_html + message_html)
-            
+
             # Scroll to bottom
             scrollbar = self.chat_display.verticalScrollBar()
             scrollbar.setValue(scrollbar.maximum())
@@ -702,12 +664,12 @@ class VisioGNS3App(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
-        
+
         # Header
         header = QFrame()
         header.setStyleSheet("background-color: #1A202C; padding: 20px;")
         header_layout = QHBoxLayout()
-        
+
         back_button = QPushButton("← Back to Home")
         back_button.setStyleSheet("""
             QPushButton {
@@ -724,26 +686,26 @@ class VisioGNS3App(QWidget):
         """)
         back_button.clicked.connect(self.show_landing_page)
         back_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         title = QLabel("Topology Interpreter Console")
         title.setStyleSheet("""
             color: white;
             font-size: 24px;
             font-weight: bold;
         """)
-        
+
         header_layout.addWidget(back_button)
         header_layout.addStretch()
         header_layout.addWidget(title)
         header_layout.addStretch()
         header.setLayout(header_layout)
-        
+
         # Content area
         content = QWidget()
         content_layout = QVBoxLayout()
         content_layout.setContentsMargins(40, 30, 40, 30)
         content_layout.setSpacing(20)
-        
+
         # Server Configuration Status
         if self.server_configured:
             config_label = QLabel(f"⚙️  Server Configured: {self.server_ip}:{self.server_port}")
@@ -767,11 +729,11 @@ class VisioGNS3App(QWidget):
                 margin-bottom: 10px;
             """)
             content_layout.addWidget(config_label)
-        
+
         # Upload File Section
         upload_label = QLabel("⬆️  Upload Topology File")
         upload_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold;")
-        
+
         upload_container = QFrame()
         upload_container.setStyleSheet("""
             QFrame {
@@ -783,7 +745,7 @@ class VisioGNS3App(QWidget):
         """)
         upload_layout = QHBoxLayout()
         upload_layout.setContentsMargins(0, 0, 0, 0)
-        
+
         self.browse_button = QPushButton("Browse...")
         self.browse_button.setStyleSheet("""
             QPushButton {
@@ -800,15 +762,15 @@ class VisioGNS3App(QWidget):
         """)
         self.browse_button.clicked.connect(self.upload_file)
         self.browse_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         self.file_label = QLabel("No file selected.")
         self.file_label.setStyleSheet("color: #A0AEC0; font-size: 13px;")
-        
+
         upload_layout.addWidget(self.browse_button)
         upload_layout.addWidget(self.file_label)
         upload_layout.addStretch()
         upload_container.setLayout(upload_layout)
-        
+
         # Run Automation Button
         self.run_button = QPushButton("▶  Run Automation")
         self.run_button.setStyleSheet("""
@@ -831,11 +793,11 @@ class VisioGNS3App(QWidget):
         """)
         self.run_button.clicked.connect(self.run_script)
         self.run_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         # Output Console Section
         console_label = QLabel(">_  Output Console")
         console_label.setStyleSheet("color: white; font-size: 14px; font-weight: bold; margin-top: 10px;")
-        
+
         self.output_text = QTextEdit()
         self.output_text.setReadOnly(True)
         self.output_text.setPlaceholderText("Ready for commands...")
@@ -851,20 +813,20 @@ class VisioGNS3App(QWidget):
             }
         """)
         self.output_text.setMinimumHeight(400)
-        
+
         # Add all widgets to content layout
         content_layout.addWidget(upload_label)
         content_layout.addWidget(upload_container)
         content_layout.addWidget(self.run_button)
         content_layout.addWidget(console_label)
         content_layout.addWidget(self.output_text)
-        
+
         content.setLayout(content_layout)
-        
+
         # Add header and content to page
         layout.addWidget(header)
         layout.addWidget(content)
-        
+
         page.setLayout(layout)
         return page
 
@@ -887,7 +849,7 @@ class VisioGNS3App(QWidget):
             # Ensure config directory exists
             config_dir = os.path.dirname(GNS3_CONF_PATH)
             os.makedirs(config_dir, exist_ok=True)
-            
+
             # Save configuration
             with open(GNS3_CONF_PATH, "w") as file:
                 file.write(f"[Server]\nhost = {ip}\nport = {port}\n")
@@ -895,7 +857,7 @@ class VisioGNS3App(QWidget):
             # Restart GNS3 server
             subprocess.run(["pkill", "-f", "gns3server"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.Popen(["gns3server"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            
+
             return True
         except Exception as e:
             raise e
@@ -911,8 +873,8 @@ class VisioGNS3App(QWidget):
         if file_path:
             valid_extensions = (".vsdx", ".xml", ".svg")
             if not file_path.lower().endswith(valid_extensions):
-                QMessageBox.critical(self, "Invalid File", 
-                                    "❌ Only .vsdx, .xml, or .svg files are allowed.\nPlease upload a valid file.")
+                QMessageBox.critical(self, "Invalid File",
+                                     "❌ Only .vsdx, .xml, or .svg files are allowed.\nPlease upload a valid file.")
                 self.file_label.setText("No file selected.")
                 self.file_label.setStyleSheet("color: #A0AEC0; font-size: 13px;")
                 self.output_text.append("❌ Invalid file type. Please upload a .vsdx, .xml, or .svg file.")
@@ -923,7 +885,7 @@ class VisioGNS3App(QWidget):
             filename = os.path.basename(file_path)
             self.file_label.setText(filename)
             self.file_label.setStyleSheet("color: #68D391; font-size: 13px;")
-            
+
             upload_folder = os.path.expanduser("~/INDA/VisioGns3/uploads")
             os.makedirs(upload_folder, exist_ok=True)
             os.system(f"cp '{file_path}' '{upload_folder}'")
@@ -938,9 +900,9 @@ class VisioGNS3App(QWidget):
                 self.output_text.append(f"🔧 Re-applied server configuration: {self.server_ip}:{self.server_port}")
             except Exception as e:
                 self.output_text.append(f"⚠️  Warning: Could not re-apply config: {e}")
-        
+
         script_path = os.path.expanduser("~/INDA/VisioGns3/automation_final.sh")
-        
+
         self.output_text.clear()
         self.output_text.append("🚀 Starting automation script...\n")
         self.automation_completed = False
@@ -954,29 +916,30 @@ class VisioGNS3App(QWidget):
         """Update output console"""
         self.output_text.append(text)
         self.output_text.ensureCursorVisible()
-        
+
     def on_automation_finished(self):
         """Handle automation completion"""
         self.output_text.append("\n✅ Automation completed successfully!")
-        
+
         # Clear file selection
         self.selected_file = None
         self.file_label.setText("No file selected.")
         self.file_label.setStyleSheet("color: #A0AEC0; font-size: 13px;")
-        
+
         self.output_text.append("🧹 Ready for next task.")
         self.automation_completed = True
+
 
 # Run the application
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setApplicationName("Visio-GNS3")
     app.setDesktopFileName("visio-gns3.desktop")
-    
+
     # Set application-wide font
     font = QFont("Segoe UI", 10)
     app.setFont(font)
-    
+
     window = VisioGNS3App()
     window.show()
     sys.exit(app.exec())
