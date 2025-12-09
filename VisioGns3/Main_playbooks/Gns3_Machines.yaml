@@ -13,12 +13,12 @@
         headers:
           Content-Type: "application/json"
         body:
-          name: "nlp_topology_20251209_174138"
+          name: "nlp_topology_20251209_193601"
         body_format: json
         status_code: 201
       register: project_result
 
-    - name: Add server1
+    - name: Add pc1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -26,21 +26,18 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "server1",
+            "name": "pc1",
             "x": 100,
             "y": 100,
             "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": "alpine-virt-qemu.svg",
-            "template_id": "56f4c886-bad6-4197-9562-4c903694ed4c",
-            "first_port_name": "",
-            "port_name_format": "eth{0}",
-            "properties": {"adapter_type": "virtio-net-pci", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "alpine-virt-3.18.4.qcow2", "hda_disk_interface": "virtio", "hdb_disk_image": "", "hdb_disk_interface": "none", "hdc_disk_image": "", "hdc_disk_interface": "none", "ram": 128, "boot_priority": "c", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
           }
         body_format: json
         status_code: 201
 
-    - name: Add server2
+    - name: Add pc2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -48,21 +45,18 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "server2",
+            "name": "pc2",
             "x": 160,
             "y": 100,
             "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": "alpine-virt-qemu.svg",
-            "template_id": "56f4c886-bad6-4197-9562-4c903694ed4c",
-            "first_port_name": "",
-            "port_name_format": "eth{0}",
-            "properties": {"adapter_type": "virtio-net-pci", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "alpine-virt-3.18.4.qcow2", "hda_disk_interface": "virtio", "hdb_disk_image": "", "hdb_disk_interface": "none", "hdc_disk_image": "", "hdc_disk_interface": "none", "ram": 128, "boot_priority": "c", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
           }
         body_format: json
         status_code: 201
 
-    - name: Add server3
+    - name: Add pc3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -70,21 +64,18 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "server3",
+            "name": "pc3",
             "x": 100,
             "y": 160,
             "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": "alpine-virt-qemu.svg",
-            "template_id": "56f4c886-bad6-4197-9562-4c903694ed4c",
-            "first_port_name": "",
-            "port_name_format": "eth{0}",
-            "properties": {"adapter_type": "virtio-net-pci", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "alpine-virt-3.18.4.qcow2", "hda_disk_interface": "virtio", "hdb_disk_image": "", "hdb_disk_interface": "none", "hdc_disk_image": "", "hdc_disk_interface": "none", "ram": 128, "boot_priority": "c", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
           }
         body_format: json
         status_code: 201
 
-    - name: Add server4
+    - name: Add router1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -92,57 +83,16 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "server4",
+            "name": "router1",
             "x": 160,
             "y": 160,
             "compute_id": "local",
             "node_type": "qemu",
-            "symbol": "alpine-virt-qemu.svg",
-            "template_id": "56f4c886-bad6-4197-9562-4c903694ed4c",
-            "first_port_name": "",
-            "port_name_format": "eth{0}",
-            "properties": {"adapter_type": "virtio-net-pci", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "alpine-virt-3.18.4.qcow2", "hda_disk_interface": "virtio", "hdb_disk_image": "", "hdb_disk_interface": "none", "hdc_disk_image": "", "hdc_disk_interface": "none", "ram": 128, "boot_priority": "c", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add server5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "server5",
-            "x": 100,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": "alpine-virt-qemu.svg",
-            "template_id": "56f4c886-bad6-4197-9562-4c903694ed4c",
-            "first_port_name": "",
-            "port_name_format": "eth{0}",
-            "properties": {"adapter_type": "virtio-net-pci", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "alpine-virt-3.18.4.qcow2", "hda_disk_interface": "virtio", "hdb_disk_image": "", "hdb_disk_interface": "none", "hdc_disk_image": "", "hdc_disk_interface": "none", "ram": 128, "boot_priority": "c", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add switch1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "switch1",
-            "x": 160,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+            "symbol": ":/symbols/router.svg",
+            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
           }
         body_format: json
         status_code: 201

@@ -5,7 +5,7 @@
 
   vars:
     gns3_server: "http://127.0.0.1:3080"
-    project_name: "nlp_topology_20251209_174138"
+    project_name: "nlp_topology_20251209_193601"
 
   tasks:
     - name: Get all projects
@@ -33,7 +33,7 @@
         return_content: yes
       register: gns3_nodes
 
-    - name: Connect switch1 to server1
+    - name: Connect router1 to pc1
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -45,33 +45,14 @@
         status_code: [200, 201]
         body:
           nodes:
-            - node_id: "{{ node_map['switch1'] }}"
+            - node_id: "{{ node_map['router1'] }}"
               adapter_number: 0
               port_number: 0
-            - node_id: "{{ node_map['server1'] }}"
-              adapter_number: 0
-              port_number: 0
-
-    - name: Connect switch1 to server2
-      vars:
-        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-            - node_id: "{{ node_map['switch1'] }}"
-              adapter_number: 0
-              port_number: 1
-            - node_id: "{{ node_map['server2'] }}"
+            - node_id: "{{ node_map['pc1'] }}"
               adapter_number: 0
               port_number: 0
 
-    - name: Connect switch1 to server3
+    - name: Connect router1 to pc2
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -83,14 +64,14 @@
         status_code: [200, 201]
         body:
           nodes:
-            - node_id: "{{ node_map['switch1'] }}"
-              adapter_number: 0
-              port_number: 2
-            - node_id: "{{ node_map['server3'] }}"
+            - node_id: "{{ node_map['router1'] }}"
+              adapter_number: 1
+              port_number: 0
+            - node_id: "{{ node_map['pc2'] }}"
               adapter_number: 0
               port_number: 0
 
-    - name: Connect switch1 to server4
+    - name: Connect router1 to pc3
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -102,28 +83,9 @@
         status_code: [200, 201]
         body:
           nodes:
-            - node_id: "{{ node_map['switch1'] }}"
-              adapter_number: 0
-              port_number: 3
-            - node_id: "{{ node_map['server4'] }}"
-              adapter_number: 0
+            - node_id: "{{ node_map['router1'] }}"
+              adapter_number: 2
               port_number: 0
-
-    - name: Connect switch1 to server5
-      vars:
-        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-            - node_id: "{{ node_map['switch1'] }}"
-              adapter_number: 0
-              port_number: 4
-            - node_id: "{{ node_map['server5'] }}"
+            - node_id: "{{ node_map['pc3'] }}"
               adapter_number: 0
               port_number: 0
