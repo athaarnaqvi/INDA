@@ -4,27 +4,21 @@
   vars:
     gns3_url: "http://127.0.0.1:3080"
     ansible_python_interpreter: /usr/bin/python3
+
   tasks:
-    - name: Create a new GNS3 project
+    - name: Create NLP GNS3 project
       uri:
         url: "{{ gns3_url }}/v2/projects"
         method: POST
         headers:
           Content-Type: "application/json"
-        body: |
-          {
-            "name": "Final_Testing"
-          }
+        body:
+          name: "nlp_topology_20251208_181702"
         body_format: json
-        return_content: yes
         status_code: 201
       register: project_result
 
-    - name: Debug project creation result
-      debug:
-        var: project_result
-
-    - name: Add N3248TE-ONFrontView88 to the project
+    - name: Add router1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -32,7 +26,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "N3248TE-ONFrontView88",
+            "name": "router1",
             "x": 100,
             "y": 100,
             "compute_id": "local",
@@ -41,33 +35,12 @@
             "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
-            "properties": {
-              "adapter_type": "e1000",
-              "adapters": 10,
-              "console_type": "telnet",
-              "cpus": 1,
-              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
-              "hda_disk_interface": "sata",
-              "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
-              "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk",
-              "hdc_disk_interface": "virtio",
-              "ram": 4096,
-              "boot_priority": "d",
-              "qemu_path": "/bin/qemu-system-x86_64",
-              "replicate_network_connection_state": true
-            }
+            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
           }
         body_format: json
-        return_content: yes
         status_code: 201
-      register: machine_result
 
-    - name: Debug N3248TE-ONFrontView88 creation result
-      debug:
-        var: machine_result
-
-    - name: Add S4128F-ONFrontView94 to the project
+    - name: Add router2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -75,42 +48,21 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "S4128F-ONFrontView94",
-            "x": 150,
+            "name": "router2",
+            "x": 160,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "8f3c730b-e725-47eb-8e8e-b76fe36d4222",
+            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
-            "properties": {
-              "adapter_type": "e1000",
-              "adapters": 10,
-              "console_type": "telnet",
-              "cpus": 1,
-              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
-              "hda_disk_interface": "sata",
-              "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
-              "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-S4128F-10.5.5.5.105.vmdk",
-              "hdc_disk_interface": "virtio",
-              "ram": 4096,
-              "boot_priority": "d",
-              "qemu_path": "/bin/qemu-system-x86_64",
-              "replicate_network_connection_state": true
-            }
+            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
           }
         body_format: json
-        return_content: yes
         status_code: 201
-      register: machine_result
 
-    - name: Debug S4128F-ONFrontView94 creation result
-      debug:
-        var: machine_result
-
-    - name: Add S5212F-ONFrontView(ACPower)72 to the project
+    - name: Add router3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -118,42 +70,21 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "S5212F-ONFrontView(ACPower)72",
+            "name": "router3",
             "x": 100,
-            "y": 150,
+            "y": 160,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "e7988e20-0fbb-424d-b09b-70238e7326cc",
+            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
-            "properties": {
-              "adapter_type": "e1000",
-              "adapters": 10,
-              "console_type": "telnet",
-              "cpus": 1,
-              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
-              "hda_disk_interface": "sata",
-              "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
-              "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-S5212F-10.5.5.5.105.vmdk",
-              "hdc_disk_interface": "virtio",
-              "ram": 4096,
-              "boot_priority": "d",
-              "qemu_path": "/bin/qemu-system-x86_64",
-              "replicate_network_connection_state": true
-            }
+            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
           }
         body_format: json
-        return_content: yes
         status_code: 201
-      register: machine_result
 
-    - name: Debug S5212F-ONFrontView(ACPower)72 creation result
-      debug:
-        var: machine_result
-
-    - name: Add S5224F-ONFrontView75 to the project
+    - name: Add router4
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -161,37 +92,16 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "S5224F-ONFrontView75",
-            "x": 150,
-            "y": 150,
+            "name": "router4",
+            "x": 160,
+            "y": 160,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "167240a6-e2b8-4a00-ac03-b77c35e52b2a",
+            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
-            "properties": {
-              "adapter_type": "e1000",
-              "adapters": 10,
-              "console_type": "telnet",
-              "cpus": 1,
-              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
-              "hda_disk_interface": "sata",
-              "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk",
-              "hdb_disk_interface": "virtio",
-              "hdc_disk_image": "OS10-platform-S5224F-10.5.5.5.105.vmdk",
-              "hdc_disk_interface": "virtio",
-              "ram": 4096,
-              "boot_priority": "d",
-              "qemu_path": "/bin/qemu-system-x86_64",
-              "replicate_network_connection_state": true
-            }
+            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
           }
         body_format: json
-        return_content: yes
         status_code: 201
-      register: machine_result
-
-    - name: Debug S5224F-ONFrontView75 creation result
-      debug:
-        var: machine_result

@@ -1,0 +1,18 @@
+[
+  {
+    "from": "router1",
+    "to": "router2"
+  },
+  {
+    "from": "router2",
+    "to": "router3"
+  },
+  {
+    "from": "router3",
+    "to": "router4"
+  },
+  {
+    "from": "router4",
+    "to": "router1"
+  }
+]

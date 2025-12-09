@@ -1,10 +1,26 @@
 [
   {
-    "from": "router 1",
-    "to": "switch 1"
+    "from": "router1",
+    "to": "router2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 0
   },
   {
-    "from": "switch 1",
-    "to": "router 2"
+    "from": "router2",
+    "to": "router3",
+    "from_adapter_number": 1,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "router3",
+    "to": "router4",
+    "from_adapter_number": 1,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "router4",
+    "to": "router1",
+    "from_adapter_number": 1,
+    "to_adapter_number": 1
   }
 ]
