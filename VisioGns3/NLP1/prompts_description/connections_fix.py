@@ -14,13 +14,17 @@ GENERATED_FILES_DIR = os.path.join(
 INPUT_FILE = os.path.join(GENERATED_FILES_DIR, "pre_Connections.json")
 OUTPUT_FILE = os.path.join(GENERATED_FILES_DIR, "Connections.json")
 
+def normalize_name(name):
+    """Remove spaces and convert to lowercase if desired."""
+    return name.replace(" ", "")
+
 def assign_adapters(connections):
     adapter_counter = {}
     mapped_connections = []
 
     for conn in connections:
-        src = conn["from"]
-        dst = conn["to"]
+        src = normalize_name(conn["from"])
+        dst = normalize_name(conn["to"])
 
         # Initialize adapter counters if not present
         if src not in adapter_counter:

@@ -1,18 +1,22 @@
 [
-  {
-    "from": "router1",
-    "to": "router2"
-  },
-  {
-    "from": "router2",
-    "to": "router3"
-  },
-  {
-    "from": "router3",
-    "to": "router4"
-  },
-  {
-    "from": "router4",
-    "to": "router1"
-  }
+    {
+        "from": "switch 1",
+        "to": "server 1"
+    },
+    {
+        "from": "switch 1",
+        "to": "server 2"
+    },
+    {
+        "from": "switch 1",
+        "to": "server 3"
+    },
+    {
+        "from": "switch 1",
+        "to": "server 4"
+    },
+    {
+        "from": "switch 1",
+        "to": "server 5"
+    }
 ]

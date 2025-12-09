@@ -1,26 +1,32 @@
 [
   {
-    "from": "router1",
-    "to": "router2",
+    "from": "switch1",
+    "to": "server1",
     "from_adapter_number": 0,
     "to_adapter_number": 0
   },
   {
-    "from": "router2",
-    "to": "router3",
+    "from": "switch1",
+    "to": "server2",
     "from_adapter_number": 1,
     "to_adapter_number": 0
   },
   {
-    "from": "router3",
-    "to": "router4",
-    "from_adapter_number": 1,
+    "from": "switch1",
+    "to": "server3",
+    "from_adapter_number": 2,
     "to_adapter_number": 0
   },
   {
-    "from": "router4",
-    "to": "router1",
-    "from_adapter_number": 1,
-    "to_adapter_number": 1
+    "from": "switch1",
+    "to": "server4",
+    "from_adapter_number": 3,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch1",
+    "to": "server5",
+    "from_adapter_number": 4,
+    "to_adapter_number": 0
   }
 ]

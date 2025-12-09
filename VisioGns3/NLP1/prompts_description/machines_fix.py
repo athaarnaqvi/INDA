@@ -22,14 +22,18 @@ OUTPUT_FILE = os.path.join(GENERATED_FILES_DIR, "machine_names.txt")
 # LOGIC
 # ----------------------------------------------------
 
+def normalize_name(name):
+    """Remove spaces and convert to lowercase if desired."""
+    return name.replace(" ", "")
+
 def extract_unique_machine_names(connections):
     machines = set()
 
     for conn in connections:
         if "from" in conn:
-            machines.add(conn["from"].strip())
+            machines.add(normalize_name(conn["from"]))
         if "to" in conn:
-            machines.add(conn["to"].strip())
+            machines.add(normalize_name(conn["to"]))
 
     return sorted(machines)
 

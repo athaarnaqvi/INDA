@@ -35,3 +35,5 @@ Thumbs.db
 # ---- Local config ----
 *.local
 *.cfg
+# ---- ChromaDB Data ----
+VisioGns3/NLP1/chroma_db/
