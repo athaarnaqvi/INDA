@@ -13,7 +13,7 @@
         headers:
           Content-Type: "application/json"
         body:
-          name: "nlp_topology_20251209_193601"
+          name: "nlp_topology_20251209_200324"
         body_format: json
         status_code: 201
       register: project_result
@@ -37,6 +37,63 @@
         body_format: json
         status_code: 201
 
+    - name: Add pc10
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc10",
+            "x": 160,
+            "y": 100,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add pc11
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc11",
+            "x": 220,
+            "y": 100,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add pc12
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc12",
+            "x": 280,
+            "y": 100,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
     - name: Add pc2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
@@ -46,8 +103,8 @@
         body: |
           {
             "name": "pc2",
-            "x": 160,
-            "y": 100,
+            "x": 100,
+            "y": 160,
             "compute_id": "local",
             "node_type": "vpcs",
             "symbol": ":/symbols/vpcs_guest.svg",
@@ -65,7 +122,7 @@
         body: |
           {
             "name": "pc3",
-            "x": 100,
+            "x": 160,
             "y": 160,
             "compute_id": "local",
             "node_type": "vpcs",
@@ -75,7 +132,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add router1
+    - name: Add pc4
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -83,16 +140,184 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "router1",
-            "x": 160,
+            "name": "pc4",
+            "x": 220,
             "y": 160,
             "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": ":/symbols/router.svg",
-            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
-            "first_port_name": "mgmt 1/1/1",
-            "port_name_format": "eth 1/1/{port1}",
-            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add pc5
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc5",
+            "x": 280,
+            "y": 160,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add pc6
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc6",
+            "x": 100,
+            "y": 220,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add pc7
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc7",
+            "x": 160,
+            "y": 220,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add pc8
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc8",
+            "x": 220,
+            "y": 220,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add pc9
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "pc9",
+            "x": 280,
+            "y": 220,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add switch1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "switch1",
+            "x": 100,
+            "y": 280,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add switch2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "switch2",
+            "x": 160,
+            "y": 280,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add switch3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "switch3",
+            "x": 220,
+            "y": 280,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add switch4
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "switch4",
+            "x": 280,
+            "y": 280,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
           }
         body_format: json
         status_code: 201

@@ -27,7 +27,7 @@ def test_rag_retrieval():
         rag = RAGPipeline(chroma_path=CHROMA_PATH, model_path=EMBEDDING_MODEL)
         print("✅ RAG pipeline initialized\n")
     except Exception as e:
-        print(f"❌ Failed to initialize RAG: {e}")
+        print(f"Failed to initialize RAG: {e}")
         return False
     
     # Test queries
@@ -65,7 +65,7 @@ def test_rag_retrieval():
             print(f"📊 Formatted context length: {len(context)} characters")
             
         except Exception as e:
-            print(f"❌ Query failed: {e}")
+            print(f"Query failed: {e}")
             continue
     
     print("\n" + "="*70)
@@ -90,7 +90,7 @@ def test_rag_retrieval():
         print("\n✅ Context formatting successful")
         
     except Exception as e:
-        print(f"❌ Context formatting failed: {e}")
+        print(f"Context formatting failed: {e}")
         return False
     
     print("\n" + "="*70)
@@ -121,7 +121,7 @@ def check_prerequisites():
         if os.path.exists(path):
             print(f"  ✅ {name}: {path}")
         else:
-            print(f"  ❌ {name} NOT FOUND: {path}")
+            print(f"  {name} NOT FOUND: {path}")
             all_good = False
     
     if not all_good:
@@ -148,7 +148,7 @@ if __name__ == "__main__":
         print("\n\nTest interrupted by user.")
         sys.exit(0)
     except Exception as e:
-        print(f"\n❌ Unexpected error: {e}")
+        print(f"\nUnexpected error: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)

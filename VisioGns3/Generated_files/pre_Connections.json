@@ -1,14 +1,66 @@
 [
     {
-        "from": "router 1",
+        "from": "switch 1",
+        "to": "switch 2"
+    },
+    {
+        "from": "switch 2",
+        "to": "switch 3"
+    },
+    {
+        "from": "switch 3",
+        "to": "switch 4"
+    },
+    {
+        "from": "switch 4",
+        "to": "switch 1"
+    },
+    {
+        "from": "switch 1",
         "to": "pc 1"
     },
     {
-        "from": "router 1",
+        "from": "switch 1",
         "to": "pc 2"
     },
     {
-        "from": "router 1",
+        "from": "switch 1",
         "to": "pc 3"
+    },
+    {
+        "from": "switch 2",
+        "to": "pc 4"
+    },
+    {
+        "from": "switch 2",
+        "to": "pc 5"
+    },
+    {
+        "from": "switch 2",
+        "to": "pc 6"
+    },
+    {
+        "from": "switch 3",
+        "to": "pc 7"
+    },
+    {
+        "from": "switch 3",
+        "to": "pc 8"
+    },
+    {
+        "from": "switch 3",
+        "to": "pc 9"
+    },
+    {
+        "from": "switch 4",
+        "to": "pc 10"
+    },
+    {
+        "from": "switch 4",
+        "to": "pc 11"
+    },
+    {
+        "from": "switch 4",
+        "to": "pc 12"
     }
 ]

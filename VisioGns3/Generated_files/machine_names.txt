@@ -1,4 +1,16 @@
 pc1
+pc10
+pc11
+pc12
 pc2
 pc3
-router1
+pc4
+pc5
+pc6
+pc7
+pc8
+pc9
+switch1
+switch2
+switch3
+switch4

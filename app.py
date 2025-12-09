@@ -97,7 +97,7 @@ class AutomationRunnerThread(QThread):
             # Stream stderr
             for line in iter(process.stderr.readline, ''):
                 if line:
-                    self.output_signal.emit(f"❌ {line.rstrip()}")
+                    self.output_signal.emit(f"{line.rstrip()}")
 
             process.stdout.close()
             process.stderr.close()
@@ -105,7 +105,7 @@ class AutomationRunnerThread(QThread):
             self.finished_signal.emit(return_code)
 
         except Exception as e:
-            self.output_signal.emit(f"❌ Exception: {str(e)}")
+            self.output_signal.emit(f"Exception: {str(e)}")
             self.finished_signal.emit(-1)
 
 
@@ -118,6 +118,7 @@ class VisioGNS3App(QWidget):
         self.server_ip = ""
         self.server_port = ""
         self.automation_runner = None  # Store thread reference
+        self.assistant_active = False
         self.initUI()
 
     def initUI(self):
@@ -320,7 +321,7 @@ class VisioGNS3App(QWidget):
             self.server_configured = True
             QTimer.singleShot(600, self.show_landing_page)
         except Exception as e:
-            self.setup_status.setText(f"❌ Error: {str(e)[:50]}")
+            self.setup_status.setText(f"Error: {str(e)[:50]}")
             self.setup_status.setStyleSheet("""
                 QLabel {
                     color: #F87171;
@@ -651,12 +652,12 @@ class VisioGNS3App(QWidget):
 
         # Safety checks
         if not os.path.exists(script_path):
-            self.add_chat_message("bot", f"❌ Script not found:\n{script_path}")
+            self.add_chat_message("bot", f"Script not found:\n{script_path}")
             self.run_btn.setEnabled(True)
             return
 
         if not os.access(script_path, os.X_OK):
-            self.add_chat_message("bot", "❌ Script is not executable (chmod +x needed)")
+            self.add_chat_message("bot", "Script is not executable (chmod +x needed)")
             self.run_btn.setEnabled(True)
             return
 
@@ -677,19 +678,45 @@ class VisioGNS3App(QWidget):
         if return_code == 0:
             self.add_chat_message("bot", "✅ Automation completed successfully!")
         else:
-            self.add_chat_message("bot", f"❌ Automation failed with code {return_code}. Check logs above.")
+            self.add_chat_message("bot", f"Automation failed with code {return_code}. Check logs above.")
         
         # Reset flag for next operation
         self.automation_completed = False
 
     def add_chat_message(self, role, content):
         current = self.chat_display.toHtml()
+
         if role == "user":
-            msg = f"<div style='margin: 15px 0;'><span style='color: #68D391; font-weight: 700;'>👤 You:</span><br/><span style='color: #E2E8F0;'>{content}</span></div>"
-        else:
-            msg = f"<div style='margin: 15px 0;'><span style='color: #4299E1; font-weight: 700;'>🤖 Assistant:</span><br/>{content}</div>"
+            # Reset assistant block when user speaks
+            self.assistant_active = False
+
+            msg = f"""
+            <div style='margin: 15px 0;'>
+                <span style='color: #68D391; font-weight: 700;'>👤 You:</span><br/>
+                <span style='color: #E2E8F0;'>{content}</span>
+            </div>
+            """
+
+        else:  # Assistant
+            if not self.assistant_active:
+                # First assistant message → create header once
+                msg = f"""
+                <div style='margin: 15px 0;'>
+                    <span style='color: #4299E1; font-weight: 700;'>🤖 Assistant:</span><br/>
+                    <span style='color: #E2E8F0;'>{content}</span>
+                """
+                self.assistant_active = True
+            else:
+                # Subsequent assistant messages → append only content
+                msg = f"""
+                    <br/>
+                    <span style='color: #E2E8F0;'>{content}</span>
+                """
+
         self.chat_display.setHtml(current + msg)
-        self.chat_display.verticalScrollBar().setValue(self.chat_display.verticalScrollBar().maximum())
+        self.chat_display.verticalScrollBar().setValue(
+            self.chat_display.verticalScrollBar().maximum()
+        )
 
     def create_console_page(self):
         page = QWidget()
@@ -902,3 +929,4 @@ if __name__ == "__main__":
     window = VisioGNS3App()
     window.show()
     sys.exit(app.exec())
+

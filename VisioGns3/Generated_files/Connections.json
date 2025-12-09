@@ -1,20 +1,98 @@
 [
   {
-    "from": "router1",
-    "to": "pc1",
+    "from": "switch1",
+    "to": "switch2",
     "from_adapter_number": 0,
     "to_adapter_number": 0
   },
   {
-    "from": "router1",
-    "to": "pc2",
+    "from": "switch2",
+    "to": "switch3",
     "from_adapter_number": 1,
     "to_adapter_number": 0
   },
   {
-    "from": "router1",
-    "to": "pc3",
+    "from": "switch3",
+    "to": "switch4",
+    "from_adapter_number": 1,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch4",
+    "to": "switch1",
+    "from_adapter_number": 1,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "switch1",
+    "to": "pc1",
     "from_adapter_number": 2,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch1",
+    "to": "pc2",
+    "from_adapter_number": 3,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch1",
+    "to": "pc3",
+    "from_adapter_number": 4,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch2",
+    "to": "pc4",
+    "from_adapter_number": 2,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch2",
+    "to": "pc5",
+    "from_adapter_number": 3,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch2",
+    "to": "pc6",
+    "from_adapter_number": 4,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch3",
+    "to": "pc7",
+    "from_adapter_number": 2,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch3",
+    "to": "pc8",
+    "from_adapter_number": 3,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch3",
+    "to": "pc9",
+    "from_adapter_number": 4,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch4",
+    "to": "pc10",
+    "from_adapter_number": 2,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch4",
+    "to": "pc11",
+    "from_adapter_number": 3,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "switch4",
+    "to": "pc12",
+    "from_adapter_number": 4,
     "to_adapter_number": 0
   }
 ]
