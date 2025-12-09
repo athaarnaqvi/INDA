@@ -474,7 +474,7 @@ class VisioGNS3App(QWidget):
             </div>
         """)
 
-        # Input
+        # Input and buttons
         input_frame = QFrame()
         input_frame.setStyleSheet("""
             QFrame {
@@ -504,6 +504,33 @@ class VisioGNS3App(QWidget):
         """)
         self.chat_input.returnPressed.connect(self.send_message)
 
+        # Create the Run button
+        self.run_btn = QPushButton("🚀 Run")
+        self.run_btn.setMinimumHeight(52)
+        self.run_btn.setMinimumWidth(100)
+        self.run_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(139, 92, 246, 0.2);
+                color: #8B5CF6;
+                border: 1px solid rgba(139, 92, 246, 0.4);
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 700;
+            }
+            QPushButton:hover {
+                background: rgba(139, 92, 246, 0.3);
+                border: 1px solid #8B5CF6;
+            }
+            QPushButton:disabled {
+                background: rgba(100, 116, 139, 0.2);
+                color: #64748B;
+                border: 1px solid rgba(100, 116, 139, 0.3);
+            }
+        """)
+        self.run_btn.clicked.connect(self.run_automation)
+        self.run_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.run_btn.setEnabled(False)  # Initially disabled
+
         send_btn = QPushButton("Send →")
         send_btn.setMinimumHeight(52)
         send_btn.setMinimumWidth(120)
@@ -524,6 +551,7 @@ class VisioGNS3App(QWidget):
         send_btn.setCursor(Qt.CursorShape.PointingHandCursor)
 
         i_layout.addWidget(self.chat_input)
+        i_layout.addWidget(self.run_btn)
         i_layout.addWidget(send_btn)
         input_frame.setLayout(i_layout)
 
@@ -540,24 +568,64 @@ class VisioGNS3App(QWidget):
         msg = self.chat_input.text().strip()
         if not msg:
             return
+        
+        # Disable Run button when starting new message
+        self.run_btn.setEnabled(False)
+        
         self.add_chat_message("user", msg)
-        self.add_chat_message("bot", "🔮 Processing...")
+        self.add_chat_message("bot", "🔮 Processing your request...")
         self.chat_input.clear()
         self.chat_input.setEnabled(False)
 
         script_path = os.path.expanduser("~/INDA/VisioGns3/NLP1/run_pipeline.py")
         self.script_runner = ScriptRunnerThread(script_path, msg)
         self.script_runner.output_signal.connect(self.handle_script_output)
-        self.script_runner.finished_signal.connect(lambda: self.chat_input.setEnabled(True))
+        self.script_runner.finished_signal.connect(self.on_script_completed)
         self.script_runner.start()
 
     def handle_script_output(self, output):
         import html
         escaped = html.escape(output)
+        
+        # Check if this looks like a successful completion
+        if "✅" in output or "success" in output.lower() or "completed" in output.lower():
+            self.automation_completed = True
+            
         formatted = f"<pre style='color: #E2E8F0; background: #1A202C; padding: 10px; border-radius: 6px;'>{escaped}</pre>"
         current = self.chat_display.toHtml()
-        self.chat_display.setHtml(current.replace("🔮 Processing...", formatted, 1))
+        self.chat_display.setHtml(current.replace("🔮 Processing your request...", formatted, 1))
         self.chat_display.verticalScrollBar().setValue(self.chat_display.verticalScrollBar().maximum())
+
+    def on_script_completed(self):
+        # Re-enable input
+        self.chat_input.setEnabled(True)
+        
+        # Enable Run button if automation completed successfully
+        if self.automation_completed:
+            self.run_btn.setEnabled(True)
+            # Add a message about the Run button being available
+            self.add_chat_message("bot", "✅ Ready to run the automation! Click the 🚀 Run button to execute.")
+
+    def run_automation(self):
+        """Function to handle the Run button click"""
+        if not self.automation_completed:
+            return
+        
+        # Disable Run button during execution
+        self.run_btn.setEnabled(False)
+        
+        # Add message about running automation
+        self.add_chat_message("bot", "🚀 Running network automation...")
+        
+        # TODO: Add your automation execution code here
+        # For now, just simulate with a timer
+        QTimer.singleShot(2000, self.on_automation_finished)
+
+    def on_automation_finished(self):
+        """Callback when automation finishes"""
+        self.add_chat_message("bot", "✅ Automation executed successfully!")
+        # Reset flag for next operation
+        self.automation_completed = False
 
     def add_chat_message(self, role, content):
         current = self.chat_display.toHtml()
