@@ -4,3 +4,4 @@
  5 computers all connected to one switch
  2 routers connected to each other, each with 2 computers
  1 router connected to 2 switches, each switch has 3 computers
+ 2 routers connected to each other, each connected with one switch,each switch is connected to 1 pc

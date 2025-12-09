@@ -50,7 +50,7 @@ import shlex
 # llm_client.py
 import subprocess
 
-def query_llm(prompt: str, timeout: int = 300):
+def query_llm(prompt: str, timeout: int = 600):
     """
     Run the local LLM (Mistral 7B) with the given prompt and return the text output.
     """
