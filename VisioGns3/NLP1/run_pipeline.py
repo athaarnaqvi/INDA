@@ -35,6 +35,15 @@ LLM_BACKEND = "ollama"
 # provide the LLM with more examples at the cost of longer prompts.
 TOP_K = 5
 
+# ---------------------------------------------------------------------------
+# GENERATED FILE PATHS (NLP → GNS3 PIPELINE)
+# ---------------------------------------------------------------------------
+
+VISIOGNS3_DIR = os.path.dirname(BASE_DIR)
+GENERATED_FILES_DIR = os.path.join(VISIOGNS3_DIR, "Generated_files")
+
+MACHINES_OUTPUT = os.path.join(GENERATED_FILES_DIR, "machine_names.txt")
+CONNECTIONS_OUTPUT = os.path.join(GENERATED_FILES_DIR, "pre_Connections.json")
 
 # ---------------------------------------------------------------------------
 # OUTPUT WRITER
@@ -145,9 +154,13 @@ def main() -> None:
     print(" Writing Output Files")
     print("=" * 60)
     try:
-        machines_path = os.path.join(BASE_DIR, "machines.txt")
-        connections_path = os.path.join(BASE_DIR, "connections.json")
-        machines_path, connections_path = write_outputs(result, machines_path, connections_path)
+        os.makedirs(GENERATED_FILES_DIR, exist_ok=True)
+
+        machines_path, connections_path = write_outputs(
+            result,
+            MACHINES_OUTPUT,
+            CONNECTIONS_OUTPUT
+        )
         print(f"\n[SUCCESS] Topology generated!")
         print("\n📄 Output Files:")
         print(f"   → Machines: {machines_path}")
