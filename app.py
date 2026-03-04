@@ -5,12 +5,235 @@ import traceback
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                               QPushButton, QLabel, QLineEdit, QTextEdit,
                               QFileDialog, QMessageBox, QFrame, QStackedWidget,
-                              QGraphicsDropShadowEffect)
+                              QGraphicsDropShadowEffect, QSpinBox, QComboBox)
 from PyQt6.QtGui import QPalette, QColor, QFont
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
 
 # GNS3 Config File Path
 GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
+
+
+class StyledSpinBox(QWidget):
+    """Custom SpinBox with clearly visible up/down arrow buttons"""
+    valueChanged = pyqtSignal(int)
+
+    def __init__(self, minimum=0, maximum=100, value=1, parent=None):
+        super().__init__(parent)
+        self._min = minimum
+        self._max = maximum
+        self._value = value
+
+        layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        self.line_edit = QLineEdit(str(value))
+        self.line_edit.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.line_edit.setMinimumHeight(46)
+        self.line_edit.setStyleSheet("""
+            QLineEdit {
+                background: rgba(15, 23, 42, 0.8);
+                color: #F8FAFC;
+                border: 2px solid rgba(100, 116, 139, 0.3);
+                border-right: none;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                font-size: 15px;
+                padding: 0 8px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #22D3EE;
+                border-right: none;
+            }
+        """)
+        self.line_edit.textChanged.connect(self._on_text_changed)
+
+        btn_container = QWidget()
+        btn_container.setFixedWidth(36)
+        btn_container.setMinimumHeight(46)
+        btn_container.setStyleSheet("""
+            QWidget {
+                background: rgba(15, 23, 42, 0.8);
+                border: 2px solid rgba(100, 116, 139, 0.3);
+                border-left: none;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+        """)
+        btn_layout = QVBoxLayout()
+        btn_layout.setContentsMargins(2, 3, 3, 3)
+        btn_layout.setSpacing(2)
+
+        self.up_btn = QPushButton("▲")
+        self.up_btn.setFixedHeight(18)
+        self.up_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(34, 211, 238, 0.15);
+                color: #22D3EE;
+                border: none;
+                border-radius: 4px;
+                font-size: 9px;
+                font-weight: 700;
+                padding: 0;
+            }
+            QPushButton:hover { background: rgba(34, 211, 238, 0.4); }
+            QPushButton:pressed { background: rgba(34, 211, 238, 0.6); }
+        """)
+        self.up_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.up_btn.clicked.connect(self.increment)
+
+        self.down_btn = QPushButton("▼")
+        self.down_btn.setFixedHeight(18)
+        self.down_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(34, 211, 238, 0.15);
+                color: #22D3EE;
+                border: none;
+                border-radius: 4px;
+                font-size: 9px;
+                font-weight: 700;
+                padding: 0;
+            }
+            QPushButton:hover { background: rgba(34, 211, 238, 0.4); }
+            QPushButton:pressed { background: rgba(34, 211, 238, 0.6); }
+        """)
+        self.down_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.down_btn.clicked.connect(self.decrement)
+
+        btn_layout.addWidget(self.up_btn)
+        btn_layout.addWidget(self.down_btn)
+        btn_container.setLayout(btn_layout)
+
+        layout.addWidget(self.line_edit)
+        layout.addWidget(btn_container)
+        self.setLayout(layout)
+
+    def increment(self):
+        if self._value < self._max:
+            self._value += 1
+            self.line_edit.setText(str(self._value))
+            self.valueChanged.emit(self._value)
+
+    def decrement(self):
+        if self._value > self._min:
+            self._value -= 1
+            self.line_edit.setText(str(self._value))
+            self.valueChanged.emit(self._value)
+
+    def _on_text_changed(self, text):
+        try:
+            v = int(text)
+            if self._min <= v <= self._max:
+                self._value = v
+                self.valueChanged.emit(self._value)
+        except ValueError:
+            pass
+
+    def value(self):
+        return self._value
+
+    def setValue(self, v):
+        self._value = max(self._min, min(self._max, v))
+        self.line_edit.setText(str(self._value))
+
+    def setMinimum(self, v):
+        self._min = v
+
+    def setMaximum(self, v):
+        self._max = v
+
+
+class StyledComboBox(QWidget):
+    """QComboBox wrapper with a clearly visible ▼ arrow button"""
+    currentIndexChanged = pyqtSignal(int)
+
+    def __init__(self, items=None, parent=None):
+        super().__init__(parent)
+        layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        self._combo = QComboBox()
+        if items:
+            self._combo.addItems(items)
+        self._combo.setMinimumHeight(46)
+        self._combo.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
+        self._combo.setStyleSheet("""
+            QComboBox {
+                background: rgba(15, 23, 42, 0.8);
+                color: #F8FAFC;
+                border: 2px solid rgba(100, 116, 139, 0.3);
+                border-right: none;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                padding: 0 14px;
+                font-size: 15px;
+            }
+            QComboBox:focus {
+                border: 2px solid #22D3EE;
+                border-right: none;
+            }
+            QComboBox::drop-down { width: 0px; border: none; }
+            QComboBox::down-arrow { image: none; width: 0px; }
+            QComboBox QAbstractItemView {
+                background: #1E293B;
+                color: #F8FAFC;
+                border: 1px solid rgba(6, 182, 212, 0.3);
+                border-radius: 8px;
+                selection-background-color: rgba(6, 182, 212, 0.25);
+                outline: none;
+                padding: 4px;
+                font-size: 14px;
+            }
+            QComboBox QAbstractItemView::item {
+                min-height: 32px;
+                padding: 4px 12px;
+            }
+        """)
+        self._combo.currentIndexChanged.connect(self.currentIndexChanged)
+
+        arrow_btn = QPushButton("▼")
+        arrow_btn.setFixedWidth(40)
+        arrow_btn.setMinimumHeight(46)
+        arrow_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(34, 211, 238, 0.15);
+                color: #22D3EE;
+                border: 2px solid rgba(100, 116, 139, 0.3);
+                border-left: none;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                font-size: 12px;
+                font-weight: 700;
+                padding: 0;
+            }
+            QPushButton:hover { background: rgba(34, 211, 238, 0.35); }
+            QPushButton:pressed { background: rgba(34, 211, 238, 0.55); }
+        """)
+        arrow_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        arrow_btn.clicked.connect(self._combo.showPopup)
+
+        layout.addWidget(self._combo)
+        layout.addWidget(arrow_btn)
+        self.setLayout(layout)
+
+    def addItems(self, items):
+        self._combo.addItems(items)
+
+    def currentText(self):
+        return self._combo.currentText()
+
+    def currentIndex(self):
+        return self._combo.currentIndex()
+
+    def setCurrentIndex(self, i):
+        self._combo.setCurrentIndex(i)
+
+    def setMinimumHeight(self, h):
+        self._combo.setMinimumHeight(h)
+
+    def setMinimumWidth(self, w):
+        super().setMinimumWidth(w)
 
 
 class WorkerThread(QThread):
@@ -139,11 +362,13 @@ class VisioGNS3App(QWidget):
         self.landing_page = self.create_landing_page()
         self.console_page = self.create_console_page()
         self.chatbot_page = self.create_chatbot_page()
+        self.architecture_page = self.create_architecture_page()
 
-        self.stacked_widget.addWidget(self.setup_page)
-        self.stacked_widget.addWidget(self.landing_page)
-        self.stacked_widget.addWidget(self.console_page)
-        self.stacked_widget.addWidget(self.chatbot_page)
+        self.stacked_widget.addWidget(self.setup_page)       # index 0
+        self.stacked_widget.addWidget(self.landing_page)     # index 1
+        self.stacked_widget.addWidget(self.console_page)     # index 2
+        self.stacked_widget.addWidget(self.chatbot_page)     # index 3
+        self.stacked_widget.addWidget(self.architecture_page) # index 4
 
         main_layout.addWidget(self.stacked_widget)
         self.setLayout(main_layout)
@@ -356,13 +581,15 @@ class VisioGNS3App(QWidget):
         cards_container = QWidget()
         cards_container.setStyleSheet("background: transparent;")
         cards_layout = QHBoxLayout()
-        cards_layout.setSpacing(30)
+        cards_layout.setSpacing(24)
         cards_layout.setContentsMargins(0, 0, 0, 0)
         
         cards_layout.addWidget(self.create_card("🤖", "Instruction Orchestrator",
                                             "Natural language topology generation", "#3B82F6", self.show_chatbot_page))
         cards_layout.addWidget(self.create_card("📊", "Topology Interpreter",
                                             "Upload Visio/XML/SVG files", "#8B5CF6", self.show_console_page))
+        cards_layout.addWidget(self.create_card("🏢", "Architecture Abstraction Engine",
+                                            "Design from building parameters", "#06B6D4", self.show_architecture_page))
         
         cards_container.setLayout(cards_layout)
         
@@ -379,8 +606,9 @@ class VisioGNS3App(QWidget):
 
     def create_card(self, emoji, title, desc, color, callback):
         card = QFrame()
-        card.setMinimumHeight(320)
-        card.setMinimumWidth(400)
+        card.setMinimumHeight(300)
+        card.setMinimumWidth(310)
+        card.setMaximumWidth(360)
         card.setStyleSheet(f"""
             QFrame {{
                 background: rgba(30, 41, 59, 0.6);
@@ -397,15 +625,15 @@ class VisioGNS3App(QWidget):
         
         content_label = QLabel(f"""
             <div align="center">
-                <div style="font-size: 48px;">{emoji}</div>
-                <div style="color: #F8FAFC; font-size: 24px; font-weight: 700; margin: 20px 0;">{title}</div>
-                <div style="color: #94A3B8; font-size: 15px; line-height: 1.6; margin-bottom: 30px;">{desc}</div>
-                <div style="color: {color}; font-size: 32px;">→</div>
+                <div style="font-size: 44px;">{emoji}</div>
+                <div style="color: #F8FAFC; font-size: 20px; font-weight: 700; margin: 16px 0;">{title}</div>
+                <div style="color: #94A3B8; font-size: 14px; line-height: 1.6; margin-bottom: 24px;">{desc}</div>
+                <div style="color: {color}; font-size: 28px;">→</div>
             </div>
         """)
         content_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         content_label.setWordWrap(True)
-        content_label.setStyleSheet("background: transparent; padding: 40px;")
+        content_label.setStyleSheet("background: transparent; padding: 36px;")
         
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -414,6 +642,252 @@ class VisioGNS3App(QWidget):
         card.setLayout(layout)
         card.mousePressEvent = lambda e: callback()
         return card
+
+    def create_architecture_page(self):
+        page = QWidget()
+        page.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0F172A, stop:1 #1E293B);")
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+
+        # Header
+        header = QFrame()
+        header.setStyleSheet("background: rgba(30, 41, 59, 0.95); padding: 24px 40px; border-bottom: 1px solid rgba(148, 163, 184, 0.2);")
+        h_layout = QHBoxLayout()
+
+        back_btn = QPushButton("← Back")
+        back_btn.setFixedHeight(44)
+        back_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(6, 182, 212, 0.1);
+                color: #22D3EE;
+                border: 1px solid rgba(6, 182, 212, 0.3);
+                border-radius: 22px;
+                font-size: 14px;
+                font-weight: 600;
+                padding: 0 20px;
+            }
+            QPushButton:hover {
+                background: rgba(6, 182, 212, 0.2);
+                border: 1px solid #22D3EE;
+            }
+        """)
+        back_btn.clicked.connect(self.show_landing_page)
+        back_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        title = QLabel("Architecture Abstraction Engine")
+        title.setStyleSheet("color: #F8FAFC; font-size: 26px; font-weight: 700; background: transparent;")
+
+        badge = QLabel("🏢 Building Designer")
+        badge.setStyleSheet("""
+            color: #22D3EE;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 14px;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 12px;
+        """)
+
+        h_layout.addWidget(back_btn)
+        h_layout.addSpacing(16)
+        h_layout.addWidget(title)
+        h_layout.addStretch()
+        h_layout.addWidget(badge)
+        header.setLayout(h_layout)
+
+        # Content
+        content = QWidget()
+        c_layout = QVBoxLayout()
+        c_layout.setContentsMargins(50, 30, 50, 40)
+        c_layout.setSpacing(28)
+
+        # Form header (directly in content, no wrapping container)
+        form_layout = c_layout
+
+        form_title = QLabel("🏗️  Building Configuration")
+        form_title.setStyleSheet("color: #22D3EE; font-size: 18px; font-weight: 700; background: transparent;")
+
+        form_desc = QLabel("Define your building parameters to generate an optimal network topology.")
+        form_desc.setStyleSheet("color: #BCC4C5; font-size: 14px; background: transparent;")
+        form_desc.setWordWrap(True)
+
+        form_layout.addWidget(form_title)
+        form_layout.addWidget(form_desc)
+
+        # Divider
+        divider = QFrame()
+        divider.setFrameShape(QFrame.Shape.HLine)
+        divider.setStyleSheet("background: rgba(6, 182, 212, 0.15); border: none; max-height: 1px;")
+        form_layout.addWidget(divider)
+
+        # Field style helpers
+        label_style = "color: #CBD5E1; font-size: 14px; font-weight: 600; background: transparent;"
+        hint_style = "color: #BCC4C5; font-size: 12px; background: transparent;"
+
+
+        # ── Row 1: Floors + Rooms per floor ──
+        row1 = QHBoxLayout()
+        row1.setSpacing(30)
+
+        # Number of floors
+        floors_col = QVBoxLayout()
+        floors_col.setSpacing(6)
+        floors_label = QLabel("🏢  Number of Floors")
+        floors_label.setStyleSheet(label_style)
+        floors_hint = QLabel("Maximum: 5 floors")
+        floors_hint.setStyleSheet(hint_style)
+        self.floors_spin = StyledSpinBox(minimum=1, maximum=5, value=1)
+        self.floors_spin.setMinimumWidth(200)
+        floors_col.addWidget(floors_label)
+        floors_col.addWidget(floors_hint)
+        floors_col.addWidget(self.floors_spin)
+
+        # Rooms per floor
+        rooms_col = QVBoxLayout()
+        rooms_col.setSpacing(6)
+        rooms_label = QLabel("🚪  Rooms Per Floor")
+        rooms_label.setStyleSheet(label_style)
+        rooms_hint = QLabel("Maximum: 10 rooms")
+        rooms_hint.setStyleSheet(hint_style)
+        self.rooms_spin = StyledSpinBox(minimum=1, maximum=10, value=1)
+        self.rooms_spin.setMinimumWidth(200)
+        rooms_col.addWidget(rooms_label)
+        rooms_col.addWidget(rooms_hint)
+        rooms_col.addWidget(self.rooms_spin)
+
+        row1.addLayout(floors_col)
+        row1.addLayout(rooms_col)
+        form_layout.addLayout(row1)
+
+        # ── Row 2: Avg users + Building width ──
+        row2 = QHBoxLayout()
+        row2.setSpacing(30)
+
+        # Average users per room
+        users_col = QVBoxLayout()
+        users_col.setSpacing(6)
+        users_label = QLabel("👤  Average Users Per Room")
+        users_label.setStyleSheet(label_style)
+        users_hint = QLabel("Maximum: 20 users")
+        users_hint.setStyleSheet(hint_style)
+        self.users_spin = StyledSpinBox(minimum=1, maximum=20, value=1)
+        self.users_spin.setMinimumWidth(200)
+        users_col.addWidget(users_label)
+        users_col.addWidget(users_hint)
+        users_col.addWidget(self.users_spin)
+
+        # Building width
+        width_col = QVBoxLayout()
+        width_col.setSpacing(6)
+        width_label = QLabel("📐  Building Width")
+        width_label.setStyleSheet(label_style)
+        width_hint = QLabel("Enter value and select unit")
+        width_hint.setStyleSheet(hint_style)
+
+        width_input_row = QHBoxLayout()
+        width_input_row.setSpacing(10)
+
+        self.width_input = QLineEdit()
+        self.width_input.setPlaceholderText("e.g., 50")
+        self.width_input.setMinimumHeight(46)
+        self.width_input.setStyleSheet("""
+            QLineEdit {
+                background: rgba(15, 23, 42, 0.8);
+                color: #F8FAFC;
+                border: 2px solid rgba(100, 116, 139, 0.3);
+                border-radius: 10px;
+                padding: 0 14px;
+                font-size: 15px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #22D3EE;
+            }
+        """)
+
+        self.width_unit_combo = StyledComboBox(items=["Feet", "Square Meters", "Meters"])
+        self.width_unit_combo.setMinimumHeight(46)
+        self.width_unit_combo.setMinimumWidth(180)
+
+        width_input_row.addWidget(self.width_input)
+        width_input_row.addWidget(self.width_unit_combo)
+
+        width_col.addWidget(width_label)
+        width_col.addWidget(width_hint)
+        width_col.addLayout(width_input_row)
+
+        row2.addLayout(users_col)
+        row2.addLayout(width_col)
+        form_layout.addLayout(row2)
+
+        # ── Row 3: Building type (full width) ──
+        type_col = QVBoxLayout()
+        type_col.setSpacing(6)
+        type_label = QLabel("🏗️  Building Type")
+        type_label.setStyleSheet(label_style)
+        type_hint = QLabel("Select the primary use of the building")
+        type_hint.setStyleSheet(hint_style)
+        self.building_type_combo = StyledComboBox(items=["Office", "Hospital", "School / University", "Hotel"])
+        self.building_type_combo.setMinimumHeight(46)
+        type_col.addWidget(type_label)
+        type_col.addWidget(type_hint)
+        type_col.addWidget(self.building_type_combo)
+        form_layout.addLayout(type_col)
+
+        # Start Engine button
+        start_btn = QPushButton("⚙️   Start Engine")
+        start_btn.setMinimumHeight(60)
+        start_btn.setStyleSheet("""
+            QPushButton {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0891B2, stop:1 #06B6D4);
+                color: #FFFFFF;
+                border: none;
+                border-radius: 14px;
+                font-size: 17px;
+                font-weight: 700;
+                letter-spacing: 1px;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0E7490, stop:1 #0891B2);
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #164E63, stop:1 #0E7490);
+            }
+        """)
+        start_btn.clicked.connect(self.start_architecture_engine)
+        start_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.add_shadow(start_btn)
+
+        c_layout.addWidget(start_btn)
+        c_layout.addStretch()
+        content.setLayout(c_layout)
+
+        layout.addWidget(header)
+        layout.addWidget(content)
+        page.setLayout(layout)
+        return page
+
+    def start_architecture_engine(self):
+        floors = self.floors_spin.value()
+        rooms = self.rooms_spin.value()
+        users = self.users_spin.value()
+        width = self.width_input.text().strip()
+        unit = self.width_unit_combo.currentText()
+        building_type = self.building_type_combo.currentText()
+
+        if not width:
+            QMessageBox.warning(self, "Missing Input", "Please enter a building width value.")
+            return
+
+        try:
+            float(width)
+        except ValueError:
+            QMessageBox.warning(self, "Invalid Input", "Building width must be a numeric value.")
+            return
+
+        summary = (
+            f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
+            f"Width: {width} {unit}  |  Type: {building_type}"
+        )
+        QMessageBox.information(self, "Architecture Abstraction Engine", f"🏢 Engine started with:\n\n{summary}")
 
     def create_chatbot_page(self):
         page = QWidget()
@@ -863,6 +1337,9 @@ class VisioGNS3App(QWidget):
         self.stacked_widget.setCurrentIndex(3)
         self.chat_input.setFocus()
 
+    def show_architecture_page(self):
+        self.stacked_widget.setCurrentIndex(4)
+
     def save_gns3_config(self, ip, port):
         config_dir = os.path.dirname(GNS3_CONF_PATH)
         os.makedirs(config_dir, exist_ok=True)
@@ -929,4 +1406,3 @@ if __name__ == "__main__":
     window = VisioGNS3App()
     window.show()
     sys.exit(app.exec())
-
