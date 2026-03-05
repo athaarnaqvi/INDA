@@ -966,29 +966,35 @@ class VisioGNS3App(QWidget):
 
         # --- generate txt file (Architecture module) ---
         try:
-            # NEW import (matches the new generator)
-            from VisioGns3.Architecture.rule_based_generator import generate_architecture_devices
+            from VisioGns3.Architecture.generate_machine_names_architecture import ArchitectureEngine
+            import os
 
             gui_dir = os.path.dirname(os.path.abspath(__file__))
             visio_dir = os.path.join(gui_dir, "VisioGns3")
             arch_dir = os.path.join(visio_dir, "Architecture")
             out_dir = os.path.join(arch_dir, "outputs")
 
-            out_path = generate_architecture_devices(
-                floors=floors,
-                rooms_per_floor=rooms,
-                users_per_room=users,
-                width=width,
-                unit=unit,
-                building_type=building_type,
-                output_dir=out_dir
+            os.makedirs(out_dir, exist_ok=True)
+
+            out_path = os.path.join(out_dir, "machines.txt")
+
+            engine = ArchitectureEngine(
+                floors,
+                rooms,
+                users,
+                width,
+                unit,
+                building_type
             )
+
+            engine.run(out_path)
 
             summary = (
                 f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
                 f"Width: {width} {unit}  |  Type: {building_type}\n\n"
                 f"✅ Architecture devices TXT generated:\n{out_path}"
             )
+
             QMessageBox.information(self, "Architecture Abstraction Engine", summary)
 
         except Exception as e:
@@ -997,7 +1003,6 @@ class VisioGNS3App(QWidget):
                 "Architecture Abstraction Engine",
                 f"Failed to generate architecture devices txt:\n{str(e)}"
             )
-
     def create_chatbot_page(self):
         page = QWidget()
         page.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0F172A, stop:1 #1E293B);")
