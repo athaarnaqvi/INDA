@@ -707,7 +707,7 @@ class VisioGNS3App(QWidget):
         form_title.setStyleSheet("color: #22D3EE; font-size: 18px; font-weight: 700; background: transparent;")
 
         form_desc = QLabel("Define your building parameters to generate an optimal network topology.")
-        form_desc.setStyleSheet("color: #BCC4C5; font-size: 14px; background: transparent;")
+        form_desc.setStyleSheet("color: #64748B; font-size: 14px; background: transparent;")
         form_desc.setWordWrap(True)
 
         form_layout.addWidget(form_title)
@@ -721,7 +721,7 @@ class VisioGNS3App(QWidget):
 
         # Field style helpers
         label_style = "color: #CBD5E1; font-size: 14px; font-weight: 600; background: transparent;"
-        hint_style = "color: #BCC4C5; font-size: 12px; background: transparent;"
+        hint_style = "color: #475569; font-size: 12px; background: transparent;"
 
 
         # ── Row 1: Floors + Rooms per floor ──
@@ -866,22 +866,103 @@ class VisioGNS3App(QWidget):
         return page
 
     def start_architecture_engine(self):
-        floors = self.floors_spin.value()
-        rooms = self.rooms_spin.value()
-        users = self.users_spin.value()
-        width = self.width_input.text().strip()
+        errors = []
+
+        # --- Floors ---
+        floors_text = self.floors_spin.line_edit.text().strip()
+        if not floors_text:
+            errors.append("• Number of Floors cannot be empty.")
+        else:
+            try:
+                floors = int(floors_text)
+                if floors != float(floors_text):
+                    raise ValueError
+                if floors <= 0:
+                    errors.append("• Number of Floors must be greater than zero.")
+                elif floors > 5:
+                    errors.append("• Number of Floors cannot exceed 5.")
+            except ValueError:
+                errors.append("• Number of Floors must be a whole number (e.g. 2).")
+
+        # --- Rooms per floor ---
+        rooms_text = self.rooms_spin.line_edit.text().strip()
+        if not rooms_text:
+            errors.append("• Rooms Per Floor cannot be empty.")
+        else:
+            try:
+                rooms = int(rooms_text)
+                if rooms != float(rooms_text):
+                    raise ValueError
+                if rooms <= 0:
+                    errors.append("• Rooms Per Floor must be greater than zero.")
+                elif rooms > 10:
+                    errors.append("• Rooms Per Floor cannot exceed 10.")
+            except ValueError:
+                errors.append("• Rooms Per Floor must be a whole number (e.g. 4).")
+
+        # --- Average users per room ---
+        users_text = self.users_spin.line_edit.text().strip()
+        if not users_text:
+            errors.append("• Average Users Per Room cannot be empty.")
+        else:
+            try:
+                users = int(users_text)
+                if users != float(users_text):
+                    raise ValueError
+                if users <= 0:
+                    errors.append("• Average Users Per Room must be greater than zero.")
+                elif users > 20:
+                    errors.append("• Average Users Per Room cannot exceed 20.")
+            except ValueError:
+                errors.append("• Average Users Per Room must be a whole number (e.g. 10).")
+
+        # --- Building width ---
+        width_text = self.width_input.text().strip()
+        if not width_text:
+            errors.append("• Building Width cannot be empty.")
+        else:
+            try:
+                width = float(width_text)
+                if width <= 0:
+                    errors.append("• Building Width must be greater than zero.")
+            except ValueError:
+                errors.append("• Building Width must be a decimal number (e.g. 50.5).")
+
+        # --- Show errors or proceed ---
+        if errors:
+            msg = QMessageBox(self)
+            msg.setWindowTitle("Validation Error")
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setText("<b>Please fix the following issues:</b>")
+            msg.setInformativeText("\n".join(errors))
+            msg.setStyleSheet("""
+                QMessageBox {
+                    background: #1E293B;
+                    color: #F8FAFC;
+                }
+                QMessageBox QLabel {
+                    color: #F8FAFC;
+                    font-size: 14px;
+                }
+                QPushButton {
+                    background: rgba(6, 182, 212, 0.2);
+                    color: #22D3EE;
+                    border: 1px solid rgba(6, 182, 212, 0.4);
+                    border-radius: 8px;
+                    padding: 6px 20px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    min-width: 80px;
+                }
+                QPushButton:hover {
+                    background: rgba(6, 182, 212, 0.35);
+                }
+            """)
+            msg.exec()
+            return
+
         unit = self.width_unit_combo.currentText()
         building_type = self.building_type_combo.currentText()
-
-        if not width:
-            QMessageBox.warning(self, "Missing Input", "Please enter a building width value.")
-            return
-
-        try:
-            float(width)
-        except ValueError:
-            QMessageBox.warning(self, "Invalid Input", "Building width must be a numeric value.")
-            return
 
         summary = (
             f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
