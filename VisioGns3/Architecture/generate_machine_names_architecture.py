@@ -2,15 +2,14 @@ import math
 
 
 class ArchitectureEngine:
-
-    def __init__(self, floors, rooms, users, width, unit, building_type):
-
+    def __init__(self, floors, rooms, users, width, unit, building_type, firewall_enabled):
         self.floors = floors
         self.rooms = rooms
         self.users = users
         self.width = width
         self.unit = unit
         self.building_type = building_type
+        self.firewall_enabled = firewall_enabled
 
         self.machines = []
 
@@ -52,6 +51,8 @@ class ArchitectureEngine:
         self.machines.append("dhcp_server")
         self.machines.append("dns_server")
         self.machines.append("internet_cloud")
+        if self.firewall_enabled:
+            self.machines.append("firewall_1")
 
 
     # --------------------------------------------------

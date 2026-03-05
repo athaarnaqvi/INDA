@@ -5,13 +5,51 @@ import traceback
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                               QPushButton, QLabel, QLineEdit, QTextEdit,
                               QFileDialog, QMessageBox, QFrame, QStackedWidget,
-                              QGraphicsDropShadowEffect, QSpinBox, QComboBox)
-from PyQt6.QtGui import QPalette, QColor, QFont
-from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
+                              QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox)
+from PyQt6.QtGui import QPalette, QColor, QFont, QPainter, QBrush
+from PyQt6.QtCore import QSize, Qt, QPropertyAnimation, QThread, pyqtSignal, QTimer, pyqtProperty
 
 # GNS3 Config File Path
 GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
 
+class ToggleSwitch(QCheckBox):
+    def __init__(self, parent=None, width=60, height=28):
+        super().__init__(parent)
+        self.setFixedSize(width, height)
+        self._offset = 2
+        self._anim = QPropertyAnimation(self, b"offset", self)
+        self._anim.setDuration(180)
+        self.stateChanged.connect(self.start_transition)
+
+    def start_transition(self, value):
+        self._anim.stop()
+        self._anim.setStartValue(self._offset)
+        self._anim.setEndValue(self.width() - self.height() + 2 if self.isChecked() else 2)
+        self._anim.start()
+
+    @pyqtProperty(int)
+    def offset(self):
+        return self._offset
+
+    @offset.setter
+    def offset(self, value):
+        self._offset = value
+        self.update()  # repaint
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+
+        # Track
+        track_color = QColor("#22D3EE") if self.isChecked() else QColor("#334155")
+        painter.setBrush(QBrush(track_color))
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.drawRoundedRect(0, 0, self.width(), self.height(), self.height()/2, self.height()/2)
+
+        # Knob
+        knob_color = QColor("#F8FAFC")
+        painter.setBrush(QBrush(knob_color))
+        painter.drawEllipse(self._offset, 2, self.height()-4, self.height()-4)
 
 class StyledSpinBox(QWidget):
     """Custom SpinBox with clearly visible up/down arrow buttons"""
@@ -832,6 +870,36 @@ class VisioGNS3App(QWidget):
         type_col.addWidget(self.building_type_combo)
         form_layout.addLayout(type_col)
 
+        # ── Row 4: Firewall Toggle ──
+        firewall_col = QVBoxLayout()
+        firewall_col.setSpacing(6)
+
+        firewall_label = QLabel("🛡️  Firewall")
+        firewall_label.setStyleSheet(label_style)
+
+        firewall_hint = QLabel("Enable firewall for perimeter network security")
+        firewall_hint.setStyleSheet(hint_style)
+        
+        # Toggle Switch
+        self.firewall_toggle = ToggleSwitch("Enable Firewall")
+
+        # Label beside toggle
+        toggle_text = QLabel("Enable Firewall")
+        toggle_text.setStyleSheet("color: #CBD5E1; font-weight: 600; font-size: 14px;")
+        toggle_text.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
+        # Horizontal layout for toggle + text
+        toggle_row = QHBoxLayout()
+        toggle_row.setSpacing(12)
+        toggle_row.addWidget(self.firewall_toggle)
+        toggle_row.addWidget(toggle_text)
+        toggle_row.addStretch()
+
+        firewall_col.addWidget(firewall_label)
+        firewall_col.addWidget(firewall_hint)
+        firewall_col.addLayout(toggle_row)
+
+        form_layout.addLayout(firewall_col)
+
         # Start Engine button
         start_btn = QPushButton("⚙️   Start Engine")
         start_btn.setMinimumHeight(60)
@@ -963,7 +1031,7 @@ class VisioGNS3App(QWidget):
 
         unit = self.width_unit_combo.currentText()
         building_type = self.building_type_combo.currentText()
-
+        firewall_enabled = self.firewall_toggle.isChecked()
         # --- generate txt file (Architecture module) ---
         try:
             from VisioGns3.Architecture.generate_machine_names_architecture import ArchitectureEngine
@@ -979,19 +1047,23 @@ class VisioGNS3App(QWidget):
             out_path = os.path.join(out_dir, "machines.txt")
 
             engine = ArchitectureEngine(
-                floors,
-                rooms,
-                users,
-                width,
-                unit,
-                building_type
-            )
+            floors,
+            rooms,
+            users,
+            width,
+            unit,
+            building_type,
+            firewall_enabled
+        )
 
             engine.run(out_path)
 
+            firewall_status = "Enabled" if firewall_enabled else "Disabled"
+
             summary = (
                 f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
-                f"Width: {width} {unit}  |  Type: {building_type}\n\n"
+                f"Width: {width} {unit}  |  Type: {building_type}\n"
+                f"Firewall: {firewall_status}\n\n"
                 f"✅ Architecture devices TXT generated:\n{out_path}"
             )
 
@@ -1003,6 +1075,7 @@ class VisioGNS3App(QWidget):
                 "Architecture Abstraction Engine",
                 f"Failed to generate architecture devices txt:\n{str(e)}"
             )
+
     def create_chatbot_page(self):
         page = QWidget()
         page.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0F172A, stop:1 #1E293B);")
