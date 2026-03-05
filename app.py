@@ -964,11 +964,39 @@ class VisioGNS3App(QWidget):
         unit = self.width_unit_combo.currentText()
         building_type = self.building_type_combo.currentText()
 
-        summary = (
-            f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
-            f"Width: {width} {unit}  |  Type: {building_type}"
-        )
-        QMessageBox.information(self, "Architecture Abstraction Engine", f"🏢 Engine started with:\n\n{summary}")
+        # --- generate txt file (Architecture module) ---
+        try:
+            # NEW import (matches the new generator)
+            from VisioGns3.Architecture.rule_based_generator import generate_architecture_devices
+
+            gui_dir = os.path.dirname(os.path.abspath(__file__))
+            visio_dir = os.path.join(gui_dir, "VisioGns3")
+            arch_dir = os.path.join(visio_dir, "Architecture")
+            out_dir = os.path.join(arch_dir, "outputs")
+
+            out_path = generate_architecture_devices(
+                floors=floors,
+                rooms_per_floor=rooms,
+                users_per_room=users,
+                width=width,
+                unit=unit,
+                building_type=building_type,
+                output_dir=out_dir
+            )
+
+            summary = (
+                f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
+                f"Width: {width} {unit}  |  Type: {building_type}\n\n"
+                f"✅ Architecture devices TXT generated:\n{out_path}"
+            )
+            QMessageBox.information(self, "Architecture Abstraction Engine", summary)
+
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                "Architecture Abstraction Engine",
+                f"Failed to generate architecture devices txt:\n{str(e)}"
+            )
 
     def create_chatbot_page(self):
         page = QWidget()
