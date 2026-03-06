@@ -1,16 +1,16 @@
 import json
 import math
 
-
 class ArchitectureConnections:
 
-    def __init__(self, floors, rooms, users, width_m, building_type, firewall_enabled):
+    def __init__(self, floors, rooms, users, width_m, building_type, firewall_enabled, servers=None):
         self.floors = floors
         self.rooms = rooms
         self.users = users
         self.width_m = width_m
         self.building_type = building_type
         self.firewall_enabled = firewall_enabled
+        self.servers = servers or []  # list of server names like ['file_server', 'mail_server']
 
         self.connections = []
 
@@ -56,10 +56,8 @@ class ArchitectureConnections:
     # --------------------------------------------------
 
     def connect_access_switches(self):
-
         for f in range(1, self.floors + 1):
             dist = f"dist_switch_f{f}"
-
             for r in range(1, self.rooms + 1):
                 access = f"access_switch_f{f}_r{r}"
                 self.connect(access, dist)
@@ -90,18 +88,12 @@ class ArchitectureConnections:
         floor_area = self.width_m * self.width_m
 
         ap_by_area = math.ceil(floor_area / coverage_area)
-
         total_users_floor = self.rooms * self.users
         ap_by_users = math.ceil(total_users_floor / users_per_ap)
-
-        aps_needed = max(ap_by_area, ap_by_users)
-
-        if aps_needed < 1:
-            aps_needed = 1
+        aps_needed = max(ap_by_area, ap_by_users, 1)
 
         for f in range(1, self.floors + 1):
             dist = f"dist_switch_f{f}"
-
             for ap in range(1, aps_needed + 1):
                 ap_name = f"ap_f{f}_{ap}"
                 self.connect(ap_name, dist)
@@ -112,7 +104,6 @@ class ArchitectureConnections:
     # --------------------------------------------------
 
     def connect_distribution_to_core(self):
-
         for f in range(1, self.floors + 1):
             dist = f"dist_switch_f{f}"
             self.connect(dist, "core_router_1")
@@ -121,17 +112,36 @@ class ArchitectureConnections:
 
     # --------------------------------------------------
     # RULE 5
-    # SERVERS → CORE
+    # SERVERS → SERVER SWITCH → CORE
     # --------------------------------------------------
 
     def connect_servers(self):
+        if self.servers:
+                # Always create server_switch if there are servers or DHCP/DNS
+                self.connect("core_router_1", "server_switch")
+                if self.floors >= 3:
+                    self.connect("backup_core_router", "server_switch")
 
-        self.connect("dhcp_server", "core_router_1")
-        self.connect("dns_server", "core_router_1")
-        if self.floors >= 3:
-            self.connect("dns_server", "backup_core_router")
-        if self.floors >= 3:
-            self.connect("dhcp_server", "backup_core_router")
+                # Connect additional servers if provided
+                for s in self.servers:
+                    self.connect("server_switch", s)
+
+                # Always connect DHCP and DNS to server_switch
+                self.connect("server_switch", "dhcp_server")
+                self.connect("server_switch", "dns_server")
+
+                # Backup router connections if 3+ floors
+                if self.floors >= 3:
+                    self.connect("server_switch", "dhcp_server")  # already connected, but redundant is fine
+                    self.connect("server_switch", "dns_server")
+
+        else:
+            # default DHCP/DNS
+            self.connect("dhcp_server", "core_router_1")
+            self.connect("dns_server", "core_router_1")
+            if self.floors >= 3:
+                self.connect("dns_server", "backup_core_router")
+                self.connect("dhcp_server", "backup_core_router")
 
     # --------------------------------------------------
     # RULE 6
@@ -139,24 +149,21 @@ class ArchitectureConnections:
     # --------------------------------------------------
 
     def connect_internet(self):
-
         if self.firewall_enabled:
-
             self.connect("core_router_1", "firewall_1")
-            self.connect("backup_core_router", "firewall_1")
+            if self.floors >= 3:
+                self.connect("backup_core_router", "firewall_1")
             self.connect("firewall_1", "internet_cloud")
-
         else:
-
             self.connect("core_router_1", "internet_cloud")
-            self.connect("backup_core_router", "internet_cloud")
+            if self.floors >= 3:
+                self.connect("backup_core_router", "internet_cloud")
 
     # --------------------------------------------------
     # RUN ENGINE
     # --------------------------------------------------
 
     def run(self, output_path):
-
         self.connect_pcs()
         self.connect_access_switches()
         self.connect_access_points()

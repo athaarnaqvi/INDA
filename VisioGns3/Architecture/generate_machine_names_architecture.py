@@ -44,7 +44,12 @@ class ArchitectureEngine:
         self.machines.append("internet_cloud")
         if self.firewall_enabled:
             self.machines.append("firewall_1")
-
+    def add_servers(self):
+        if not self.servers:
+            return
+        self.machines.append("server_switch")
+        for server in self.servers:
+            self.machines.append(server)
     # --------------------------------------------------
     # RULE 2
     # DISTRIBUTION SWITCH PER FLOOR

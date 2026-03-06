@@ -5,7 +5,7 @@ import traceback
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                               QPushButton, QLabel, QLineEdit, QTextEdit,
                               QFileDialog, QMessageBox, QFrame, QStackedWidget,
-                              QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox)
+                              QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox, QScrollArea)
 from PyQt6.QtGui import QPalette, QColor, QFont, QPainter, QBrush
 from PyQt6.QtCore import QSize, Qt, QPropertyAnimation, QThread, pyqtSignal, QTimer, pyqtProperty
 
@@ -870,7 +870,27 @@ class VisioGNS3App(QWidget):
         type_col.addWidget(self.building_type_combo)
         form_layout.addLayout(type_col)
 
-        # ── Row 4: Firewall Toggle ──
+        # ── Row 4: Server Checklist ──
+        self.server_map = {
+            "Office": ["file_server", "mail_server", "backup_server", "vpn_server"],
+            "Hospital": ["emr_server", "lab_server", "radiology_server", "pharmacy_server"],
+            "School / University": ["lms_server", "exam_server", "library_server", "research_server"],
+            "Hotel": ["booking_server", "guest_management_server", "billing_server", "cctv_server"]
+        }
+
+        server_col = QVBoxLayout()
+        server_label = QLabel("🖥️ Servers")
+        server_label.setStyleSheet(label_style)
+        self.server_checkboxes = []
+        self.server_container = QVBoxLayout()
+        server_col.addWidget(server_label)
+        server_col.addLayout(self.server_container)
+        form_layout.addLayout(server_col)
+
+        self.building_type_combo.currentIndexChanged.connect(self.update_server_checklist)
+        self.update_server_checklist()  # initial
+
+        # ── Row 5: Firewall Toggle ──
         firewall_col = QVBoxLayout()
         firewall_col.setSpacing(6)
 
@@ -928,10 +948,86 @@ class VisioGNS3App(QWidget):
         c_layout.addStretch()
         content.setLayout(c_layout)
 
+        # Put content inside a scroll area so the form doesn't get cut off
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(content)
+        scroll.setStyleSheet("background: transparent; border: none;")
+
         layout.addWidget(header)
-        layout.addWidget(content)
+        layout.addWidget(scroll)
         page.setLayout(layout)
         return page
+
+    def update_server_checklist(self, index=None):
+        """Refresh the server checkbox list based on selected building type."""
+        # Clear existing widgets in the server container layout
+        while self.server_container.count():
+            item = self.server_container.takeAt(0)
+            w = item.widget()
+            if w:
+                w.deleteLater()
+
+        self.server_checkboxes = []
+
+        # Determine selected building type text
+        try:
+            btype = self.building_type_combo._combo.currentText()
+        except Exception:
+            # fallback if called with index or styled combo doesn't expose _combo
+            if isinstance(index, int):
+                try:
+                    btype = self.building_type_combo._combo.itemText(index)
+                except Exception:
+                    btype = None
+            else:
+                btype = None
+
+        servers = self.server_map.get(btype, []) if btype else []
+        accent = "#22D3EE"
+        border_gray = "rgba(100, 116, 139, 0.45)"
+        checkbox_css = f"""
+QCheckBox {{
+    color: #CBD5E1;
+    spacing: 12px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QCheckBox::indicator {{
+    width: 20px;
+    height: 20px;
+    border: 2px solid {border_gray};
+    border-radius: 4px;
+    background: transparent;
+}}
+QCheckBox::indicator:checked {{
+    background: {accent};
+    border: 2px solid {accent};
+    image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polyline points='20 6 9 17 4 12' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}}
+QCheckBox::indicator:unchecked:hover {{
+    border: 2px solid rgba(34,211,238,0.35);
+}}
+        for s in servers:
+            cb = QCheckBox(s.replace('_', ' ').title())
+            cb.setStyleSheet(checkbox_css)
+            cb.setChecked(False)
+            cb.setProperty('server_key', s)
+            cb.setCursor(Qt.CursorShape.PointingHandCursor)
+            cb.setMinimumHeight(26)
+            self.server_container.addWidget(cb)
+            self.server_checkboxes.append(cb)
+"""
+
+        for s in servers:
+            cb = QCheckBox(s.replace('_', ' ').title())
+            cb.setStyleSheet(checkbox_css)
+            cb.setChecked(False)
+            cb.setCursor(Qt.CursorShape.PointingHandCursor)
+            cb.setMinimumHeight(26)
+            cb.setProperty('server_key', s)
+            self.server_container.addWidget(cb)
+            self.server_checkboxes.append(cb)
 
     def start_architecture_engine(self):
         errors = []
@@ -1030,7 +1126,8 @@ class VisioGNS3App(QWidget):
             return
 
         unit = self.width_unit_combo.currentText()
-        building_type = self.building_type_combo.currentText()
+        # StyledComboBox wraps a QComboBox as `_combo`
+        building_type = self.building_type_combo._combo.currentText()
         firewall_enabled = self.firewall_toggle.isChecked()
         # --- generate txt file (Architecture module) ---
         try:
@@ -1055,6 +1152,22 @@ class VisioGNS3App(QWidget):
             building_type,
             firewall_enabled
         )
+
+            # collect selected servers from the UI checkboxes
+            selected_servers = []
+            for cb in self.server_checkboxes:
+                try:
+                    if cb.isChecked():
+                        key = cb.property('server_key')
+                        if key:
+                            selected_servers.append(key)
+                except Exception:
+                    continue
+
+            # attach and add servers to the architecture engine
+            engine.servers = selected_servers
+            if selected_servers:
+                engine.add_servers()
 
             engine.run(out_path)
 
@@ -1083,7 +1196,8 @@ class VisioGNS3App(QWidget):
             users,
             engine.width_m,
             building_type,
-            firewall_enabled
+            firewall_enabled,
+            selected_servers if 'selected_servers' in locals() else []
         )
 
         conn_engine.run(os.path.join(out_dir, "pre_connections.json"))
