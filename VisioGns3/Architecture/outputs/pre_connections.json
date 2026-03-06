@@ -1,163 +1,603 @@
 [
     {
-        "from": "pc_f1_r1_u1",
+        "from": "medical_pc_f1_r1_u1",
         "to": "access_switch_f1_r1"
     },
     {
-        "from": "pc_f1_r1_u2",
+        "from": "medical_pc_f1_r1_u2",
         "to": "access_switch_f1_r1"
     },
     {
-        "from": "pc_f1_r1_u3",
+        "from": "medical_pc_f1_r1_u3",
         "to": "access_switch_f1_r1"
     },
     {
-        "from": "pc_f1_r1_u4",
+        "from": "medical_pc_f1_r1_u4",
         "to": "access_switch_f1_r1"
     },
     {
-        "from": "pc_f1_r2_u1",
+        "from": "medical_pc_f1_r1_u5",
+        "to": "access_switch_f1_r1"
+    },
+    {
+        "from": "medical_pc_f1_r1_u6",
+        "to": "access_switch_f1_r1"
+    },
+    {
+        "from": "medical_pc_f1_r1_u7",
+        "to": "access_switch_f1_r1"
+    },
+    {
+        "from": "medical_pc_f1_r1_u8",
+        "to": "access_switch_f1_r1"
+    },
+    {
+        "from": "medical_pc_f1_r1_u9",
+        "to": "access_switch_f1_r1"
+    },
+    {
+        "from": "medical_pc_f1_r1_u10",
+        "to": "access_switch_f1_r1"
+    },
+    {
+        "from": "medical_pc_f1_r2_u1",
         "to": "access_switch_f1_r2"
     },
     {
-        "from": "pc_f1_r2_u2",
+        "from": "medical_pc_f1_r2_u2",
         "to": "access_switch_f1_r2"
     },
     {
-        "from": "pc_f1_r2_u3",
+        "from": "medical_pc_f1_r2_u3",
         "to": "access_switch_f1_r2"
     },
     {
-        "from": "pc_f1_r2_u4",
+        "from": "medical_pc_f1_r2_u4",
         "to": "access_switch_f1_r2"
     },
     {
-        "from": "pc_f1_r3_u1",
+        "from": "medical_pc_f1_r2_u5",
+        "to": "access_switch_f1_r2"
+    },
+    {
+        "from": "medical_pc_f1_r2_u6",
+        "to": "access_switch_f1_r2"
+    },
+    {
+        "from": "medical_pc_f1_r2_u7",
+        "to": "access_switch_f1_r2"
+    },
+    {
+        "from": "medical_pc_f1_r2_u8",
+        "to": "access_switch_f1_r2"
+    },
+    {
+        "from": "medical_pc_f1_r2_u9",
+        "to": "access_switch_f1_r2"
+    },
+    {
+        "from": "medical_pc_f1_r2_u10",
+        "to": "access_switch_f1_r2"
+    },
+    {
+        "from": "medical_pc_f1_r3_u1",
         "to": "access_switch_f1_r3"
     },
     {
-        "from": "pc_f1_r3_u2",
+        "from": "medical_pc_f1_r3_u2",
         "to": "access_switch_f1_r3"
     },
     {
-        "from": "pc_f1_r3_u3",
+        "from": "medical_pc_f1_r3_u3",
         "to": "access_switch_f1_r3"
     },
     {
-        "from": "pc_f1_r3_u4",
+        "from": "medical_pc_f1_r3_u4",
         "to": "access_switch_f1_r3"
     },
     {
-        "from": "pc_f1_r4_u1",
+        "from": "medical_pc_f1_r3_u5",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "medical_pc_f1_r3_u6",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "medical_pc_f1_r3_u7",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "medical_pc_f1_r3_u8",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "medical_pc_f1_r3_u9",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "medical_pc_f1_r3_u10",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "medical_pc_f1_r4_u1",
         "to": "access_switch_f1_r4"
     },
     {
-        "from": "pc_f1_r4_u2",
+        "from": "medical_pc_f1_r4_u2",
         "to": "access_switch_f1_r4"
     },
     {
-        "from": "pc_f1_r4_u3",
+        "from": "medical_pc_f1_r4_u3",
         "to": "access_switch_f1_r4"
     },
     {
-        "from": "pc_f1_r4_u4",
+        "from": "medical_pc_f1_r4_u4",
         "to": "access_switch_f1_r4"
     },
     {
-        "from": "pc_f1_r5_u1",
+        "from": "medical_pc_f1_r4_u5",
+        "to": "access_switch_f1_r4"
+    },
+    {
+        "from": "medical_pc_f1_r4_u6",
+        "to": "access_switch_f1_r4"
+    },
+    {
+        "from": "medical_pc_f1_r4_u7",
+        "to": "access_switch_f1_r4"
+    },
+    {
+        "from": "medical_pc_f1_r4_u8",
+        "to": "access_switch_f1_r4"
+    },
+    {
+        "from": "medical_pc_f1_r4_u9",
+        "to": "access_switch_f1_r4"
+    },
+    {
+        "from": "medical_pc_f1_r4_u10",
+        "to": "access_switch_f1_r4"
+    },
+    {
+        "from": "medical_pc_f1_r5_u1",
         "to": "access_switch_f1_r5"
     },
     {
-        "from": "pc_f1_r5_u2",
+        "from": "medical_pc_f1_r5_u2",
         "to": "access_switch_f1_r5"
     },
     {
-        "from": "pc_f1_r5_u3",
+        "from": "medical_pc_f1_r5_u3",
         "to": "access_switch_f1_r5"
     },
     {
-        "from": "pc_f1_r5_u4",
+        "from": "medical_pc_f1_r5_u4",
         "to": "access_switch_f1_r5"
     },
     {
-        "from": "pc_f2_r1_u1",
+        "from": "medical_pc_f1_r5_u5",
+        "to": "access_switch_f1_r5"
+    },
+    {
+        "from": "medical_pc_f1_r5_u6",
+        "to": "access_switch_f1_r5"
+    },
+    {
+        "from": "medical_pc_f1_r5_u7",
+        "to": "access_switch_f1_r5"
+    },
+    {
+        "from": "medical_pc_f1_r5_u8",
+        "to": "access_switch_f1_r5"
+    },
+    {
+        "from": "medical_pc_f1_r5_u9",
+        "to": "access_switch_f1_r5"
+    },
+    {
+        "from": "medical_pc_f1_r5_u10",
+        "to": "access_switch_f1_r5"
+    },
+    {
+        "from": "medical_pc_f2_r1_u1",
         "to": "access_switch_f2_r1"
     },
     {
-        "from": "pc_f2_r1_u2",
+        "from": "medical_pc_f2_r1_u2",
         "to": "access_switch_f2_r1"
     },
     {
-        "from": "pc_f2_r1_u3",
+        "from": "medical_pc_f2_r1_u3",
         "to": "access_switch_f2_r1"
     },
     {
-        "from": "pc_f2_r1_u4",
+        "from": "medical_pc_f2_r1_u4",
         "to": "access_switch_f2_r1"
     },
     {
-        "from": "pc_f2_r2_u1",
+        "from": "medical_pc_f2_r1_u5",
+        "to": "access_switch_f2_r1"
+    },
+    {
+        "from": "medical_pc_f2_r1_u6",
+        "to": "access_switch_f2_r1"
+    },
+    {
+        "from": "medical_pc_f2_r1_u7",
+        "to": "access_switch_f2_r1"
+    },
+    {
+        "from": "medical_pc_f2_r1_u8",
+        "to": "access_switch_f2_r1"
+    },
+    {
+        "from": "medical_pc_f2_r1_u9",
+        "to": "access_switch_f2_r1"
+    },
+    {
+        "from": "medical_pc_f2_r1_u10",
+        "to": "access_switch_f2_r1"
+    },
+    {
+        "from": "medical_pc_f2_r2_u1",
         "to": "access_switch_f2_r2"
     },
     {
-        "from": "pc_f2_r2_u2",
+        "from": "medical_pc_f2_r2_u2",
         "to": "access_switch_f2_r2"
     },
     {
-        "from": "pc_f2_r2_u3",
+        "from": "medical_pc_f2_r2_u3",
         "to": "access_switch_f2_r2"
     },
     {
-        "from": "pc_f2_r2_u4",
+        "from": "medical_pc_f2_r2_u4",
         "to": "access_switch_f2_r2"
     },
     {
-        "from": "pc_f2_r3_u1",
+        "from": "medical_pc_f2_r2_u5",
+        "to": "access_switch_f2_r2"
+    },
+    {
+        "from": "medical_pc_f2_r2_u6",
+        "to": "access_switch_f2_r2"
+    },
+    {
+        "from": "medical_pc_f2_r2_u7",
+        "to": "access_switch_f2_r2"
+    },
+    {
+        "from": "medical_pc_f2_r2_u8",
+        "to": "access_switch_f2_r2"
+    },
+    {
+        "from": "medical_pc_f2_r2_u9",
+        "to": "access_switch_f2_r2"
+    },
+    {
+        "from": "medical_pc_f2_r2_u10",
+        "to": "access_switch_f2_r2"
+    },
+    {
+        "from": "medical_pc_f2_r3_u1",
         "to": "access_switch_f2_r3"
     },
     {
-        "from": "pc_f2_r3_u2",
+        "from": "medical_pc_f2_r3_u2",
         "to": "access_switch_f2_r3"
     },
     {
-        "from": "pc_f2_r3_u3",
+        "from": "medical_pc_f2_r3_u3",
         "to": "access_switch_f2_r3"
     },
     {
-        "from": "pc_f2_r3_u4",
+        "from": "medical_pc_f2_r3_u4",
         "to": "access_switch_f2_r3"
     },
     {
-        "from": "pc_f2_r4_u1",
+        "from": "medical_pc_f2_r3_u5",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "medical_pc_f2_r3_u6",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "medical_pc_f2_r3_u7",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "medical_pc_f2_r3_u8",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "medical_pc_f2_r3_u9",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "medical_pc_f2_r3_u10",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "medical_pc_f2_r4_u1",
         "to": "access_switch_f2_r4"
     },
     {
-        "from": "pc_f2_r4_u2",
+        "from": "medical_pc_f2_r4_u2",
         "to": "access_switch_f2_r4"
     },
     {
-        "from": "pc_f2_r4_u3",
+        "from": "medical_pc_f2_r4_u3",
         "to": "access_switch_f2_r4"
     },
     {
-        "from": "pc_f2_r4_u4",
+        "from": "medical_pc_f2_r4_u4",
         "to": "access_switch_f2_r4"
     },
     {
-        "from": "pc_f2_r5_u1",
+        "from": "medical_pc_f2_r4_u5",
+        "to": "access_switch_f2_r4"
+    },
+    {
+        "from": "medical_pc_f2_r4_u6",
+        "to": "access_switch_f2_r4"
+    },
+    {
+        "from": "medical_pc_f2_r4_u7",
+        "to": "access_switch_f2_r4"
+    },
+    {
+        "from": "medical_pc_f2_r4_u8",
+        "to": "access_switch_f2_r4"
+    },
+    {
+        "from": "medical_pc_f2_r4_u9",
+        "to": "access_switch_f2_r4"
+    },
+    {
+        "from": "medical_pc_f2_r4_u10",
+        "to": "access_switch_f2_r4"
+    },
+    {
+        "from": "medical_pc_f2_r5_u1",
         "to": "access_switch_f2_r5"
     },
     {
-        "from": "pc_f2_r5_u2",
+        "from": "medical_pc_f2_r5_u2",
         "to": "access_switch_f2_r5"
     },
     {
-        "from": "pc_f2_r5_u3",
+        "from": "medical_pc_f2_r5_u3",
         "to": "access_switch_f2_r5"
     },
     {
-        "from": "pc_f2_r5_u4",
+        "from": "medical_pc_f2_r5_u4",
         "to": "access_switch_f2_r5"
+    },
+    {
+        "from": "medical_pc_f2_r5_u5",
+        "to": "access_switch_f2_r5"
+    },
+    {
+        "from": "medical_pc_f2_r5_u6",
+        "to": "access_switch_f2_r5"
+    },
+    {
+        "from": "medical_pc_f2_r5_u7",
+        "to": "access_switch_f2_r5"
+    },
+    {
+        "from": "medical_pc_f2_r5_u8",
+        "to": "access_switch_f2_r5"
+    },
+    {
+        "from": "medical_pc_f2_r5_u9",
+        "to": "access_switch_f2_r5"
+    },
+    {
+        "from": "medical_pc_f2_r5_u10",
+        "to": "access_switch_f2_r5"
+    },
+    {
+        "from": "medical_pc_f3_r1_u1",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u2",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u3",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u4",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u5",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u6",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u7",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u8",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u9",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r1_u10",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "medical_pc_f3_r2_u1",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u2",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u3",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u4",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u5",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u6",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u7",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u8",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u9",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r2_u10",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "medical_pc_f3_r3_u1",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u2",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u3",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u4",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u5",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u6",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u7",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u8",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u9",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r3_u10",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "medical_pc_f3_r4_u1",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u2",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u3",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u4",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u5",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u6",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u7",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u8",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u9",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r4_u10",
+        "to": "access_switch_f3_r4"
+    },
+    {
+        "from": "medical_pc_f3_r5_u1",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u2",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u3",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u4",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u5",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u6",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u7",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u8",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u9",
+        "to": "access_switch_f3_r5"
+    },
+    {
+        "from": "medical_pc_f3_r5_u10",
+        "to": "access_switch_f3_r5"
     },
     {
         "from": "access_switch_f1_r1",
@@ -200,11 +640,35 @@
         "to": "dist_switch_f2"
     },
     {
+        "from": "access_switch_f3_r1",
+        "to": "dist_switch_f3"
+    },
+    {
+        "from": "access_switch_f3_r2",
+        "to": "dist_switch_f3"
+    },
+    {
+        "from": "access_switch_f3_r3",
+        "to": "dist_switch_f3"
+    },
+    {
+        "from": "access_switch_f3_r4",
+        "to": "dist_switch_f3"
+    },
+    {
+        "from": "access_switch_f3_r5",
+        "to": "dist_switch_f3"
+    },
+    {
         "from": "ap_f1_1",
         "to": "dist_switch_f1"
     },
     {
         "from": "ap_f1_2",
+        "to": "dist_switch_f1"
+    },
+    {
+        "from": "ap_f1_3",
         "to": "dist_switch_f1"
     },
     {
@@ -216,12 +680,44 @@
         "to": "dist_switch_f2"
     },
     {
+        "from": "ap_f2_3",
+        "to": "dist_switch_f2"
+    },
+    {
+        "from": "ap_f3_1",
+        "to": "dist_switch_f3"
+    },
+    {
+        "from": "ap_f3_2",
+        "to": "dist_switch_f3"
+    },
+    {
+        "from": "ap_f3_3",
+        "to": "dist_switch_f3"
+    },
+    {
         "from": "dist_switch_f1",
         "to": "core_router_1"
     },
     {
+        "from": "dist_switch_f1",
+        "to": "backup_core_router"
+    },
+    {
         "from": "dist_switch_f2",
         "to": "core_router_1"
+    },
+    {
+        "from": "dist_switch_f2",
+        "to": "backup_core_router"
+    },
+    {
+        "from": "dist_switch_f3",
+        "to": "core_router_1"
+    },
+    {
+        "from": "dist_switch_f3",
+        "to": "backup_core_router"
     },
     {
         "from": "dhcp_server",
@@ -232,7 +728,19 @@
         "to": "core_router_1"
     },
     {
+        "from": "dns_server",
+        "to": "backup_core_router"
+    },
+    {
+        "from": "dhcp_server",
+        "to": "backup_core_router"
+    },
+    {
         "from": "core_router_1",
+        "to": "firewall_1"
+    },
+    {
+        "from": "backup_core_router",
         "to": "firewall_1"
     },
     {

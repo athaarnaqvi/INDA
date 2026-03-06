@@ -37,6 +37,8 @@ class ArchitectureEngine:
         core connectivity + basic network services
         """
         self.machines.append("core_router_1")
+        if self.floors >= 3:
+            self.machines.append("backup_core_router")
         self.machines.append("dhcp_server")
         self.machines.append("dns_server")
         self.machines.append("internet_cloud")
@@ -80,6 +82,16 @@ class ArchitectureEngine:
 # RULE 4
 # PCS FOR USERS
 # --------------------------------------------------
+    def get_user_device_type(self):
+        if self.building_type == "Office":
+            return "pc"
+        elif self.building_type == "School / University":
+            return "lab_pc"
+        elif self.building_type == "Hotel":
+            return "laptop"
+        elif self.building_type == "Hospital":
+            return "medical_pc"
+        return "pc"
 
     def add_user_pcs(self):
         """
@@ -88,10 +100,13 @@ class ArchitectureEngine:
         Naming Convention:
         pc_f{floor}_r{room}_u{user}
         """
+        device_type = self.get_user_device_type()
+
         for floor in range(1, self.floors + 1):
             for room in range(1, self.rooms + 1):
                 for user in range(1, self.users + 1):
-                    name = f"pc_f{floor}_r{room}_u{user}"
+
+                    name = f"{device_type}_f{floor}_r{room}_u{user}"
                     self.machines.append(name)
 
     # --------------------------------------------------
@@ -106,23 +121,32 @@ class ArchitectureEngine:
         """
         if self.building_type == "Office":
             radius = 12
-
+            users_per_ap = 25
         elif self.building_type == "Hospital":
             radius = 10
-
+            users_per_ap = 20
         elif self.building_type == "School / University":
             radius = 15
-
+            users_per_ap = 30
         elif self.building_type == "Hotel":
             radius = 10
+            users_per_ap = 20
         else:
             radius = 12
+            users_per_ap = 25
 
         coverage_area = math.pi * radius * radius
         floor_area = self.width_m * self.width_m
-        aps_needed = math.ceil(floor_area / coverage_area)
+
+        ap_by_area = math.ceil(floor_area / coverage_area)
+
+        total_users_floor = self.rooms * self.users
+        ap_by_users = math.ceil(total_users_floor / users_per_ap)
+
+        aps_needed = max(ap_by_area, ap_by_users)
+
         if aps_needed < 1:
-            aps_needed = 1
+                    aps_needed = 1
 
         for floor in range(1, self.floors + 1):
             for ap in range(1, aps_needed + 1):

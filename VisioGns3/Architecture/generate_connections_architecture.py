@@ -28,15 +28,26 @@ class ArchitectureConnections:
     # RULE 1
     # PC → ACCESS SWITCH
     # --------------------------------------------------
-
+    def get_user_device_type(self):
+        if self.building_type == "Office":
+            return "pc"
+        elif self.building_type == "School / University":
+            return "lab_pc"
+        elif self.building_type == "Hotel":
+            return "laptop"
+        elif self.building_type == "Hospital":
+            return "medical_pc"
+        return "pc"
+    
     def connect_pcs(self):
-
+        device_type = self.get_user_device_type()
+        
         for f in range(1, self.floors + 1):
             for r in range(1, self.rooms + 1):
                 access = f"access_switch_f{f}_r{r}"
 
                 for u in range(1, self.users + 1):
-                    pc = f"pc_f{f}_r{r}_u{u}"
+                    pc = f"{device_type}_f{f}_r{r}_u{u}"
                     self.connect(pc, access)
 
     # --------------------------------------------------
@@ -59,22 +70,32 @@ class ArchitectureConnections:
     # --------------------------------------------------
 
     def connect_access_points(self):
-
         if self.building_type == "Office":
             radius = 12
+            users_per_ap = 25
+
         elif self.building_type == "Hospital":
             radius = 10
+            users_per_ap = 20
+
         elif self.building_type == "School / University":
             radius = 15
+            users_per_ap = 30
+
         elif self.building_type == "Hotel":
             radius = 10
-        else:
-            radius = 12
+            users_per_ap = 20
 
         coverage_area = math.pi * radius * radius
         floor_area = self.width_m * self.width_m
 
-        aps_needed = math.ceil(floor_area / coverage_area)
+        ap_by_area = math.ceil(floor_area / coverage_area)
+
+        total_users_floor = self.rooms * self.users
+        ap_by_users = math.ceil(total_users_floor / users_per_ap)
+
+        aps_needed = max(ap_by_area, ap_by_users)
+
         if aps_needed < 1:
             aps_needed = 1
 
@@ -95,6 +116,8 @@ class ArchitectureConnections:
         for f in range(1, self.floors + 1):
             dist = f"dist_switch_f{f}"
             self.connect(dist, "core_router_1")
+            if self.floors >= 3:
+                self.connect(dist, "backup_core_router")
 
     # --------------------------------------------------
     # RULE 5
@@ -105,6 +128,10 @@ class ArchitectureConnections:
 
         self.connect("dhcp_server", "core_router_1")
         self.connect("dns_server", "core_router_1")
+        if self.floors >= 3:
+            self.connect("dns_server", "backup_core_router")
+        if self.floors >= 3:
+            self.connect("dhcp_server", "backup_core_router")
 
     # --------------------------------------------------
     # RULE 6
@@ -116,11 +143,13 @@ class ArchitectureConnections:
         if self.firewall_enabled:
 
             self.connect("core_router_1", "firewall_1")
+            self.connect("backup_core_router", "firewall_1")
             self.connect("firewall_1", "internet_cloud")
 
         else:
 
             self.connect("core_router_1", "internet_cloud")
+            self.connect("backup_core_router", "internet_cloud")
 
     # --------------------------------------------------
     # RUN ENGINE
