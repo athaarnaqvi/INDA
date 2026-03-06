@@ -2,6 +2,7 @@ core_router_1
 dhcp_server
 dns_server
 internet_cloud
+firewall_1
 dist_switch_f1
 dist_switch_f2
 access_switch_f1_r1
@@ -56,7 +57,5 @@ pc_f2_r5_u3
 pc_f2_r5_u4
 ap_f1_1
 ap_f1_2
-ap_f1_3
 ap_f2_1
 ap_f2_2
-ap_f2_3

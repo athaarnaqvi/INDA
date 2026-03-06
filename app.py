@@ -1075,6 +1075,18 @@ class VisioGNS3App(QWidget):
                 "Architecture Abstraction Engine",
                 f"Failed to generate architecture devices txt:\n{str(e)}"
             )
+        from VisioGns3.Architecture.generate_connections_architecture import ArchitectureConnections
+
+        conn_engine = ArchitectureConnections(
+            floors,
+            rooms,
+            users,
+            engine.width_m,
+            building_type,
+            firewall_enabled
+        )
+
+        conn_engine.run(os.path.join(out_dir, "pre_connections.json"))
 
     def create_chatbot_page(self):
         page = QWidget()
