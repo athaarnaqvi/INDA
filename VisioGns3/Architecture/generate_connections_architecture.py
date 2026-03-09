@@ -48,16 +48,21 @@ class ArchitectureConnections:
             "to": dst
         })
     def choose_topology(self):
-
+        """
+        Hybrid approach:
+        - User priorities: cost, speed, reliability
+        - Building type preferences
+        - Network size preferences
+        """
         network_size = self.get_network_size()
-
         score_map = {"Low": 1, "Medium": 2, "High": 3}
 
+        # Convert user priorities to scores
         cost = score_map.get(self.cost_priority, 2)
         speed = score_map.get(self.speed_priority, 2)
         reliability = score_map.get(self.reliability_priority, 2)
 
-        # topology profiles
+        # Topology profiles
         profiles = {
             "bus": {"cost":3, "speed":1, "reliability":1},
             "star": {"cost":2, "speed":3, "reliability":2},
@@ -66,36 +71,38 @@ class ArchitectureConnections:
             "hierarchical": {"cost":2, "speed":3, "reliability":3}
         }
 
-        best_topology = "star"
+        # Building type preferences
+        # building_preferences = {
+        #     "Hospital": ["mesh", "hierarchical"],
+        #     "Office": ["star", "hierarchical"],
+        #     "School / University": ["hierarchical", "star"],
+        #     "Hotel": ["star", "ring"]
+        # }
+
+        # Network size preferences
+        size_preferences = {
+            "small": ["bus", "star", "ring", "hierarchical", "mesh"],
+            "medium": ["star", "ring", "hierarchical", "mesh", "bus"],
+            "large": ["hierarchical", "star", "ring", "bus"]
+        }
+
+        best_topology = None
         best_score = -999
 
         for topo, p in profiles.items():
+            # 1. User priority match (higher is better)
+            score = 10 - (abs(p["cost"] - cost) + abs(p["speed"] - speed) + abs(p["reliability"] - reliability))
 
-            score = 0
-            score += abs(p["cost"] - cost)
-            score += abs(p["speed"] - speed)
-            score += abs(p["reliability"] - reliability)
+            # 2. Building type preference bonus
+            # if topo in building_preferences.get(self.building_type, []):
+            #     score += 2
 
-            score = 10 - score
-
-            # building preference
-            if self.building_type == "Hospital" and topo == "mesh":
+            # 3. Network size preference bonus
+            if topo in size_preferences.get(network_size, []):
                 score += 2
 
-            if self.building_type in ["Office", "School / University"] and topo == "hierarchical":
-                score += 2
-
-            if self.building_type == "Hotel" and topo == "star":
-                score += 2
-
-            # size preference
-            if network_size == "large" and topo == "hierarchical":
-                score += 2
-
-            if network_size == "small" and topo == "bus":
-                score += 1
-
-            if score > best_score:
+            # Choose the topology with the highest score
+            if score >= best_score:
                 best_score = score
                 best_topology = topo
 
