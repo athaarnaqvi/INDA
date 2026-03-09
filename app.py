@@ -1266,7 +1266,10 @@ QCheckBox::indicator:unchecked:hover {{
             engine.width_m,
             building_type,
             firewall_enabled,
-            selected_servers if 'selected_servers' in locals() else []
+            selected_servers,
+            cost_priority,
+            speed_priority,
+            reliability_priority
         )
 
         conn_engine.run(os.path.join(visio_dir,"Generated_files", "pre_Connections.json"))

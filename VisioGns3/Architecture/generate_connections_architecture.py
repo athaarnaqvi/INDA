@@ -3,17 +3,41 @@ import math
 
 class ArchitectureConnections:
 
-    def __init__(self, floors, rooms, users, width_m, building_type, firewall_enabled, servers=None):
-        self.floors = floors
-        self.rooms = rooms
-        self.users = users
-        self.width_m = width_m
-        self.building_type = building_type
-        self.firewall_enabled = firewall_enabled
-        self.servers = servers or []  # list of server names like ['file_server', 'mail_server']
+    def __init__(self, floors, rooms, users, width_m, building_type,
+             firewall_enabled, servers=None,
+             cost_priority="Medium",
+             speed_priority="Medium",
+             reliability_priority="Medium"):
 
-        self.connections = []
+            self.floors = floors
+            self.rooms = rooms
+            self.users = users
+            self.width_m = width_m
+            self.building_type = building_type
+            self.firewall_enabled = firewall_enabled
+            self.servers = servers or []
 
+            self.cost_priority = cost_priority
+            self.speed_priority = speed_priority
+            self.reliability_priority = reliability_priority
+
+            self.connections = []
+
+            # determine topology once
+            self.topology = self.choose_topology()
+
+    def get_network_size(self):
+
+        total_users = self.floors * self.rooms * self.users
+
+        if total_users <= 50:
+            return "small"
+
+        elif total_users <= 200:
+            return "medium"
+
+        else:
+            return "large"
     # --------------------------------------------------
     # Utility
     # --------------------------------------------------
@@ -23,6 +47,59 @@ class ArchitectureConnections:
             "from": src,
             "to": dst
         })
+    def choose_topology(self):
+
+        network_size = self.get_network_size()
+
+        score_map = {"Low": 1, "Medium": 2, "High": 3}
+
+        cost = score_map.get(self.cost_priority, 2)
+        speed = score_map.get(self.speed_priority, 2)
+        reliability = score_map.get(self.reliability_priority, 2)
+
+        # topology profiles
+        profiles = {
+            "bus": {"cost":3, "speed":1, "reliability":1},
+            "star": {"cost":2, "speed":3, "reliability":2},
+            "ring": {"cost":2, "speed":2, "reliability":2},
+            "mesh": {"cost":1, "speed":3, "reliability":3},
+            "hierarchical": {"cost":2, "speed":3, "reliability":3}
+        }
+
+        best_topology = "star"
+        best_score = -999
+
+        for topo, p in profiles.items():
+
+            score = 0
+            score += abs(p["cost"] - cost)
+            score += abs(p["speed"] - speed)
+            score += abs(p["reliability"] - reliability)
+
+            score = 10 - score
+
+            # building preference
+            if self.building_type == "Hospital" and topo == "mesh":
+                score += 2
+
+            if self.building_type in ["Office", "School / University"] and topo == "hierarchical":
+                score += 2
+
+            if self.building_type == "Hotel" and topo == "star":
+                score += 2
+
+            # size preference
+            if network_size == "large" and topo == "hierarchical":
+                score += 2
+
+            if network_size == "small" and topo == "bus":
+                score += 1
+
+            if score > best_score:
+                best_score = score
+                best_topology = topo
+
+        return best_topology
 
     # --------------------------------------------------
     # RULE 1
@@ -104,11 +181,78 @@ class ArchitectureConnections:
     # --------------------------------------------------
 
     def connect_distribution_to_core(self):
-        for f in range(1, self.floors + 1):
-            dist = f"dist_switch_f{f}"
-            self.connect(dist, "core_router_1")
-            if self.floors >= 3:
-                self.connect(dist, "backup_core_router")
+
+        if self.topology == "star" or self.topology == "hierarchical":
+
+            for f in range(1, self.floors + 1):
+                dist = f"dist_switch_f{f}"
+                self.connect(dist, "core_router_1")
+
+                if self.floors >= 3:
+                    self.connect(dist, "backup_core_router")
+
+
+        elif self.topology == "ring":
+
+            prev = None
+            first = None
+
+            for f in range(1, self.floors + 1):
+                dist = f"dist_switch_f{f}"
+
+                # Ring connection
+                if prev:
+                    self.connect(prev, dist)
+
+                if not first:
+                    first = dist
+
+                prev = dist
+
+                # ALSO connect to core router
+                self.connect(dist, "core_router_1")
+
+                if self.floors >= 3:
+                    self.connect(dist, "backup_core_router")
+
+            if prev and first:
+                self.connect(prev, first)
+
+
+        elif self.topology == "mesh":
+
+            switches = [f"dist_switch_f{f}" for f in range(1, self.floors + 1)]
+
+            for i in range(len(switches)):
+                for j in range(i+1, len(switches)):
+                    self.connect(switches[i], switches[j])
+
+            # ALSO connect each switch to core
+            for sw in switches:
+                self.connect(sw, "core_router_1")
+
+                if self.floors >= 3:
+                    self.connect(sw, "backup_core_router")
+
+
+        elif self.topology == "bus":
+
+            prev = None
+
+            for f in range(1, self.floors + 1):
+                dist = f"dist_switch_f{f}"
+
+                # Bus connection
+                if prev:
+                    self.connect(prev, dist)
+
+                prev = dist
+
+                # ALSO connect to core router
+                self.connect(dist, "core_router_1")
+
+                if self.floors >= 3:
+                    self.connect(dist, "backup_core_router")
 
     # --------------------------------------------------
     # RULE 5
@@ -129,11 +273,6 @@ class ArchitectureConnections:
                 # Always connect DHCP and DNS to server_switch
                 self.connect("server_switch", "dhcp_server")
                 self.connect("server_switch", "dns_server")
-
-                # Backup router connections if 3+ floors
-                if self.floors >= 3:
-                    self.connect("server_switch", "dhcp_server")  # already connected, but redundant is fine
-                    self.connect("server_switch", "dns_server")
 
         else:
             # default DHCP/DNS
@@ -170,6 +309,8 @@ class ArchitectureConnections:
         self.connect_distribution_to_core()
         self.connect_servers()
         self.connect_internet()
+
+        print("Selected Topology:", self.topology)
 
         with open(output_path, "w") as f:
             json.dump(self.connections, f, indent=4)
