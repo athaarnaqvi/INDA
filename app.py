@@ -870,7 +870,71 @@ class VisioGNS3App(QWidget):
         type_col.addWidget(self.building_type_combo)
         form_layout.addLayout(type_col)
 
-        # ── Row 4: Server Checklist ──
+        # ── Row 4: Performance Metrics ──
+        metrics_row = QHBoxLayout()
+        metrics_row.setSpacing(30)
+
+        # Cost Priority
+        cost_col = QVBoxLayout()
+        cost_col.setSpacing(6)
+
+        cost_label = QLabel("💰 Cost Priority")
+        cost_label.setStyleSheet(label_style)
+
+        cost_hint = QLabel("Importance of minimizing cost")
+        cost_hint.setStyleSheet(hint_style)
+
+        self.cost_combo = StyledComboBox(items=["Low", "Medium", "High"])
+        self.cost_combo.setMinimumHeight(46)
+
+        cost_col.addWidget(cost_label)
+        cost_col.addWidget(cost_hint)
+        cost_col.addWidget(self.cost_combo)
+
+
+        # Speed Requirement
+        speed_col = QVBoxLayout()
+        speed_col.setSpacing(6)
+
+        speed_label = QLabel("⚡ Speed Requirement")
+        speed_label.setStyleSheet(label_style)
+
+        speed_hint = QLabel("Required network performance")
+        speed_hint.setStyleSheet(hint_style)
+
+        self.speed_combo = StyledComboBox(items=["Low", "Medium", "High"])
+        self.speed_combo.setMinimumHeight(46)
+
+        speed_col.addWidget(speed_label)
+        speed_col.addWidget(speed_hint)
+        speed_col.addWidget(self.speed_combo)
+
+
+        # Reliability Requirement
+        reliability_col = QVBoxLayout()
+        reliability_col.setSpacing(6)
+
+        reliability_label = QLabel("🛡 Reliability Requirement")
+        reliability_label.setStyleSheet(label_style)
+
+        reliability_hint = QLabel("Network fault tolerance importance")
+        reliability_hint.setStyleSheet(hint_style)
+
+        self.reliability_combo = StyledComboBox(items=["Low", "Medium", "High"])
+        self.reliability_combo.setMinimumHeight(46)
+
+        reliability_col.addWidget(reliability_label)
+        reliability_col.addWidget(reliability_hint)
+        reliability_col.addWidget(self.reliability_combo)
+
+
+        metrics_row.addLayout(cost_col)
+        metrics_row.addLayout(speed_col)
+        metrics_row.addLayout(reliability_col)
+
+        form_layout.addLayout(metrics_row)
+
+        # ── Row 5: Server Checklist ──
         self.server_map = {
             "Office": ["file_server", "mail_server", "backup_server", "vpn_server"],
             "Hospital": ["emr_server", "lab_server", "radiology_server", "pharmacy_server"],
@@ -890,7 +954,7 @@ class VisioGNS3App(QWidget):
         self.building_type_combo.currentIndexChanged.connect(self.update_server_checklist)
         self.update_server_checklist()  # initial
 
-        # ── Row 5: Firewall Toggle ──
+        # ── Row 6: Firewall Toggle ──
         firewall_col = QVBoxLayout()
         firewall_col.setSpacing(6)
 
@@ -1129,6 +1193,10 @@ QCheckBox::indicator:unchecked:hover {{
         # StyledComboBox wraps a QComboBox as `_combo`
         building_type = self.building_type_combo._combo.currentText()
         firewall_enabled = self.firewall_toggle.isChecked()
+        
+        cost_priority = self.cost_combo._combo.currentText()
+        speed_priority = self.speed_combo._combo.currentText()
+        reliability_priority = self.reliability_combo._combo.currentText()
         # --- generate txt file (Architecture module) ---
         try:
             from VisioGns3.Architecture.generate_machine_names_architecture import ArchitectureEngine
@@ -1176,6 +1244,7 @@ QCheckBox::indicator:unchecked:hover {{
             summary = (
                 f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
                 f"Width: {width} {unit}  |  Type: {building_type}\n"
+                f"Cost: {cost_priority}  |  Speed: {speed_priority}  |  Reliability: {reliability_priority}\n"
                 f"Firewall: {firewall_status}\n\n"
                 f"✅ Architecture devices TXT generated:\n{out_path}"
             )
