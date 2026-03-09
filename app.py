@@ -1205,11 +1205,11 @@ QCheckBox::indicator:unchecked:hover {{
             gui_dir = os.path.dirname(os.path.abspath(__file__))
             visio_dir = os.path.join(gui_dir, "VisioGns3")
             arch_dir = os.path.join(visio_dir, "Architecture")
-            out_dir = os.path.join(arch_dir, "outputs")
+            out_dir = os.path.join(visio_dir, "Generated_files")
 
             os.makedirs(out_dir, exist_ok=True)
 
-            out_path = os.path.join(out_dir, "machines.txt")
+            out_path = os.path.join(out_dir, "pre_Machines.txt")
 
             engine = ArchitectureEngine(
             floors,
@@ -1269,7 +1269,7 @@ QCheckBox::indicator:unchecked:hover {{
             selected_servers if 'selected_servers' in locals() else []
         )
 
-        conn_engine.run(os.path.join(out_dir, "pre_connections.json"))
+        conn_engine.run(os.path.join(visio_dir,"Generated_files", "pre_Connections.json"))
 
     def create_chatbot_page(self):
         page = QWidget()
