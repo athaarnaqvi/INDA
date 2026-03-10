@@ -110,6 +110,8 @@ def main():
     try:
         # Step 1: Get GNS3 server details
         ip, port = get_gns3_server_details(GNS3_CONF_PATH)
+        if ip == "127.0.0.1":
+            ip = "localhost"
         print(f"Found GNS3 server: IP={ip}, Port={port}")
 
         # Step 2: Save server details to a text file

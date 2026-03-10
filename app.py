@@ -1209,7 +1209,7 @@ QCheckBox::indicator:unchecked:hover {{
 
             os.makedirs(out_dir, exist_ok=True)
 
-            out_path = os.path.join(out_dir, "pre_Machines.txt")
+            out_path = os.path.join(out_dir, "machine_names.txt")
 
             engine = ArchitectureEngine(
             floors,

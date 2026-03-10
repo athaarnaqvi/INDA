@@ -6,7 +6,7 @@ class ArchitectureConnections:
     def __init__(self, floors, rooms, users, width_m, building_type,
              firewall_enabled, servers=None,
              cost_priority="Medium",
-             speed_priority="Medium",
+             speed_priority="High",
              reliability_priority="Medium"):
 
             self.floors = floors
