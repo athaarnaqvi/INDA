@@ -58,32 +58,32 @@ GENERIC_TEMPLATE_MAPPING = {
     "firewall": "pfSense 2.7.0",
 
     # Infrastructure servers
-    "dhcp_server": "ubuntu-server",
-    "dns_server": "ubuntu-server",
+    "dhcp_server": "Alpine Linux Virt 3.18.4",
+    "dns_server": "Alpine Linux Virt 3.18.4",
 
     # Hospital servers
-    "emr_server": "ubuntu-server",
-    "lab_server": "ubuntu-server",
-    "radiology_server": "ubuntu-server",
-    "pharmacy_server": "ubuntu-server",
+    "emr_server": "Alpine Linux Virt 3.18.4",
+    "lab_server": "Alpine Linux Virt 3.18.4",
+    "radiology_server": "Alpine Linux Virt 3.18.4",
+    "pharmacy_server": "Alpine Linux Virt 3.18.4",
 
     # Office servers
-    "file_server": "ubuntu-server",
-    "mail_server": "ubuntu-server",
-    "backup_server": "ubuntu-server",
-    "vpn_server": "ubuntu-server",
+    "file_server": "Alpine Linux Virt 3.18.4",
+    "mail_server": "Alpine Linux Virt 3.18.4",
+    "backup_server": "Alpine Linux Virt 3.18.4",
+    "vpn_server": "Alpine Linux Virt 3.18.4",
 
     # School servers
-    "lms_server": "ubuntu-server",
-    "exam_server": "ubuntu-server",
-    "library_server": "ubuntu-server",
-    "research_server": "ubuntu-server",
+    "lms_server": "Alpine Linux Virt 3.18.4",
+    "exam_server": "Alpine Linux Virt 3.18.4",
+    "library_server": "Alpine Linux Virt 3.18.4",
+    "research_server": "Alpine Linux Virt 3.18.4",
 
     # Hotel servers
-    "booking_server": "ubuntu-server",
-    "guest_management_server": "ubuntu-server",
-    "billing_server": "ubuntu-server",
-    "cctv_server": "ubuntu-server"
+    "booking_server": "Alpine Linux Virt 3.18.4",
+    "guest_management_server": "Alpine Linux Virt 3.18.4",
+    "billing_server": "Alpine Linux Virt 3.18.4",
+    "cctv_server": "Alpine Linux Virt 3.18.4"
 }
 # ----------------------------------------------------
 # HELPERS

@@ -23,30 +23,6 @@
             "replicate_network_connection_state": true
         }
     },
-    "ubuntu-server": {
-        "compute_id": "local",
-        "node_type": "qemu",
-        "symbol": ":/symbols/qemu_guest.svg",
-        "template_id": "ed42ac1e-9853-4f6f-a1cd-5cc166672e64",
-        "first_port_name": "",
-        "port_name_format": "Ethernet{0}",
-        "properties": {
-            "adapter_type": "e1000",
-            "adapters": 1,
-            "console_type": "telnet",
-            "cpus": 1,
-            "hda_disk_image": "alpine-virt-3.18.4.qcow2",
-            "hda_disk_interface": "ide",
-            "hdb_disk_image": "",
-            "hdb_disk_interface": "none",
-            "hdc_disk_image": "",
-            "hdc_disk_interface": "none",
-            "ram": 256,
-            "boot_priority": "c",
-            "qemu_path": "/usr/bin/qemu-system-x86_64",
-            "replicate_network_connection_state": true
-        }
-    },
     "pfSense 2.7.0": {
         "compute_id": "local",
         "node_type": "qemu",
@@ -112,5 +88,29 @@
         "node_type": "atm_switch",
         "symbol": ":/symbols/atm_switch.svg",
         "template_id": "aaa764e2-b383-300f-8a0e-3493bbfdb7d2"
+    },
+    "Alpine Linux Virt 3.18.4": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/qemu_guest.svg",
+        "template_id": "3a18653d-2ea5-4c08-8d4c-cd2478f741fd",
+        "first_port_name": "",
+        "port_name_format": "Ethernet{0}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 1,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "/home/athaar/GNS3/images/QEMU/alpine-virt-3.18.4.qcow2",
+            "hda_disk_interface": "ide",
+            "hdb_disk_image": "",
+            "hdb_disk_interface": "none",
+            "hdc_disk_image": "",
+            "hdc_disk_interface": "none",
+            "ram": 256,
+            "boot_priority": "c",
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
     }
 }

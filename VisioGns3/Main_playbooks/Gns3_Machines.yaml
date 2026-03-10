@@ -13,7 +13,7 @@
         headers:
           Content-Type: "application/json"
         body:
-          name: "architecture_topology_20260310_150502"
+          name: "architecture_topology_20260310_151931"
         body_format: json
         status_code: 201
       register: project_result
@@ -37,7 +37,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add emr_server
+    - name: Add file_server
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -45,7 +45,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "emr_server",
+            "name": "file_server",
             "x": 160,
             "y": 100,
             "compute_id": "local",
@@ -59,7 +59,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add lab_server
+    - name: Add mail_server
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -67,30 +67,8 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "lab_server",
+            "name": "mail_server",
             "x": 220,
-            "y": 100,
-            "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": ":/symbols/qemu_guest.svg",
-            "template_id": "ed42ac1e-9853-4f6f-a1cd-5cc166672e64",
-            "first_port_name": "",
-            "port_name_format": "Ethernet{0}",
-            "properties": {"adapter_type": "e1000", "adapters": 1, "console_type": "telnet", "cpus": 1, "hda_disk_image": "alpine-virt-3.18.4.qcow2", "hda_disk_interface": "ide", "hdb_disk_image": "", "hdb_disk_interface": "none", "hdc_disk_image": "", "hdc_disk_interface": "none", "ram": 256, "boot_priority": "c", "qemu_path": "/usr/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add radiology_server
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "radiology_server",
-            "x": 280,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
@@ -112,29 +90,7 @@
         body: |
           {
             "name": "core_router_1",
-            "x": 340,
-            "y": 100,
-            "compute_id": "local",
-            "node_type": "qemu",
-            "symbol": ":/symbols/router.svg",
-            "template_id": "158704ed-0665-4328-a56b-880b1733b70d",
-            "first_port_name": "mgmt 1/1/1",
-            "port_name_format": "eth 1/1/{port1}",
-            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/usr/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add backup_core_router
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "backup_core_router",
-            "x": 400,
+            "x": 280,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
@@ -156,7 +112,7 @@
         body: |
           {
             "name": "dhcp_server",
-            "x": 460,
+            "x": 340,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
@@ -178,7 +134,7 @@
         body: |
           {
             "name": "dns_server",
-            "x": 520,
+            "x": 400,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
@@ -200,8 +156,8 @@
         body: |
           {
             "name": "internet_cloud",
-            "x": 580,
-            "y": 100,
+            "x": 100,
+            "y": 160,
             "compute_id": "local",
             "node_type": "cloud",
             "symbol": ":/symbols/cloud.svg",
@@ -219,8 +175,8 @@
         body: |
           {
             "name": "firewall_1",
-            "x": 640,
-            "y": 100,
+            "x": 160,
+            "y": 160,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/firewall.svg",
@@ -241,7 +197,7 @@
         body: |
           {
             "name": "dist_switch_f1",
-            "x": 100,
+            "x": 220,
             "y": 160,
             "compute_id": "local",
             "node_type": "ethernet_switch",
@@ -260,26 +216,7 @@
         body: |
           {
             "name": "dist_switch_f2",
-            "x": 160,
-            "y": 160,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add dist_switch_f3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "dist_switch_f3",
-            "x": 220,
+            "x": 280,
             "y": 160,
             "compute_id": "local",
             "node_type": "ethernet_switch",
@@ -298,7 +235,7 @@
         body: |
           {
             "name": "access_switch_f1_r1",
-            "x": 280,
+            "x": 340,
             "y": 160,
             "compute_id": "local",
             "node_type": "ethernet_switch",
@@ -317,7 +254,7 @@
         body: |
           {
             "name": "access_switch_f1_r2",
-            "x": 340,
+            "x": 400,
             "y": 160,
             "compute_id": "local",
             "node_type": "ethernet_switch",
@@ -336,27 +273,8 @@
         body: |
           {
             "name": "access_switch_f1_r3",
-            "x": 400,
-            "y": 160,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add access_switch_f1_r4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "access_switch_f1_r4",
-            "x": 460,
-            "y": 160,
+            "x": 100,
+            "y": 220,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -374,8 +292,8 @@
         body: |
           {
             "name": "access_switch_f2_r1",
-            "x": 520,
-            "y": 160,
+            "x": 160,
+            "y": 220,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -393,8 +311,8 @@
         body: |
           {
             "name": "access_switch_f2_r2",
-            "x": 580,
-            "y": 160,
+            "x": 220,
+            "y": 220,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -412,82 +330,6 @@
         body: |
           {
             "name": "access_switch_f2_r3",
-            "x": 640,
-            "y": 160,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add access_switch_f2_r4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "access_switch_f2_r4",
-            "x": 100,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add access_switch_f3_r1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "access_switch_f3_r1",
-            "x": 160,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add access_switch_f3_r2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "access_switch_f3_r2",
-            "x": 220,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add access_switch_f3_r3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "access_switch_f3_r3",
             "x": 280,
             "y": 220,
             "compute_id": "local",
@@ -498,7 +340,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add access_switch_f3_r4
+    - name: Add pc_f1_r1_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -506,18 +348,18 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "access_switch_f3_r4",
+            "name": "pc_f1_r1_u1",
             "x": 340,
             "y": 220,
             "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
           }
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r1_u1
+    - name: Add pc_f1_r1_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -525,7 +367,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r1_u1",
+            "name": "pc_f1_r1_u2",
             "x": 400,
             "y": 220,
             "compute_id": "local",
@@ -536,7 +378,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r1_u2
+    - name: Add pc_f1_r1_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -544,83 +386,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r1_u2",
-            "x": 460,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r1_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r1_u3",
-            "x": 520,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r1_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r1_u4",
-            "x": 580,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r1_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r1_u5",
-            "x": 640,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r2_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r2_u1",
+            "name": "pc_f1_r1_u3",
             "x": 100,
             "y": 280,
             "compute_id": "local",
@@ -631,7 +397,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r2_u2
+    - name: Add pc_f1_r2_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -639,7 +405,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r2_u2",
+            "name": "pc_f1_r2_u1",
             "x": 160,
             "y": 280,
             "compute_id": "local",
@@ -650,7 +416,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r2_u3
+    - name: Add pc_f1_r2_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -658,7 +424,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r2_u3",
+            "name": "pc_f1_r2_u2",
             "x": 220,
             "y": 280,
             "compute_id": "local",
@@ -669,7 +435,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r2_u4
+    - name: Add pc_f1_r2_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -677,7 +443,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r2_u4",
+            "name": "pc_f1_r2_u3",
             "x": 280,
             "y": 280,
             "compute_id": "local",
@@ -688,7 +454,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r2_u5
+    - name: Add pc_f1_r3_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -696,7 +462,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r2_u5",
+            "name": "pc_f1_r3_u1",
             "x": 340,
             "y": 280,
             "compute_id": "local",
@@ -707,7 +473,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r3_u1
+    - name: Add pc_f1_r3_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -715,7 +481,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r3_u1",
+            "name": "pc_f1_r3_u2",
             "x": 400,
             "y": 280,
             "compute_id": "local",
@@ -726,7 +492,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r3_u2
+    - name: Add pc_f1_r3_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -734,83 +500,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r3_u2",
-            "x": 460,
-            "y": 280,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r3_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r3_u3",
-            "x": 520,
-            "y": 280,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r3_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r3_u4",
-            "x": 580,
-            "y": 280,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r3_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r3_u5",
-            "x": 640,
-            "y": 280,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f1_r4_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f1_r4_u1",
+            "name": "pc_f1_r3_u3",
             "x": 100,
             "y": 340,
             "compute_id": "local",
@@ -821,7 +511,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r4_u2
+    - name: Add pc_f2_r1_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -829,7 +519,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r4_u2",
+            "name": "pc_f2_r1_u1",
             "x": 160,
             "y": 340,
             "compute_id": "local",
@@ -840,7 +530,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r4_u3
+    - name: Add pc_f2_r1_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -848,7 +538,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r4_u3",
+            "name": "pc_f2_r1_u2",
             "x": 220,
             "y": 340,
             "compute_id": "local",
@@ -859,7 +549,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r4_u4
+    - name: Add pc_f2_r1_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -867,7 +557,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r4_u4",
+            "name": "pc_f2_r1_u3",
             "x": 280,
             "y": 340,
             "compute_id": "local",
@@ -878,7 +568,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f1_r4_u5
+    - name: Add pc_f2_r2_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -886,7 +576,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f1_r4_u5",
+            "name": "pc_f2_r2_u1",
             "x": 340,
             "y": 340,
             "compute_id": "local",
@@ -897,7 +587,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f2_r1_u1
+    - name: Add pc_f2_r2_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -905,7 +595,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f2_r1_u1",
+            "name": "pc_f2_r2_u2",
             "x": 400,
             "y": 340,
             "compute_id": "local",
@@ -916,7 +606,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f2_r1_u2
+    - name: Add pc_f2_r2_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -924,83 +614,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f2_r1_u2",
-            "x": 460,
-            "y": 340,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r1_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r1_u3",
-            "x": 520,
-            "y": 340,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r1_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r1_u4",
-            "x": 580,
-            "y": 340,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r1_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r1_u5",
-            "x": 640,
-            "y": 340,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r2_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r2_u1",
+            "name": "pc_f2_r2_u3",
             "x": 100,
             "y": 400,
             "compute_id": "local",
@@ -1011,7 +625,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f2_r2_u2
+    - name: Add pc_f2_r3_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -1019,7 +633,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f2_r2_u2",
+            "name": "pc_f2_r3_u1",
             "x": 160,
             "y": 400,
             "compute_id": "local",
@@ -1030,7 +644,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f2_r2_u3
+    - name: Add pc_f2_r3_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -1038,7 +652,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f2_r2_u3",
+            "name": "pc_f2_r3_u2",
             "x": 220,
             "y": 400,
             "compute_id": "local",
@@ -1049,7 +663,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add medical_pc_f2_r2_u4
+    - name: Add pc_f2_r3_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -1057,598 +671,9 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "medical_pc_f2_r2_u4",
+            "name": "pc_f2_r3_u3",
             "x": 280,
             "y": 400,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r2_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r2_u5",
-            "x": 340,
-            "y": 400,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r3_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r3_u1",
-            "x": 400,
-            "y": 400,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r3_u2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r3_u2",
-            "x": 460,
-            "y": 400,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r3_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r3_u3",
-            "x": 520,
-            "y": 400,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r3_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r3_u4",
-            "x": 580,
-            "y": 400,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r3_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r3_u5",
-            "x": 640,
-            "y": 400,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r4_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r4_u1",
-            "x": 100,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r4_u2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r4_u2",
-            "x": 160,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r4_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r4_u3",
-            "x": 220,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r4_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r4_u4",
-            "x": 280,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f2_r4_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f2_r4_u5",
-            "x": 340,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r1_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r1_u1",
-            "x": 400,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r1_u2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r1_u2",
-            "x": 460,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r1_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r1_u3",
-            "x": 520,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r1_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r1_u4",
-            "x": 580,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r1_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r1_u5",
-            "x": 640,
-            "y": 460,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r2_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r2_u1",
-            "x": 100,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r2_u2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r2_u2",
-            "x": 160,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r2_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r2_u3",
-            "x": 220,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r2_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r2_u4",
-            "x": 280,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r2_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r2_u5",
-            "x": 340,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r3_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r3_u1",
-            "x": 400,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r3_u2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r3_u2",
-            "x": 460,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r3_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r3_u3",
-            "x": 520,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r3_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r3_u4",
-            "x": 580,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r3_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r3_u5",
-            "x": 640,
-            "y": 520,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r4_u1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r4_u1",
-            "x": 100,
-            "y": 580,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r4_u2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r4_u2",
-            "x": 160,
-            "y": 580,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r4_u3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r4_u3",
-            "x": 220,
-            "y": 580,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r4_u4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r4_u4",
-            "x": 280,
-            "y": 580,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add medical_pc_f3_r4_u5
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "medical_pc_f3_r4_u5",
-            "x": 340,
-            "y": 580,
             "compute_id": "local",
             "node_type": "vpcs",
             "symbol": ":/symbols/vpcs_guest.svg",
@@ -1666,8 +691,8 @@
         body: |
           {
             "name": "ap_f1_1",
-            "x": 400,
-            "y": 580,
+            "x": 340,
+            "y": 400,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -1685,8 +710,8 @@
         body: |
           {
             "name": "ap_f1_2",
-            "x": 460,
-            "y": 580,
+            "x": 400,
+            "y": 400,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -1704,8 +729,8 @@
         body: |
           {
             "name": "ap_f2_1",
-            "x": 520,
-            "y": 580,
+            "x": 100,
+            "y": 460,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -1723,46 +748,8 @@
         body: |
           {
             "name": "ap_f2_2",
-            "x": 580,
-            "y": 580,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add ap_f3_1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "ap_f3_1",
-            "x": 640,
-            "y": 580,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add ap_f3_2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "ap_f3_2",
-            "x": 100,
-            "y": 640,
+            "x": 160,
+            "y": 460,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
