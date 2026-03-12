@@ -9,11 +9,14 @@ import os
 from pathlib import Path
 
 # Add current directory to path
-VISIO_GNS3_DIR = Path(__file__).parent.absolute()
+ARCH_DIR = Path(__file__).parent.absolute()
+VISIO_GNS3_DIR = ARCH_DIR.parent
+
+sys.path.insert(0, str(ARCH_DIR))
 sys.path.insert(0, str(VISIO_GNS3_DIR))
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
-from VisioGns3.Architecture.preview_dialog import TopologyPreviewDialog
+from preview_dialog import TopologyPreviewDialog
 
 
 def main():

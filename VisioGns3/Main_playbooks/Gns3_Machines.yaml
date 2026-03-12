@@ -13,7 +13,7 @@
         headers:
           Content-Type: "application/json"
         body:
-          name: "architecture_topology_20260312_222729"
+          name: "architecture_topology_20260312_224625"
         body_format: json
         status_code: 201
       register: project_result
@@ -37,7 +37,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add file_server
+    - name: Add billing_server
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -45,7 +45,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "file_server",
+            "name": "billing_server",
             "x": 160,
             "y": 100,
             "compute_id": "local",
@@ -81,6 +81,28 @@
         body_format: json
         status_code: 201
 
+    - name: Add backup_core_router
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "backup_core_router",
+            "x": 280,
+            "y": 100,
+            "compute_id": "local",
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "2ba077ef-894f-4575-9e6d-2c2fb6e423f4",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "hdb_disk_image": "OS10-Installer-10.5.5.5.105.vmdk", "hdb_disk_interface": "virtio", "hdc_disk_image": "OS10-platform-N3248TE-10.5.5.5.105.vmdk", "hdc_disk_interface": "virtio", "ram": 4096, "boot_priority": "d", "qemu_path": "/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
+          }
+        body_format: json
+        status_code: 201
+
     - name: Add dhcp_server
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
@@ -90,7 +112,7 @@
         body: |
           {
             "name": "dhcp_server",
-            "x": 280,
+            "x": 340,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
@@ -112,7 +134,7 @@
         body: |
           {
             "name": "dns_server",
-            "x": 340,
+            "x": 400,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
@@ -134,8 +156,8 @@
         body: |
           {
             "name": "internet_cloud",
-            "x": 100,
-            "y": 160,
+            "x": 460,
+            "y": 100,
             "compute_id": "local",
             "node_type": "cloud",
             "symbol": ":/symbols/cloud.svg",
@@ -153,7 +175,7 @@
         body: |
           {
             "name": "firewall_1",
-            "x": 160,
+            "x": 100,
             "y": 160,
             "compute_id": "local",
             "node_type": "qemu",
@@ -175,7 +197,7 @@
         body: |
           {
             "name": "dist_switch_f1",
-            "x": 220,
+            "x": 160,
             "y": 160,
             "compute_id": "local",
             "node_type": "ethernet_switch",
@@ -194,6 +216,25 @@
         body: |
           {
             "name": "dist_switch_f2",
+            "x": 220,
+            "y": 160,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add dist_switch_f3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "dist_switch_f3",
             "x": 280,
             "y": 160,
             "compute_id": "local",
@@ -232,8 +273,27 @@
         body: |
           {
             "name": "access_switch_f1_r2",
-            "x": 100,
-            "y": 220,
+            "x": 400,
+            "y": 160,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add access_switch_f1_r3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "access_switch_f1_r3",
+            "x": 460,
+            "y": 160,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -251,7 +311,7 @@
         body: |
           {
             "name": "access_switch_f2_r1",
-            "x": 160,
+            "x": 100,
             "y": 220,
             "compute_id": "local",
             "node_type": "ethernet_switch",
@@ -270,6 +330,25 @@
         body: |
           {
             "name": "access_switch_f2_r2",
+            "x": 160,
+            "y": 220,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add access_switch_f2_r3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "access_switch_f2_r3",
             "x": 220,
             "y": 220,
             "compute_id": "local",
@@ -280,7 +359,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add pc_f1_r1_u1
+    - name: Add access_switch_f3_r1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -288,18 +367,18 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f1_r1_u1",
+            "name": "access_switch_f3_r1",
             "x": 280,
             "y": 220,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
           }
         body_format: json
         status_code: 201
 
-    - name: Add pc_f1_r1_u2
+    - name: Add access_switch_f3_r2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -307,8 +386,46 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f1_r1_u2",
+            "name": "access_switch_f3_r2",
             "x": 340,
+            "y": 220,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add access_switch_f3_r3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "access_switch_f3_r3",
+            "x": 400,
+            "y": 220,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f1_r1_u1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f1_r1_u1",
+            "x": 460,
             "y": 220,
             "compute_id": "local",
             "node_type": "vpcs",
@@ -318,7 +435,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add pc_f1_r2_u1
+    - name: Add laptop_f1_r1_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -326,7 +443,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f1_r2_u1",
+            "name": "laptop_f1_r1_u2",
             "x": 100,
             "y": 280,
             "compute_id": "local",
@@ -337,7 +454,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add pc_f1_r2_u2
+    - name: Add laptop_f1_r1_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -345,7 +462,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f1_r2_u2",
+            "name": "laptop_f1_r1_u3",
             "x": 160,
             "y": 280,
             "compute_id": "local",
@@ -356,7 +473,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add pc_f2_r1_u1
+    - name: Add laptop_f1_r2_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -364,7 +481,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f2_r1_u1",
+            "name": "laptop_f1_r2_u1",
             "x": 220,
             "y": 280,
             "compute_id": "local",
@@ -375,7 +492,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add pc_f2_r1_u2
+    - name: Add laptop_f1_r2_u2
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -383,7 +500,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f2_r1_u2",
+            "name": "laptop_f1_r2_u2",
             "x": 280,
             "y": 280,
             "compute_id": "local",
@@ -394,7 +511,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add pc_f2_r2_u1
+    - name: Add laptop_f1_r2_u3
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -402,7 +519,7 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f2_r2_u1",
+            "name": "laptop_f1_r2_u3",
             "x": 340,
             "y": 280,
             "compute_id": "local",
@@ -413,7 +530,7 @@
         body_format: json
         status_code: 201
 
-    - name: Add pc_f2_r2_u2
+    - name: Add laptop_f1_r3_u1
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -421,9 +538,389 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc_f2_r2_u2",
+            "name": "laptop_f1_r3_u1",
+            "x": 400,
+            "y": 280,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f1_r3_u2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f1_r3_u2",
+            "x": 460,
+            "y": 280,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f1_r3_u3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f1_r3_u3",
             "x": 100,
             "y": 340,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r1_u1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r1_u1",
+            "x": 160,
+            "y": 340,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r1_u2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r1_u2",
+            "x": 220,
+            "y": 340,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r1_u3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r1_u3",
+            "x": 280,
+            "y": 340,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r2_u1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r2_u1",
+            "x": 340,
+            "y": 340,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r2_u2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r2_u2",
+            "x": 400,
+            "y": 340,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r2_u3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r2_u3",
+            "x": 460,
+            "y": 340,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r3_u1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r3_u1",
+            "x": 100,
+            "y": 400,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r3_u2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r3_u2",
+            "x": 160,
+            "y": 400,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f2_r3_u3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f2_r3_u3",
+            "x": 220,
+            "y": 400,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r1_u1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r1_u1",
+            "x": 280,
+            "y": 400,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r1_u2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r1_u2",
+            "x": 340,
+            "y": 400,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r1_u3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r1_u3",
+            "x": 400,
+            "y": 400,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r2_u1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r2_u1",
+            "x": 460,
+            "y": 400,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r2_u2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r2_u2",
+            "x": 100,
+            "y": 460,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r2_u3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r2_u3",
+            "x": 160,
+            "y": 460,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r3_u1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r3_u1",
+            "x": 220,
+            "y": 460,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r3_u2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r3_u2",
+            "x": 280,
+            "y": 460,
+            "compute_id": "local",
+            "node_type": "vpcs",
+            "symbol": ":/symbols/vpcs_guest.svg",
+            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add laptop_f3_r3_u3
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "laptop_f3_r3_u3",
+            "x": 340,
+            "y": 460,
             "compute_id": "local",
             "node_type": "vpcs",
             "symbol": ":/symbols/vpcs_guest.svg",
@@ -441,8 +938,8 @@
         body: |
           {
             "name": "ap_f1_1",
-            "x": 160,
-            "y": 340,
+            "x": 400,
+            "y": 460,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -460,8 +957,8 @@
         body: |
           {
             "name": "ap_f1_2",
-            "x": 220,
-            "y": 340,
+            "x": 460,
+            "y": 460,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -479,8 +976,8 @@
         body: |
           {
             "name": "ap_f2_1",
-            "x": 280,
-            "y": 340,
+            "x": 100,
+            "y": 520,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",
@@ -498,8 +995,46 @@
         body: |
           {
             "name": "ap_f2_2",
-            "x": 340,
-            "y": 340,
+            "x": 160,
+            "y": 520,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add ap_f3_1
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "ap_f3_1",
+            "x": 220,
+            "y": 520,
+            "compute_id": "local",
+            "node_type": "ethernet_switch",
+            "symbol": ":/symbols/ethernet_switch.svg",
+            "template_id": "1966b864-93e7-32d5-965f-001384eec461"
+          }
+        body_format: json
+        status_code: 201
+
+    - name: Add ap_f3_2
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "ap_f3_2",
+            "x": 280,
+            "y": 520,
             "compute_id": "local",
             "node_type": "ethernet_switch",
             "symbol": ":/symbols/ethernet_switch.svg",

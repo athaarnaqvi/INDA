@@ -16,7 +16,10 @@ import sys
 from pathlib import Path
 
 # Add VisioGns3 to path for absolute imports
-VISIO_GNS3_DIR = Path(__file__).parent.absolute()
+ARCH_DIR = Path(__file__).parent.absolute()
+VISIO_GNS3_DIR = ARCH_DIR.parent
+
+sys.path.insert(0, str(ARCH_DIR))
 sys.path.insert(0, str(VISIO_GNS3_DIR))
 
 from topology_visualization import TopologyVisualizer
