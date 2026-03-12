@@ -4,7 +4,6 @@ core_router_1
 dhcp_server
 dns_server
 internet_cloud
-firewall_1
 dist_switch_f1
 access_switch_f1_r1
 pc_f1_r1_u1

@@ -5,7 +5,7 @@
 
   vars:
     gns3_server: "http://localhost:3080"
-    project_name: "architecture_topology_20260312_202145"
+    project_name: "architecture_topology_20260312_203548"
 
   tasks:
     - name: Get all projects
@@ -185,7 +185,7 @@
               adapter_number: 0
               port_number: 0
 
-    - name: Connect core_router_1 to firewall_1
+    - name: Connect core_router_1 to internet_cloud
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -199,25 +199,6 @@
           nodes:
             - node_id: "{{ node_map['core_router_1'] }}"
               adapter_number: 2
-              port_number: 0
-            - node_id: "{{ node_map['firewall_1'] }}"
-              adapter_number: 0
-              port_number: 0
-
-    - name: Connect firewall_1 to internet_cloud
-      vars:
-        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-            - node_id: "{{ node_map['firewall_1'] }}"
-              adapter_number: 1
               port_number: 0
             - node_id: "{{ node_map['internet_cloud'] }}"
               adapter_number: 0

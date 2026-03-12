@@ -49,14 +49,8 @@
   },
   {
     "from": "core_router_1",
-    "to": "firewall_1",
-    "from_adapter_number": 2,
-    "to_adapter_number": 0
-  },
-  {
-    "from": "firewall_1",
     "to": "internet_cloud",
-    "from_adapter_number": 1,
+    "from_adapter_number": 2,
     "to_adapter_number": 0
   }
 ]

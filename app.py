@@ -1279,8 +1279,13 @@ QCheckBox::indicator:unchecked:hover {{
             import sys
 
             # Call the shell script
+    
+            import subprocess
+
+            script_path = os.path.join(gui_dir, "VisioGns3", "automation_architecture.sh")
+
             subprocess.run(
-                ["bash", "/home/athaar/INDA/VisioGns3/automation_architecture.sh"],
+                ["bash", script_path],
                 check=True
             )
             QMessageBox.information(

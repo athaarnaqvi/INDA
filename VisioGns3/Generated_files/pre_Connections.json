@@ -33,10 +33,6 @@
     },
     {
         "from": "core_router_1",
-        "to": "firewall_1"
-    },
-    {
-        "from": "firewall_1",
         "to": "internet_cloud"
     }
 ]
