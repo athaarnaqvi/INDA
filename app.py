@@ -1274,6 +1274,27 @@ QCheckBox::indicator:unchecked:hover {{
 
         conn_engine.run(os.path.join(visio_dir,"Generated_files", "pre_Connections.json"))
 
+        try:
+            import subprocess
+            import sys
+
+            # Call the shell script
+            subprocess.run(
+                ["bash", "/home/athaar/INDA/VisioGns3/automation_architecture.sh"],
+                check=True
+            )
+            QMessageBox.information(
+                self,
+                "Architecture Workflow",
+                "✅ All scripts executed successfully."
+            )
+        except subprocess.CalledProcessError as e:
+            QMessageBox.critical(
+                self,
+                "Architecture Workflow Error",
+                f"An error occurred while running the scripts:\n{e}"
+            )
+
     def create_chatbot_page(self):
         page = QWidget()
         page.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0F172A, stop:1 #1E293B);")
