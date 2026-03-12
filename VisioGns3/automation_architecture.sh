@@ -7,19 +7,26 @@ echo "🚀 Starting Architecture Orchestrator automation..."
 # ----------------------------------------
 # Base directory (VisioGns3)
 # ----------------------------------------
-
-BASE_DIR="/home/fiza-wajid/INDA/VisioGns3"
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 ARCH_DIR="$BASE_DIR/Architecture"
 GENERATED_DIR="$BASE_DIR/Generated_files"
 MAIN_PLAYBOOKS_DIR="$BASE_DIR/Main_playbooks"
-NLP_DIR="$BASE_DIR/NLP1/prompts_description"
-PYTHON="/home/fiza-wajid/INDA/venv/bin/python"
+NLP_DIR="$BASE_DIR/NLP1/prompts_description"  # optional if any NLP integration
+# Automatically detect Python virtual environment
+if [ -d "$BASE_DIR/../venv" ]; then
+    PYTHON="$BASE_DIR/../venv/bin/python"
+elif [ -d "$BASE_DIR/venv" ]; then
+    PYTHON="$BASE_DIR/venv/bin/python"
+else
+    echo "❌ Virtual environment not found. Please create a venv in the project root."
+    exit 1
+fi
 
 echo "📁 Base dir          : $BASE_DIR"
 echo "📁 Architecture dir  : $ARCH_DIR"
 echo "📁 Generated files   : $GENERATED_DIR"
 echo "📁 Main playbooks    : $MAIN_PLAYBOOKS_DIR"
-
+echo "🐍 Python venv       : $PYTHON"
 # ----------------------------------------
 # Step 1: Generate machine names and pre-connections JSON
 # ----------------------------------------

@@ -302,8 +302,6 @@ class ArchitectureConnections:
             self.connect("firewall_1", "internet_cloud")
         else:
             self.connect("core_router_1", "internet_cloud")
-            if self.floors >= 3:
-                self.connect("backup_core_router", "internet_cloud")
 
     # --------------------------------------------------
     # RUN ENGINE
