@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                               QFileDialog, QMessageBox, QFrame, QStackedWidget,
                               QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox, QScrollArea)
 from PyQt6.QtGui import QPalette, QColor, QFont, QPainter, QBrush
-from PyQt6.QtCore import QSize, Qt, QPropertyAnimation, QThread, pyqtSignal, QTimer, pyqtProperty
+from PyQt6.QtCore import QSize, Qt, QPropertyAnimation, QThread, pyqtSignal, QTimer, pyqtProperty, QObject
 
 # GNS3 Config File Path
 GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
@@ -368,6 +368,25 @@ class AutomationRunnerThread(QThread):
         except Exception as e:
             self.output_signal.emit(f"Exception: {str(e)}")
             self.finished_signal.emit(-1)
+
+
+class ScriptWorker(QObject):
+    finished = pyqtSignal(int)
+    error    = pyqtSignal(str)
+
+    def __init__(self, script_path: str):
+        super().__init__()
+        self.script_path = script_path
+
+    def run(self):
+        try:
+            result = subprocess.run(
+                ["bash", self.script_path],
+                check=False
+            )
+            self.finished.emit(result.returncode)
+        except Exception as e:
+            self.error.emit(str(e))
 
 
 class VisioGNS3App(QWidget):
@@ -771,9 +790,9 @@ class VisioGNS3App(QWidget):
         floors_col.setSpacing(6)
         floors_label = QLabel("🏢  Number of Floors")
         floors_label.setStyleSheet(label_style)
-        floors_hint = QLabel("Maximum: 4 floors")
+        floors_hint = QLabel("Maximum: 5 floors")
         floors_hint.setStyleSheet(hint_style)
-        self.floors_spin = StyledSpinBox(minimum=1, maximum=4, value=1)
+        self.floors_spin = StyledSpinBox(minimum=1, maximum=5, value=1)
         self.floors_spin.setMinimumWidth(200)
         floors_col.addWidget(floors_label)
         floors_col.addWidget(floors_hint)
@@ -784,9 +803,9 @@ class VisioGNS3App(QWidget):
         rooms_col.setSpacing(6)
         rooms_label = QLabel("🚪  Rooms Per Floor")
         rooms_label.setStyleSheet(label_style)
-        rooms_hint = QLabel("Maximum: 5 rooms")
+        rooms_hint = QLabel("Maximum: 10 rooms")
         rooms_hint.setStyleSheet(hint_style)
-        self.rooms_spin = StyledSpinBox(minimum=1, maximum=5, value=1)
+        self.rooms_spin = StyledSpinBox(minimum=1, maximum=10, value=1)
         self.rooms_spin.setMinimumWidth(200)
         rooms_col.addWidget(rooms_label)
         rooms_col.addWidget(rooms_hint)
@@ -805,9 +824,9 @@ class VisioGNS3App(QWidget):
         users_col.setSpacing(6)
         users_label = QLabel("👤  Average Users Per Room")
         users_label.setStyleSheet(label_style)
-        users_hint = QLabel("Maximum: 10 users")
+        users_hint = QLabel("Maximum: 20 users")
         users_hint.setStyleSheet(hint_style)
-        self.users_spin = StyledSpinBox(minimum=1, maximum=10, value=1)
+        self.users_spin = StyledSpinBox(minimum=1, maximum=20, value=1)
         self.users_spin.setMinimumWidth(200)
         users_col.addWidget(users_label)
         users_col.addWidget(users_hint)
@@ -1274,31 +1293,43 @@ QCheckBox::indicator:unchecked:hover {{
 
         conn_engine.run(os.path.join(visio_dir,"Generated_files", "pre_Connections.json"))
 
-        try:
-            import subprocess
-            import sys
+        script_path = os.path.join(gui_dir, "VisioGns3", "automation_architecture.sh")
 
-            # Call the shell script
-    
-            import subprocess
+        self._arch_thread = QThread()
+        self._arch_worker = ScriptWorker(script_path)
+        self._arch_worker.moveToThread(self._arch_thread)
 
-            script_path = os.path.join(gui_dir, "VisioGns3", "automation_architecture.sh")
+        self._arch_thread.started.connect(self._arch_worker.run)
+        self._arch_worker.finished.connect(self._on_arch_script_finished)
+        self._arch_worker.error.connect(self._on_arch_script_error)
+        self._arch_worker.finished.connect(self._arch_thread.quit)
+        self._arch_worker.error.connect(self._arch_thread.quit)
+        self._arch_thread.finished.connect(self._arch_thread.deleteLater)
 
-            subprocess.run(
-                ["bash", script_path],
-                check=True
-            )
+        self._arch_thread.start()
+
+
+    def _on_arch_script_finished(self, exit_code: int):
+        if exit_code == 0:
             QMessageBox.information(
                 self,
                 "Architecture Workflow",
                 "✅ All scripts executed successfully."
             )
-        except subprocess.CalledProcessError as e:
-            QMessageBox.critical(
+        else:
+            QMessageBox.warning(
                 self,
-                "Architecture Workflow Error",
-                f"An error occurred while running the scripts:\n{e}"
+                "Architecture Workflow",
+                f"⚠️ Script exited with code {exit_code}.\nDeployment may have been cancelled."
             )
+
+    def _on_arch_script_error(self, message: str):
+        QMessageBox.critical(
+            self,
+            "Architecture Workflow Error",
+            f"An error occurred while running the scripts:\n{message}"
+        )
+
 
     def create_chatbot_page(self):
         page = QWidget()
