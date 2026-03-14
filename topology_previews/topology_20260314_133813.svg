@@ -1,0 +1,2220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1800 2485"
+     version="1.1"
+     preserveAspectRatio="xMidYMid meet"
+     style="width:100%; height:auto; border:1px solid #ddd;">
+    
+    <defs>
+        <!-- Arrow marker -->
+        <marker id="arrowhead" markerWidth="13" markerHeight="13" 
+                refX="12" refY="6" orient="auto">
+            <polygon points="0 0, 13 6, 0 12" fill="#666666" />
+        </marker>
+        
+        <!-- Styles -->
+        <style>
+            .device { cursor: pointer; }
+            .device:hover { opacity: 0.9; filter: drop-shadow(0 0 4px rgba(0,0,0,0.3)); }
+            .connection { pointer-events: none; }
+            text { font-family: Arial, Helvetica, sans-serif; }
+        </style>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="1800" height="2485" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" />
+    
+    <!-- Grid -->
+    <defs>
+        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#F5F5F5" stroke-width="0.5"/>
+        </pattern>
+    </defs>
+    <rect width="1800" height="2485" fill="url(#grid)" />
+    
+    <!-- Title -->
+    <text x="900.0" y="35" text-anchor="middle" font-size="28" font-weight="bold" fill="#222">
+        Network Topology
+    </text>
+    <text x="900.0" y="58" text-anchor="middle" font-size="11" fill="#999">
+        2026-03-14 13:38:13 | Devices: 51 | Links: 56
+    </text>
+    
+    <!-- Connections -->
+    <g id="connections">
+
+    <!-- Connection: pc_f1_r1_u1 → access_switch_f1_r1 -->
+    <g class="connection" id="conn-pc-f1-r1-u1-to-access-switch-f1-r1">
+        <!-- Connection line -->
+        <path d="M 360.0 1182.5 Q 498.0 1158.5 600.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="430.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="480.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r1_u2 → access_switch_f1_r1 -->
+    <g class="connection" id="conn-pc-f1-r1-u2-to-access-switch-f1-r1">
+        <!-- Connection line -->
+        <path d="M 520.0 1182.5 Q 578.0 1134.5 600.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="510.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="560.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r1_u3 → access_switch_f1_r1 -->
+    <g class="connection" id="conn-pc-f1-r1-u3-to-access-switch-f1-r1">
+        <!-- Connection line -->
+        <path d="M 680.0 1182.5 Q 658.0 1110.5 600.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="590.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="640.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r2_u1 → access_switch_f1_r2 -->
+    <g class="connection" id="conn-pc-f1-r2-u1-to-access-switch-f1-r2">
+        <!-- Connection line -->
+        <path d="M 840.0 1182.5 Q 818.0 1110.5 760.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="750.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="800.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r2_u2 → access_switch_f1_r2 -->
+    <g class="connection" id="conn-pc-f1-r2-u2-to-access-switch-f1-r2">
+        <!-- Connection line -->
+        <path d="M 1000.0 1182.5 Q 898.0 1086.5 760.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="830.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="880.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r2_u3 → access_switch_f1_r2 -->
+    <g class="connection" id="conn-pc-f1-r2-u3-to-access-switch-f1-r2">
+        <!-- Connection line -->
+        <path d="M 1160.0 1182.5 Q 978.0 1062.5 760.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="910.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="960.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r3_u1 → access_switch_f1_r3 -->
+    <g class="connection" id="conn-pc-f1-r3-u1-to-access-switch-f1-r3">
+        <!-- Connection line -->
+        <path d="M 1320.0 1182.5 Q 1138.0 1062.5 920.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1070.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1120.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r3_u2 → access_switch_f1_r3 -->
+    <g class="connection" id="conn-pc-f1-r3-u2-to-access-switch-f1-r3">
+        <!-- Connection line -->
+        <path d="M 1480.0 1182.5 Q 1216.7623270984698 1044.2758068738071 920.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1150.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1200.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f1_r3_u3 → access_switch_f1_r3 -->
+    <g class="connection" id="conn-pc-f1-r3-u3-to-access-switch-f1-r3">
+        <!-- Connection line -->
+        <path d="M 1640.0 1182.5 Q 1293.1519189844287 1043.5884860934284 920.0 1062.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1230.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1280.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r1_u1 → access_switch_f2_r1 -->
+    <g class="connection" id="conn-pc-f2-r1-u1-to-access-switch-f2-r1">
+        <!-- Connection line -->
+        <path d="M 360.0 1762.5 Q 498.0 1738.5 600.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="430.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="480.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r1_u2 → access_switch_f2_r1 -->
+    <g class="connection" id="conn-pc-f2-r1-u2-to-access-switch-f2-r1">
+        <!-- Connection line -->
+        <path d="M 520.0 1762.5 Q 578.0 1714.5 600.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="510.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="560.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r1_u3 → access_switch_f2_r1 -->
+    <g class="connection" id="conn-pc-f2-r1-u3-to-access-switch-f2-r1">
+        <!-- Connection line -->
+        <path d="M 680.0 1762.5 Q 658.0 1690.5 600.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="590.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="640.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r2_u1 → access_switch_f2_r2 -->
+    <g class="connection" id="conn-pc-f2-r2-u1-to-access-switch-f2-r2">
+        <!-- Connection line -->
+        <path d="M 840.0 1762.5 Q 818.0 1690.5 760.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="750.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="800.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r2_u2 → access_switch_f2_r2 -->
+    <g class="connection" id="conn-pc-f2-r2-u2-to-access-switch-f2-r2">
+        <!-- Connection line -->
+        <path d="M 1000.0 1762.5 Q 898.0 1666.5 760.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="830.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="880.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r2_u3 → access_switch_f2_r2 -->
+    <g class="connection" id="conn-pc-f2-r2-u3-to-access-switch-f2-r2">
+        <!-- Connection line -->
+        <path d="M 1160.0 1762.5 Q 978.0 1642.5 760.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="910.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="960.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r3_u1 → access_switch_f2_r3 -->
+    <g class="connection" id="conn-pc-f2-r3-u1-to-access-switch-f2-r3">
+        <!-- Connection line -->
+        <path d="M 1320.0 1762.5 Q 1138.0 1642.5 920.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1070.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1120.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r3_u2 → access_switch_f2_r3 -->
+    <g class="connection" id="conn-pc-f2-r3-u2-to-access-switch-f2-r3">
+        <!-- Connection line -->
+        <path d="M 1480.0 1762.5 Q 1216.7623270984698 1624.2758068738071 920.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1150.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1200.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f2_r3_u3 → access_switch_f2_r3 -->
+    <g class="connection" id="conn-pc-f2-r3-u3-to-access-switch-f2-r3">
+        <!-- Connection line -->
+        <path d="M 1640.0 1762.5 Q 1293.1519189844287 1623.5884860934284 920.0 1642.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1230.0" y="1675.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1280.0" y="1689.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r1_u1 → access_switch_f3_r1 -->
+    <g class="connection" id="conn-pc-f3-r1-u1-to-access-switch-f3-r1">
+        <!-- Connection line -->
+        <path d="M 360.0 2342.5 Q 498.0 2318.5 600.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="430.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="480.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r1_u2 → access_switch_f3_r1 -->
+    <g class="connection" id="conn-pc-f3-r1-u2-to-access-switch-f3-r1">
+        <!-- Connection line -->
+        <path d="M 520.0 2342.5 Q 578.0 2294.5 600.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="510.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="560.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r1_u3 → access_switch_f3_r1 -->
+    <g class="connection" id="conn-pc-f3-r1-u3-to-access-switch-f3-r1">
+        <!-- Connection line -->
+        <path d="M 680.0 2342.5 Q 658.0 2270.5 600.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="590.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="640.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r2_u1 → access_switch_f3_r2 -->
+    <g class="connection" id="conn-pc-f3-r2-u1-to-access-switch-f3-r2">
+        <!-- Connection line -->
+        <path d="M 840.0 2342.5 Q 818.0 2270.5 760.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="750.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="800.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r2_u2 → access_switch_f3_r2 -->
+    <g class="connection" id="conn-pc-f3-r2-u2-to-access-switch-f3-r2">
+        <!-- Connection line -->
+        <path d="M 1000.0 2342.5 Q 898.0 2246.5 760.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="830.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="880.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r2_u3 → access_switch_f3_r2 -->
+    <g class="connection" id="conn-pc-f3-r2-u3-to-access-switch-f3-r2">
+        <!-- Connection line -->
+        <path d="M 1160.0 2342.5 Q 978.0 2222.5 760.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="910.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="960.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r3_u1 → access_switch_f3_r3 -->
+    <g class="connection" id="conn-pc-f3-r3-u1-to-access-switch-f3-r3">
+        <!-- Connection line -->
+        <path d="M 1320.0 2342.5 Q 1138.0 2222.5 920.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1070.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1120.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r3_u2 → access_switch_f3_r3 -->
+    <g class="connection" id="conn-pc-f3-r3-u2-to-access-switch-f3-r3">
+        <!-- Connection line -->
+        <path d="M 1480.0 2342.5 Q 1216.7623270984698 2204.275806873807 920.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1150.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1200.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: pc_f3_r3_u3 → access_switch_f3_r3 -->
+    <g class="connection" id="conn-pc-f3-r3-u3-to-access-switch-f3-r3">
+        <!-- Connection line -->
+        <path d="M 1640.0 2342.5 Q 1293.1519189844287 2203.5884860934284 920.0 2222.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="1230.0" y="2255.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="1280.0" y="2269.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f1_r1 → dist_switch_f1 -->
+    <g class="connection" id="conn-access-switch-f1-r1-to-dist-switch-f1">
+        <!-- Connection line -->
+        <path d="M 600.0 1062.5 Q 716.0 966.5 760.0 822.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="630.0" y="915.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="680.0" y="929.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f1_r2 → dist_switch_f1 -->
+    <g class="connection" id="conn-access-switch-f1-r2-to-dist-switch-f1">
+        <!-- Connection line -->
+        <path d="M 760.0 1062.5 Q 796.0 942.5 760.0 822.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="915.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="929.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f1_r3 → dist_switch_f1 -->
+    <g class="connection" id="conn-access-switch-f1-r3-to-dist-switch-f1">
+        <!-- Connection line -->
+        <path d="M 920.0 1062.5 Q 876.0 918.5 760.0 822.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="790.0" y="915.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="840.0" y="929.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f2_r1 → dist_switch_f2 -->
+    <g class="connection" id="conn-access-switch-f2-r1-to-dist-switch-f2">
+        <!-- Connection line -->
+        <path d="M 600.0 1642.5 Q 716.0 1546.5 760.0 1402.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="630.0" y="1495.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="680.0" y="1509.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f2_r2 → dist_switch_f2 -->
+    <g class="connection" id="conn-access-switch-f2-r2-to-dist-switch-f2">
+        <!-- Connection line -->
+        <path d="M 760.0 1642.5 Q 796.0 1522.5 760.0 1402.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="1495.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="1509.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f2_r3 → dist_switch_f2 -->
+    <g class="connection" id="conn-access-switch-f2-r3-to-dist-switch-f2">
+        <!-- Connection line -->
+        <path d="M 920.0 1642.5 Q 876.0 1498.5 760.0 1402.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="790.0" y="1495.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="840.0" y="1509.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f3_r1 → dist_switch_f3 -->
+    <g class="connection" id="conn-access-switch-f3-r1-to-dist-switch-f3">
+        <!-- Connection line -->
+        <path d="M 600.0 2222.5 Q 716.0 2126.5 760.0 1982.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="630.0" y="2075.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="680.0" y="2089.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f3_r2 → dist_switch_f3 -->
+    <g class="connection" id="conn-access-switch-f3-r2-to-dist-switch-f3">
+        <!-- Connection line -->
+        <path d="M 760.0 2222.5 Q 796.0 2102.5 760.0 1982.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="2075.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="2089.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: access_switch_f3_r3 → dist_switch_f3 -->
+    <g class="connection" id="conn-access-switch-f3-r3-to-dist-switch-f3">
+        <!-- Connection line -->
+        <path d="M 920.0 2222.5 Q 876.0 2078.5 760.0 1982.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="790.0" y="2075.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="840.0" y="2089.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: ap_f1_1 → dist_switch_f1 -->
+    <g class="connection" id="conn-ap-f1-1-to-dist-switch-f1">
+        <!-- Connection line -->
+        <path d="M 760.0 942.5 Q 778.0 882.5 760.0 822.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="855.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="869.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→3.0
+        </text>
+    </g>
+
+    <!-- Connection: ap_f2_1 → dist_switch_f2 -->
+    <g class="connection" id="conn-ap-f2-1-to-dist-switch-f2">
+        <!-- Connection line -->
+        <path d="M 760.0 1522.5 Q 778.0 1462.5 760.0 1402.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="1435.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="1449.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→3.0
+        </text>
+    </g>
+
+    <!-- Connection: ap_f3_1 → dist_switch_f3 -->
+    <g class="connection" id="conn-ap-f3-1-to-dist-switch-f3">
+        <!-- Connection line -->
+        <path d="M 760.0 2102.5 Q 778.0 2042.5 760.0 1982.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="2015.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="2029.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            0.0→3.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f1 → core_router_1 -->
+    <g class="connection" id="conn-dist-switch-f1-to-core-router-1">
+        <!-- Connection line -->
+        <path d="M 760.0 822.5 Q 819.7966959864588 536.8002360009672 720.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="690.0" y="515.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="740.0" y="529.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            4.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f1 → backup_core_router -->
+    <g class="connection" id="conn-dist-switch-f1-to-backup-core-router">
+        <!-- Connection line -->
+        <path d="M 760.0 822.5 Q 735.339352927587 515.5930882401475 560.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="610.0" y="515.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="660.0" y="529.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            5.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f1 → dist_switch_f2 -->
+    <g class="connection" id="conn-dist-switch-f1-to-dist-switch-f2">
+        <!-- Connection line -->
+        <path d="M 760.0 822.5 Q 680.0 1112.5 760.0 1402.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="1085.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="1099.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            6.0→4.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f2 → core_router_1 -->
+    <g class="connection" id="conn-dist-switch-f2-to-core-router-1">
+        <!-- Connection line -->
+        <path d="M 760.0 1402.5 Q 819.9507995033414 829.6947087893565 720.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="690.0" y="805.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="740.0" y="819.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            5.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f2 → backup_core_router -->
+    <g class="connection" id="conn-dist-switch-f2-to-backup-core-router">
+        <!-- Connection line -->
+        <path d="M 760.0 1402.5 Q 738.7965619717052 818.67604175935 560.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="610.0" y="805.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="660.0" y="819.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            6.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f2 → dist_switch_f3 -->
+    <g class="connection" id="conn-dist-switch-f2-to-dist-switch-f3">
+        <!-- Connection line -->
+        <path d="M 760.0 1402.5 Q 680.0 1692.5 760.0 1982.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="710.0" y="1665.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="760.0" y="1679.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            7.0→4.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f3 → core_router_1 -->
+    <g class="connection" id="conn-dist-switch-f3-to-core-router-1">
+        <!-- Connection line -->
+        <path d="M 760.0 1982.5 Q 819.9783754557477 1120.640037780099 720.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="690.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="740.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            5.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: dist_switch_f3 → backup_core_router -->
+    <g class="connection" id="conn-dist-switch-f3-to-backup-core-router">
+        <!-- Connection line -->
+        <path d="M 760.0 1982.5 Q 739.4645904241003 1113.2599313460348 560.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="610.0" y="1095.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="660.0" y="1109.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            6.0→2.0
+        </text>
+    </g>
+
+    <!-- Connection: core_router_1 → server_switch -->
+    <g class="connection" id="conn-core-router-1-to-server-switch">
+        <!-- Connection line -->
+        <path d="M 720.0 262.5 Q 707.0 378.5 760.0 482.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="690.0" y="345.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="740.0" y="359.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: backup_core_router → server_switch -->
+    <g class="connection" id="conn-backup-core-router-to-server-switch">
+        <!-- Connection line -->
+        <path d="M 560.0 262.5 Q 627.0 402.5 760.0 482.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="610.0" y="345.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="660.0" y="359.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: server_switch → file_server -->
+    <g class="connection" id="conn-server-switch-to-file-server">
+        <!-- Connection line -->
+        <path d="M 760.0 482.5 Q 862.0 578.5 1000.0 602.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="830.0" y="515.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="880.0" y="529.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            2.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: server_switch → backup_server -->
+    <g class="connection" id="conn-server-switch-to-backup-server">
+        <!-- Connection line -->
+        <path d="M 760.0 482.5 Q 622.0 506.5 520.0 602.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="590.0" y="515.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="640.0" y="529.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            3.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: server_switch → dhcp_server -->
+    <g class="connection" id="conn-server-switch-to-dhcp-server">
+        <!-- Connection line -->
+        <path d="M 760.0 482.5 Q 702.0 530.5 680.0 602.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="670.0" y="515.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="720.0" y="529.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            4.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: server_switch → dns_server -->
+    <g class="connection" id="conn-server-switch-to-dns-server">
+        <!-- Connection line -->
+        <path d="M 760.0 482.5 Q 782.0 554.5 840.0 602.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="750.0" y="515.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="800.0" y="529.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            5.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: core_router_1 → firewall_1 -->
+    <g class="connection" id="conn-core-router-1-to-firewall-1">
+        <!-- Connection line -->
+        <path d="M 720.0 262.5 Q 800.0 286.5 880.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="750.0" y="235.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="800.0" y="249.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            4.0→0.0
+        </text>
+    </g>
+
+    <!-- Connection: backup_core_router → firewall_1 -->
+    <g class="connection" id="conn-backup-core-router-to-firewall-1">
+        <!-- Connection line -->
+        <path d="M 560.0 262.5 Q 720.0 310.5 880.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="670.0" y="235.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="720.0" y="249.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            4.0→1.0
+        </text>
+    </g>
+
+    <!-- Connection: firewall_1 → internet_cloud -->
+    <g class="connection" id="conn-firewall-1-to-internet-cloud">
+        <!-- Connection line -->
+        <path d="M 880.0 262.5 Q 960.0 286.5 1040.0 262.5"
+              stroke="#666666" stroke-width="2" fill="none" 
+              marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
+        
+        <!-- Port label -->
+        <rect x="910.0" y="235.5" width="100" height="20" 
+              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
+        <text x="960.0" y="249.5" 
+              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
+              dominant-baseline="middle">
+            2.0→0.0
+        </text>
+    </g>
+
+    </g>
+    
+    <!-- Nodes -->
+    <g id="nodes">
+
+    <!-- Node: server_switch -->
+    <g id="node-server-switch" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="440" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="458" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="490" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">server_switch</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="508" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>server_switch (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: file_server -->
+    <g id="node-file-server" class="device">
+        <!-- Device box -->
+        <rect x="940.0" y="560" width="120" height="85" 
+              fill="#FFB6C1" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1000.0" y="578" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">💻</text>
+        
+        <!-- Device name -->
+        <text x="1000.0" y="610" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">file_server</text>
+        
+        <!-- Device type -->
+        <text x="1000.0" y="628" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">qemu</text>
+        
+        <!-- Hover tooltip -->
+        <title>file_server (qemu)</title>
+    </g>
+
+    <!-- Node: backup_server -->
+    <g id="node-backup-server" class="device">
+        <!-- Device box -->
+        <rect x="460.0" y="560" width="120" height="85" 
+              fill="#FFB6C1" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="520.0" y="578" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">💻</text>
+        
+        <!-- Device name -->
+        <text x="520.0" y="610" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">backup_server</text>
+        
+        <!-- Device type -->
+        <text x="520.0" y="628" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">qemu</text>
+        
+        <!-- Hover tooltip -->
+        <title>backup_server (qemu)</title>
+    </g>
+
+    <!-- Node: core_router_1 -->
+    <g id="node-core-router-1" class="device">
+        <!-- Device box -->
+        <rect x="660" y="220" width="120" height="85" 
+              fill="#FFB6C1" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="720.0" y="238" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">💻</text>
+        
+        <!-- Device name -->
+        <text x="720.0" y="270" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">core_router_1</text>
+        
+        <!-- Device type -->
+        <text x="720.0" y="288" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">qemu</text>
+        
+        <!-- Hover tooltip -->
+        <title>core_router_1 (qemu)</title>
+    </g>
+
+    <!-- Node: backup_core_router -->
+    <g id="node-backup-core-router" class="device">
+        <!-- Device box -->
+        <rect x="500" y="220" width="120" height="85" 
+              fill="#FFB6C1" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="560.0" y="238" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">💻</text>
+        
+        <!-- Device name -->
+        <text x="560.0" y="270" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">backup_core_r...</text>
+        
+        <!-- Device type -->
+        <text x="560.0" y="288" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">qemu</text>
+        
+        <!-- Hover tooltip -->
+        <title>backup_core_router (qemu)</title>
+    </g>
+
+    <!-- Node: dhcp_server -->
+    <g id="node-dhcp-server" class="device">
+        <!-- Device box -->
+        <rect x="620.0" y="560" width="120" height="85" 
+              fill="#FFB6C1" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="680.0" y="578" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">💻</text>
+        
+        <!-- Device name -->
+        <text x="680.0" y="610" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">dhcp_server</text>
+        
+        <!-- Device type -->
+        <text x="680.0" y="628" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">qemu</text>
+        
+        <!-- Hover tooltip -->
+        <title>dhcp_server (qemu)</title>
+    </g>
+
+    <!-- Node: dns_server -->
+    <g id="node-dns-server" class="device">
+        <!-- Device box -->
+        <rect x="780.0" y="560" width="120" height="85" 
+              fill="#FFB6C1" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="840.0" y="578" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">💻</text>
+        
+        <!-- Device name -->
+        <text x="840.0" y="610" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">dns_server</text>
+        
+        <!-- Device type -->
+        <text x="840.0" y="628" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">qemu</text>
+        
+        <!-- Hover tooltip -->
+        <title>dns_server (qemu)</title>
+    </g>
+
+    <!-- Node: internet_cloud -->
+    <g id="node-internet-cloud" class="device">
+        <!-- Device box -->
+        <rect x="980" y="220" width="120" height="85" 
+              fill="#FFE4B5" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1040.0" y="238" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">☁️</text>
+        
+        <!-- Device name -->
+        <text x="1040.0" y="270" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">internet_cloud</text>
+        
+        <!-- Device type -->
+        <text x="1040.0" y="288" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">cloud</text>
+        
+        <!-- Hover tooltip -->
+        <title>internet_cloud (cloud)</title>
+    </g>
+
+    <!-- Node: firewall_1 -->
+    <g id="node-firewall-1" class="device">
+        <!-- Device box -->
+        <rect x="820" y="220" width="120" height="85" 
+              fill="#FFB6C1" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="880.0" y="238" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">💻</text>
+        
+        <!-- Device name -->
+        <text x="880.0" y="270" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">firewall_1</text>
+        
+        <!-- Device type -->
+        <text x="880.0" y="288" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">qemu</text>
+        
+        <!-- Hover tooltip -->
+        <title>firewall_1 (qemu)</title>
+    </g>
+
+    <!-- Node: dist_switch_f1 -->
+    <g id="node-dist-switch-f1" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="780" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="798" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="830" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">dist_switch_f1</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="848" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>dist_switch_f1 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f1_r1 -->
+    <g id="node-access-switch-f1-r1" class="device">
+        <!-- Device box -->
+        <rect x="540.0" y="1020" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="600.0" y="1038" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="600.0" y="1070" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="600.0" y="1088" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f1_r1 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f1_r2 -->
+    <g id="node-access-switch-f1-r2" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="1020" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="1038" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="1070" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="1088" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f1_r2 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f1_r3 -->
+    <g id="node-access-switch-f1-r3" class="device">
+        <!-- Device box -->
+        <rect x="860.0" y="1020" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="920.0" y="1038" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="920.0" y="1070" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="920.0" y="1088" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f1_r3 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: pc_f1_r1_u1 -->
+    <g id="node-pc-f1-r1-u1" class="device">
+        <!-- Device box -->
+        <rect x="300" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="360.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="360.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r1_u1</text>
+        
+        <!-- Device type -->
+        <text x="360.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r1_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r1_u2 -->
+    <g id="node-pc-f1-r1-u2" class="device">
+        <!-- Device box -->
+        <rect x="460" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="520.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="520.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r1_u2</text>
+        
+        <!-- Device type -->
+        <text x="520.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r1_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r1_u3 -->
+    <g id="node-pc-f1-r1-u3" class="device">
+        <!-- Device box -->
+        <rect x="620" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="680.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="680.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r1_u3</text>
+        
+        <!-- Device type -->
+        <text x="680.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r1_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r2_u1 -->
+    <g id="node-pc-f1-r2-u1" class="device">
+        <!-- Device box -->
+        <rect x="780" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="840.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="840.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r2_u1</text>
+        
+        <!-- Device type -->
+        <text x="840.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r2_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r2_u2 -->
+    <g id="node-pc-f1-r2-u2" class="device">
+        <!-- Device box -->
+        <rect x="940" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1000.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1000.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r2_u2</text>
+        
+        <!-- Device type -->
+        <text x="1000.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r2_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r2_u3 -->
+    <g id="node-pc-f1-r2-u3" class="device">
+        <!-- Device box -->
+        <rect x="1100" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1160.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1160.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r2_u3</text>
+        
+        <!-- Device type -->
+        <text x="1160.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r2_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r3_u1 -->
+    <g id="node-pc-f1-r3-u1" class="device">
+        <!-- Device box -->
+        <rect x="1260" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1320.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1320.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r3_u1</text>
+        
+        <!-- Device type -->
+        <text x="1320.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r3_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r3_u2 -->
+    <g id="node-pc-f1-r3-u2" class="device">
+        <!-- Device box -->
+        <rect x="1420" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1480.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1480.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r3_u2</text>
+        
+        <!-- Device type -->
+        <text x="1480.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r3_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f1_r3_u3 -->
+    <g id="node-pc-f1-r3-u3" class="device">
+        <!-- Device box -->
+        <rect x="1580" y="1140" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1640.0" y="1158" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1640.0" y="1190" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f1_r3_u3</text>
+        
+        <!-- Device type -->
+        <text x="1640.0" y="1208" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f1_r3_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: ap_f1_1 -->
+    <g id="node-ap-f1-1" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="900" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="918" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="950" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">ap_f1_1</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="968" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>ap_f1_1 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: dist_switch_f2 -->
+    <g id="node-dist-switch-f2" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="1360" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="1378" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="1410" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">dist_switch_f2</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="1428" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>dist_switch_f2 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f2_r1 -->
+    <g id="node-access-switch-f2-r1" class="device">
+        <!-- Device box -->
+        <rect x="540.0" y="1600" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="600.0" y="1618" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="600.0" y="1650" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="600.0" y="1668" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f2_r1 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f2_r2 -->
+    <g id="node-access-switch-f2-r2" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="1600" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="1618" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="1650" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="1668" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f2_r2 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f2_r3 -->
+    <g id="node-access-switch-f2-r3" class="device">
+        <!-- Device box -->
+        <rect x="860.0" y="1600" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="920.0" y="1618" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="920.0" y="1650" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="920.0" y="1668" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f2_r3 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: pc_f2_r1_u1 -->
+    <g id="node-pc-f2-r1-u1" class="device">
+        <!-- Device box -->
+        <rect x="300" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="360.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="360.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r1_u1</text>
+        
+        <!-- Device type -->
+        <text x="360.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r1_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r1_u2 -->
+    <g id="node-pc-f2-r1-u2" class="device">
+        <!-- Device box -->
+        <rect x="460" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="520.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="520.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r1_u2</text>
+        
+        <!-- Device type -->
+        <text x="520.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r1_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r1_u3 -->
+    <g id="node-pc-f2-r1-u3" class="device">
+        <!-- Device box -->
+        <rect x="620" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="680.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="680.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r1_u3</text>
+        
+        <!-- Device type -->
+        <text x="680.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r1_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r2_u1 -->
+    <g id="node-pc-f2-r2-u1" class="device">
+        <!-- Device box -->
+        <rect x="780" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="840.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="840.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r2_u1</text>
+        
+        <!-- Device type -->
+        <text x="840.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r2_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r2_u2 -->
+    <g id="node-pc-f2-r2-u2" class="device">
+        <!-- Device box -->
+        <rect x="940" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1000.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1000.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r2_u2</text>
+        
+        <!-- Device type -->
+        <text x="1000.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r2_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r2_u3 -->
+    <g id="node-pc-f2-r2-u3" class="device">
+        <!-- Device box -->
+        <rect x="1100" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1160.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1160.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r2_u3</text>
+        
+        <!-- Device type -->
+        <text x="1160.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r2_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r3_u1 -->
+    <g id="node-pc-f2-r3-u1" class="device">
+        <!-- Device box -->
+        <rect x="1260" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1320.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1320.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r3_u1</text>
+        
+        <!-- Device type -->
+        <text x="1320.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r3_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r3_u2 -->
+    <g id="node-pc-f2-r3-u2" class="device">
+        <!-- Device box -->
+        <rect x="1420" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1480.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1480.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r3_u2</text>
+        
+        <!-- Device type -->
+        <text x="1480.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r3_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f2_r3_u3 -->
+    <g id="node-pc-f2-r3-u3" class="device">
+        <!-- Device box -->
+        <rect x="1580" y="1720" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1640.0" y="1738" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1640.0" y="1770" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f2_r3_u3</text>
+        
+        <!-- Device type -->
+        <text x="1640.0" y="1788" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f2_r3_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: ap_f2_1 -->
+    <g id="node-ap-f2-1" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="1480" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="1498" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="1530" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">ap_f2_1</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="1548" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>ap_f2_1 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: dist_switch_f3 -->
+    <g id="node-dist-switch-f3" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="1940" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="1958" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="1990" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">dist_switch_f3</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="2008" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>dist_switch_f3 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f3_r1 -->
+    <g id="node-access-switch-f3-r1" class="device">
+        <!-- Device box -->
+        <rect x="540.0" y="2180" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="600.0" y="2198" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="600.0" y="2230" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="600.0" y="2248" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f3_r1 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f3_r2 -->
+    <g id="node-access-switch-f3-r2" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="2180" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="2198" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="2230" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="2248" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f3_r2 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: access_switch_f3_r3 -->
+    <g id="node-access-switch-f3-r3" class="device">
+        <!-- Device box -->
+        <rect x="860.0" y="2180" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="920.0" y="2198" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="920.0" y="2230" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">access_switch...</text>
+        
+        <!-- Device type -->
+        <text x="920.0" y="2248" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>access_switch_f3_r3 (ethernet_switch)</title>
+    </g>
+
+    <!-- Node: pc_f3_r1_u1 -->
+    <g id="node-pc-f3-r1-u1" class="device">
+        <!-- Device box -->
+        <rect x="300" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="360.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="360.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r1_u1</text>
+        
+        <!-- Device type -->
+        <text x="360.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r1_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r1_u2 -->
+    <g id="node-pc-f3-r1-u2" class="device">
+        <!-- Device box -->
+        <rect x="460" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="520.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="520.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r1_u2</text>
+        
+        <!-- Device type -->
+        <text x="520.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r1_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r1_u3 -->
+    <g id="node-pc-f3-r1-u3" class="device">
+        <!-- Device box -->
+        <rect x="620" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="680.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="680.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r1_u3</text>
+        
+        <!-- Device type -->
+        <text x="680.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r1_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r2_u1 -->
+    <g id="node-pc-f3-r2-u1" class="device">
+        <!-- Device box -->
+        <rect x="780" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="840.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="840.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r2_u1</text>
+        
+        <!-- Device type -->
+        <text x="840.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r2_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r2_u2 -->
+    <g id="node-pc-f3-r2-u2" class="device">
+        <!-- Device box -->
+        <rect x="940" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1000.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1000.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r2_u2</text>
+        
+        <!-- Device type -->
+        <text x="1000.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r2_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r2_u3 -->
+    <g id="node-pc-f3-r2-u3" class="device">
+        <!-- Device box -->
+        <rect x="1100" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1160.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1160.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r2_u3</text>
+        
+        <!-- Device type -->
+        <text x="1160.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r2_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r3_u1 -->
+    <g id="node-pc-f3-r3-u1" class="device">
+        <!-- Device box -->
+        <rect x="1260" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1320.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1320.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r3_u1</text>
+        
+        <!-- Device type -->
+        <text x="1320.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r3_u1 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r3_u2 -->
+    <g id="node-pc-f3-r3-u2" class="device">
+        <!-- Device box -->
+        <rect x="1420" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1480.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1480.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r3_u2</text>
+        
+        <!-- Device type -->
+        <text x="1480.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r3_u2 (vpcs)</title>
+    </g>
+
+    <!-- Node: pc_f3_r3_u3 -->
+    <g id="node-pc-f3-r3-u3" class="device">
+        <!-- Device box -->
+        <rect x="1580" y="2300" width="120" height="85" 
+              fill="#F0E68C" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="1640.0" y="2318" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🖥️</text>
+        
+        <!-- Device name -->
+        <text x="1640.0" y="2350" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">pc_f3_r3_u3</text>
+        
+        <!-- Device type -->
+        <text x="1640.0" y="2368" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">vpcs</text>
+        
+        <!-- Hover tooltip -->
+        <title>pc_f3_r3_u3 (vpcs)</title>
+    </g>
+
+    <!-- Node: ap_f3_1 -->
+    <g id="node-ap-f3-1" class="device">
+        <!-- Device box -->
+        <rect x="700.0" y="2060" width="120" height="85" 
+              fill="#87CEEB" stroke="#333333" stroke-width="2.5" rx="6" ry="6" />
+        
+        <!-- Device icon -->
+        <text x="760.0" y="2078" 
+              text-anchor="middle" font-size="20" dominant-baseline="middle">🔀</text>
+        
+        <!-- Device name -->
+        <text x="760.0" y="2110" 
+              text-anchor="middle" font-size="11" font-weight="bold"
+              fill="#000000" dominant-baseline="middle">ap_f3_1</text>
+        
+        <!-- Device type -->
+        <text x="760.0" y="2128" 
+              text-anchor="middle" font-size="8" fill="#555555" dominant-baseline="middle">ethernet_switch</text>
+        
+        <!-- Hover tooltip -->
+        <title>ap_f3_1 (ethernet_switch)</title>
+    </g>
+
+    </g>
+    
+    <!-- Legend -->
+    <g id="legend">
+        <rect x="20" y="80" width="180" height="220" fill="#F9F9F9" 
+              stroke="#AAA" stroke-width="1.5" rx="4" opacity="0.96" />
+        <text x="110" y="102" text-anchor="middle" font-weight="bold" font-size="12" fill="#333">
+            Device Types
+        </text>
+
+        <rect x="30" y="116" width="13" height="13" 
+              fill="#87CEEB" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="123" font-size="10" fill="#333">ethernet_switch</text>
+
+        <rect x="30" y="136" width="13" height="13" 
+              fill="#FFB6C1" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="143" font-size="10" fill="#333">qemu</text>
+
+        <rect x="30" y="156" width="13" height="13" 
+              fill="#98FB98" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="163" font-size="10" fill="#333">router</text>
+
+        <rect x="30" y="176" width="13" height="13" 
+              fill="#FFE4B5" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="183" font-size="10" fill="#333">cloud</text>
+
+        <rect x="30" y="196" width="13" height="13" 
+              fill="#DDA0DD" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="203" font-size="10" fill="#333">nat</text>
+
+        <rect x="30" y="216" width="13" height="13" 
+              fill="#F0E68C" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="223" font-size="10" fill="#333">vpcs</text>
+
+        <rect x="30" y="236" width="13" height="13" 
+              fill="#FF6347" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="243" font-size="10" fill="#333">firewall</text>
+
+        <rect x="30" y="256" width="13" height="13" 
+              fill="#DEB887" stroke="#333" stroke-width="1" rx="2" />
+        <text x="50" y="263" font-size="10" fill="#333">hub</text>
+
+    </g>
+
+</svg>

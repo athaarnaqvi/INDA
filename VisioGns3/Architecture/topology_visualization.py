@@ -254,53 +254,118 @@ class LayoutCalculator:
     
     @staticmethod
     def calculate_layout(nodes: Dict[str, Node], connections: List[Connection]) -> Dict[str, Tuple[float, float]]:
-        """
-        Calculate hierarchical positions for nodes based on their role in the network.
-        Organizes nodes in layers: Core -> Distribution -> Access -> Devices
-        """
-        if not nodes:
-            return {}
-        
-        # Build adjacency graph
-        adjacency = {}
-        for node_name in nodes:
-            adjacency[node_name] = {'in': [], 'out': []}
-        
-        for conn in connections:
-            if conn.from_node in adjacency and conn.to_node in adjacency:
-                adjacency[conn.from_node]['out'].append(conn.to_node)
-                adjacency[conn.to_node]['in'].append(conn.from_node)
-        
-        # Identify network layers
-        layers = LayoutCalculator._identify_layers(nodes, adjacency)
-        
-        # Calculate positions based on layers
+
+        import re
+
         layout = {}
-        layer_positions = {}
-        
-        # Layer spacing
-        layer_y_spacing = 180  # Vertical spacing between layers
-        node_x_spacing = 180   # Horizontal spacing within layer
-        
-        for layer_idx, (layer_name, layer_nodes) in enumerate(layers):
-            y_pos = 100 + (layer_idx * layer_y_spacing)
-            
-            # Sort nodes in layer for consistent positioning
-            sorted_nodes = sorted(layer_nodes)
-            num_nodes = len(sorted_nodes)
-            
-            # Calculate starting X position to center the layer
-            total_width = (num_nodes - 1) * node_x_spacing if num_nodes > 1 else 0
-            start_x = max(150, (1200 - total_width) / 2)
-            
-            # Assign positions
-            for idx, node_name in enumerate(sorted_nodes):
-                x_pos = start_x + (idx * node_x_spacing)
-                layout[node_name] = (x_pos, y_pos)
-                layer_positions[node_name] = (layer_idx, idx, layer_name)
-            
-            print(f"  📍 Layer {layer_idx} ({layer_name}): {', '.join(sorted_nodes)}")
-        
+
+        # spacing
+        floor_spacing = 220
+        node_spacing = 160
+
+        # separate core devices
+        core_nodes = []
+        floor_nodes = {}
+
+        for node_name, node in nodes.items():
+
+            name = node_name.lower()
+
+            # detect core devices
+            if (
+                "core" in name
+                or "router" in name
+                or "firewall" in name
+                or "internet" in name
+                or node.node_type in ["router", "cloud", "firewall"]
+            ):
+                core_nodes.append(node_name)
+                continue
+
+            # detect floor number
+            match = re.search(r"_f(\d+)", name)
+
+            if match:
+                floor = int(match.group(1))
+            else:
+                floor = 0
+
+            floor_nodes.setdefault(floor, []).append(node_name)
+
+        y = 120
+
+        # -------------------
+        # CORE LAYER
+        # -------------------
+        if core_nodes:
+
+            start_x = 400
+            for i, node in enumerate(sorted(core_nodes)):
+                layout[node] = (start_x + i * node_spacing, y)
+
+            print(f"  📍 Core Layer: {core_nodes}")
+
+            y += floor_spacing
+
+        # -------------------
+        # FLOOR LAYERS
+        # -------------------
+        for floor in sorted(floor_nodes.keys()):
+
+            devices = sorted(floor_nodes[floor])
+
+            # classify devices
+            dist_switches = []
+            access_points = []
+            access_switches = []
+            pcs = []
+
+            for dev in devices:
+                name = dev.lower()
+
+                if "dist" in name:
+                    dist_switches.append(dev)
+                elif "ap" in name or "access_point" in name:
+                    access_points.append(dev)
+                elif "switch" in name:
+                    access_switches.append(dev)
+                elif "pc" in name or "laptop" in name or "host" in name:
+                    pcs.append(dev)
+                else:
+                    pcs.append(dev)
+
+            print(f"  🏢 Floor {floor}")
+            print(f"     Dist: {dist_switches}")
+            print(f"     APs : {access_points}")
+            print(f"     SW  : {access_switches}")
+            print(f"     PCs : {pcs}")
+
+            # Distribution switches and APs should be on the same horizontal layer
+            distribution_layer = dist_switches + access_points
+
+            layer_groups = [
+                distribution_layer,
+                access_switches,
+                pcs
+            ]
+
+            layer_y = y
+
+            for layer in layer_groups:
+
+                if not layer:
+                    continue
+
+                total_width = (len(layer) - 1) * node_spacing
+                start_x = max(200, (1200 - total_width) / 2)
+
+                for i, node in enumerate(layer):
+                    layout[node] = (start_x + i * node_spacing, layer_y)
+
+                layer_y += 120
+
+            y = layer_y + 100
+
         return layout
     
     @staticmethod

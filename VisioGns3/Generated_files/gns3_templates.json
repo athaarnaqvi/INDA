@@ -3,7 +3,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "2ba077ef-894f-4575-9e6d-2c2fb6e423f4",
+        "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -27,7 +27,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "43d3eba2-77bd-4cd4-a791-ce45fdb162c7",
+        "template_id": "431b8ff9-6397-4333-be73-d590235396aa",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -51,7 +51,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "8bd7bb42-23f1-471d-bc39-d39ddd6384a2",
+        "template_id": "8f3c730b-e725-47eb-8e8e-b76fe36d4222",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -75,7 +75,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "50c8c2ba-700b-4d8e-a8b8-031b6e6b2052",
+        "template_id": "e7988e20-0fbb-424d-b09b-70238e7326cc",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -99,7 +99,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "920bc895-2f70-43c6-84d6-ea81e5658c75",
+        "template_id": "167240a6-e2b8-4a00-ac03-b77c35e52b2a",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -123,7 +123,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "5e39da8c-7cff-41a3-94ac-17d343cd7d3a",
+        "template_id": "40b480be-d3e6-4e56-8517-3495d37195bb",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -147,7 +147,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "7864a6a9-8712-46e5-8fff-63938c532bbd",
+        "template_id": "1ef06bd5-6537-4e8f-8284-61e09816d14d",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -171,7 +171,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "1675344e-ff2f-46a3-b122-53790ce35105",
+        "template_id": "2738f977-9a63-4f85-81c0-4b05d61198ef",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -195,7 +195,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "3902b74c-8ae2-4059-9ad6-76a1a26c5eb3",
+        "template_id": "af24b4ec-695e-402d-a705-39278e5beb01",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -215,25 +215,25 @@
             "replicate_network_connection_state": true
         }
     },
-    "qemu-system-x86_64": {
+    "Server": {
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/qemu_guest.svg",
-        "template_id": "59026b5b-1250-42e3-8592-967260d8b782",
+        "template_id": "4251d8b1-3f18-427e-a128-c70e75d41fc1",
         "first_port_name": "",
         "port_name_format": "Ethernet{0}",
         "properties": {
             "adapter_type": "e1000",
-            "adapters": 1,
-            "console_type": "telnet",
+            "adapters": 5,
+            "console_type": "vnc",
             "cpus": 1,
-            "hda_disk_image": "/home/fiza-wajid/GNS3/images/QEMU/ubuntu-server.qcow2",
+            "hda_disk_image": "/home/ambreen-arshad/GNS3/images/QEMU/ubuntu-server.qcow2",
             "hda_disk_interface": "ide",
             "hdb_disk_image": "",
             "hdb_disk_interface": "none",
             "hdc_disk_image": "",
             "hdc_disk_interface": "none",
-            "ram": 256,
+            "ram": 1024,
             "boot_priority": "c",
             "qemu_path": "/bin/qemu-system-x86_64",
             "replicate_network_connection_state": true
@@ -243,12 +243,12 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": "alpine-virt-qemu.svg",
-        "template_id": "a33adb08-eb78-4118-a364-f825ef34e289",
+        "template_id": "56f4c886-bad6-4197-9562-4c903694ed4c",
         "first_port_name": "",
         "port_name_format": "eth{0}",
         "properties": {
             "adapter_type": "virtio-net-pci",
-            "adapters": 1,
+            "adapters": 10,
             "console_type": "telnet",
             "cpus": 1,
             "hda_disk_image": "alpine-virt-3.18.4.qcow2",
@@ -259,7 +259,7 @@
             "hdc_disk_interface": "none",
             "ram": 128,
             "boot_priority": "c",
-            "qemu_path": "/usr/bin/qemu-system-x86_64",
+            "qemu_path": "/bin/qemu-system-x86_64",
             "replicate_network_connection_state": true
         }
     },
@@ -267,7 +267,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/firewall.svg",
-        "template_id": "1bec6640-305d-4c28-adbb-5f54d4603245",
+        "template_id": "e5c2824e-6158-4c53-90f4-7bf23b3a1c40",
         "first_port_name": "",
         "port_name_format": "em{0}",
         "properties": {
@@ -283,7 +283,7 @@
             "hdc_disk_interface": "none",
             "ram": 2048,
             "boot_priority": "c",
-            "qemu_path": "/usr/bin/qemu-system-x86_64",
+            "qemu_path": "/bin/qemu-system-x86_64",
             "replicate_network_connection_state": true
         }
     },
