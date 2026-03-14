@@ -37,9 +37,9 @@ GENERIC_TEMPLATE_MAPPING = {
     "backup_core_router": "Dell OS10 N3248TE-10.5.5.5.105",
 
     # Switches
-    "dist_switch": "Ethernet switch",
-    "access_switch": "Ethernet switch",
-    "server_switch": "Ethernet switch",
+    "dist_switch": "Ethernet Switch",
+    "access_switch": "Ethernet Switch",
+    "server_switch": "Ethernet Switch",
 
     # PCs
     "pc": "VPCS",
@@ -48,7 +48,7 @@ GENERIC_TEMPLATE_MAPPING = {
     "medical_pc": "VPCS",
 
     # Access Points
-    "ap": "Ethernet switch",
+    "ap": "Ethernet Switch",
 
     # Internet
     "internet_cloud": "Cloud",

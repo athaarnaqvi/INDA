@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topology>
+    <metadata>
+        <name>topology</name>
+        <timestamp>2026-03-14T14:07:47.268605</timestamp>
+        <device_count>10</device_count>
+        <connection_count>9</connection_count>
+    </metadata>
+    
+    <devices>
+    <device>
+        <name>core_router_1</name>
+        <type>qemu</type>
+        <position>
+            <x>-750.0</x>
+            <y>-400.0</y>
+        </position>
+        <symbol>:/symbols/router.svg</symbol>
+        <template_id>158704ed-0665-4328-a56b-880b1733b70d</template_id>
+        <property name="adapter_type">e1000</property>
+        <property name="adapters">10</property>
+        <property name="console_type">telnet</property>
+        <property name="cpus">1</property>
+        <property name="hda_disk_image">OS10-Disk-1.0.0.vmdk</property>
+        <property name="hda_disk_interface">sata</property>
+        <property name="hdb_disk_image">OS10-Installer-10.5.5.5.105.vmdk</property>
+        <property name="hdb_disk_interface">virtio</property>
+        <property name="hdc_disk_image">OS10-platform-N3248TE-10.5.5.5.105.vmdk</property>
+        <property name="hdc_disk_interface">virtio</property>
+        <property name="ram">4096</property>
+        <property name="boot_priority">d</property>
+        <property name="qemu_path">/usr/bin/qemu-system-x86_64</property>
+        <property name="replicate_network_connection_state">True</property>
+    </device>
+    <device>
+        <name>dhcp_server</name>
+        <type>qemu</type>
+        <position>
+            <x>-600.0</x>
+            <y>-400.0</y>
+        </position>
+        <symbol>:/symbols/qemu_guest.svg</symbol>
+        <template_id>3a18653d-2ea5-4c08-8d4c-cd2478f741fd</template_id>
+        <property name="adapter_type">e1000</property>
+        <property name="adapters">1</property>
+        <property name="console_type">telnet</property>
+        <property name="cpus">1</property>
+        <property name="hda_disk_image">/home/athaar/GNS3/images/QEMU/alpine-virt-3.18.4.qcow2</property>
+        <property name="hda_disk_interface">ide</property>
+        <property name="hdb_disk_image"></property>
+        <property name="hdb_disk_interface">none</property>
+        <property name="hdc_disk_image"></property>
+        <property name="hdc_disk_interface">none</property>
+        <property name="ram">256</property>
+        <property name="boot_priority">c</property>
+        <property name="qemu_path">/bin/qemu-system-x86_64</property>
+        <property name="replicate_network_connection_state">True</property>
+    </device>
+    <device>
+        <name>dns_server</name>
+        <type>qemu</type>
+        <position>
+            <x>-750.0</x>
+            <y>-250.0</y>
+        </position>
+        <symbol>:/symbols/qemu_guest.svg</symbol>
+        <template_id>3a18653d-2ea5-4c08-8d4c-cd2478f741fd</template_id>
+        <property name="adapter_type">e1000</property>
+        <property name="adapters">1</property>
+        <property name="console_type">telnet</property>
+        <property name="cpus">1</property>
+        <property name="hda_disk_image">/home/athaar/GNS3/images/QEMU/alpine-virt-3.18.4.qcow2</property>
+        <property name="hda_disk_interface">ide</property>
+        <property name="hdb_disk_image"></property>
+        <property name="hdb_disk_interface">none</property>
+        <property name="hdc_disk_image"></property>
+        <property name="hdc_disk_interface">none</property>
+        <property name="ram">256</property>
+        <property name="boot_priority">c</property>
+        <property name="qemu_path">/bin/qemu-system-x86_64</property>
+        <property name="replicate_network_connection_state">True</property>
+    </device>
+    <device>
+        <name>internet_cloud</name>
+        <type>cloud</type>
+        <position>
+            <x>-600.0</x>
+            <y>-250.0</y>
+        </position>
+        <symbol>:/symbols/cloud.svg</symbol>
+        <template_id>39e257dc-8412-3174-b6b3-0ee3ed6a43e9</template_id>
+    </device>
+    <device>
+        <name>firewall_1</name>
+        <type>qemu</type>
+        <position>
+            <x>-750.0</x>
+            <y>-100.0</y>
+        </position>
+        <symbol>:/symbols/firewall.svg</symbol>
+        <template_id>b2e0ff5c-375a-434a-ab3a-2e987a84f81d</template_id>
+        <property name="adapter_type">e1000</property>
+        <property name="adapters">6</property>
+        <property name="console_type">vnc</property>
+        <property name="cpus">1</property>
+        <property name="hda_disk_image">empty100G.qcow2</property>
+        <property name="hda_disk_interface">virtio</property>
+        <property name="hdb_disk_image"></property>
+        <property name="hdb_disk_interface">none</property>
+        <property name="hdc_disk_image"></property>
+        <property name="hdc_disk_interface">none</property>
+        <property name="ram">2048</property>
+        <property name="boot_priority">c</property>
+        <property name="qemu_path">/usr/bin/qemu-system-x86_64</property>
+        <property name="replicate_network_connection_state">True</property>
+    </device>
+    <device>
+        <name>dist_switch_f1</name>
+        <type>ethernet_switch</type>
+        <position>
+            <x>-50.0</x>
+            <y>-400.0</y>
+        </position>
+        <symbol>:/symbols/ethernet_switch.svg</symbol>
+        <template_id>1966b864-93e7-32d5-965f-001384eec461</template_id>
+    </device>
+    <device>
+        <name>access_switch_f1_r1</name>
+        <type>ethernet_switch</type>
+        <position>
+            <x>100.0</x>
+            <y>-400.0</y>
+        </position>
+        <symbol>:/symbols/ethernet_switch.svg</symbol>
+        <template_id>1966b864-93e7-32d5-965f-001384eec461</template_id>
+    </device>
+    <device>
+        <name>laptop_f1_r1_u1</name>
+        <type>vpcs</type>
+        <position>
+            <x>-50.0</x>
+            <y>-250.0</y>
+        </position>
+        <symbol>:/symbols/vpcs_guest.svg</symbol>
+        <template_id>19021f99-e36f-394d-b4a1-8aaa902ab9cc</template_id>
+    </device>
+    <device>
+        <name>ap_f1_1</name>
+        <type>ethernet_switch</type>
+        <position>
+            <x>100.0</x>
+            <y>-250.0</y>
+        </position>
+        <symbol>:/symbols/ethernet_switch.svg</symbol>
+        <template_id>1966b864-93e7-32d5-965f-001384eec461</template_id>
+    </device>
+    <device>
+        <name>ap_f1_2</name>
+        <type>ethernet_switch</type>
+        <position>
+            <x>-50.0</x>
+            <y>-100.0</y>
+        </position>
+        <symbol>:/symbols/ethernet_switch.svg</symbol>
+        <template_id>1966b864-93e7-32d5-965f-001384eec461</template_id>
+    </device>
+    </devices>
+    
+    <connections>
+    <connection>
+        <from>
+            <node>laptop_f1_r1_u1</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>access_switch_f1_r1</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>access_switch_f1_r1</node>
+            <adapter>1</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>dist_switch_f1</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>ap_f1_1</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>dist_switch_f1</node>
+            <adapter>1</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>ap_f1_2</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>dist_switch_f1</node>
+            <adapter>2</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>dist_switch_f1</node>
+            <adapter>3</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>core_router_1</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>dhcp_server</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>core_router_1</node>
+            <adapter>1</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>dns_server</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>core_router_1</node>
+            <adapter>2</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>core_router_1</node>
+            <adapter>3</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>firewall_1</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+    <connection>
+        <from>
+            <node>firewall_1</node>
+            <adapter>1</adapter>
+            <port>0</port>
+        </from>
+        <to>
+            <node>internet_cloud</node>
+            <adapter>0</adapter>
+            <port>0</port>
+        </to>
+    </connection>
+
+    
+    <statistics>
+        <total_devices>10</total_devices>
+        <total_connections>9</total_connections>
+        <device_types>
+        <type name="qemu" count="4" />
+        <type name="cloud" count="1" />
+        <type name="ethernet_switch" count="4" />
+        <type name="vpcs" count="1" />
+        </device_types>
+    </statistics>
+    
+</topology>
