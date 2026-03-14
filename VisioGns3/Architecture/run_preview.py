@@ -1,59 +1,66 @@
 """
-Topology Preview Launcher
-Location: VisioGns3/run_preview.py
-Usage: python run_preview.py <machines_yaml> <connections_json>
+Entry point for the topology preview dialog — called by automation_architecture.sh.
+Exit codes:
+    0  → user clicked "Confirm & Deploy"
+    1  → user cancelled / closed the dialog / error
 """
 
 import sys
 import os
 from pathlib import Path
 
-# Add current directory to path
-ARCH_DIR = Path(__file__).parent.absolute()
-VISIO_GNS3_DIR = ARCH_DIR.parent
+# ── Path setup ────────────────────────────────────────────────────────────────
+ARCH_DIR = Path(__file__).parent.absolute()          # .../VisioGns3/Architecture
+VISIO_DIR = ARCH_DIR.parent                          # .../VisioGns3
+ROOT_DIR  = VISIO_DIR.parent                         # .../INDA  (project root)
 
-sys.path.insert(0, str(ARCH_DIR))
-sys.path.insert(0, str(VISIO_GNS3_DIR))
+for p in (str(ARCH_DIR), str(VISIO_DIR), str(ROOT_DIR)):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+# ─────────────────────────────────────────────────────────────────────────────
 
-from PyQt6.QtWidgets import QApplication, QMessageBox
-from preview_dialog import TopologyPreviewDialog
 
+def main() -> int:
+    """
+    Returns 0 if the user confirmed deployment, 1 otherwise.
+    """
+    if len(sys.argv) < 3:
+        print(
+            "Usage: python run_preview.py <machines_yaml_path> <connections_json_path>",
+            file=sys.stderr,
+        )
+        return 1
 
-def main():
-    """Launch the topology preview dialog"""
-    
-    # Default paths if not provided
-    if len(sys.argv) >= 3:
-        machines_yaml = sys.argv[1]
-        connections_json = sys.argv[2]
-    else:
-        # Use defaults
-        machines_yaml = os.path.join(VISIO_GNS3_DIR, "Main_playbooks", "Gns3_Machines.yaml")
-        connections_json = os.path.join(VISIO_GNS3_DIR, "Generated_files", "Connections.json")
-    
-    # Check if files exist
-    if not os.path.exists(machines_yaml):
-        print(f"❌ Machines YAML not found: {machines_yaml}")
-        sys.exit(1)
-    
-    if not os.path.exists(connections_json):
-        print(f"❌ Connections JSON not found: {connections_json}")
-        sys.exit(1)
-    
-    # Create Qt application
+    machines_yaml    = sys.argv[1]
+    connections_json = sys.argv[2]
+
+    # Validate paths before launching the GUI
+    for label, path in (("machines YAML", machines_yaml),
+                        ("connections JSON", connections_json)):
+        if not os.path.exists(path):
+            print(f"Error: {label} not found: {path}", file=sys.stderr)
+            return 1
+
+    # ── Qt application ────────────────────────────────────────────────────────
+    from PyQt6.QtWidgets import QApplication
+    from preview_dialog import TopologyPreviewDialog
+
     app = QApplication(sys.argv)
-    
-    # Show preview dialog
-    dialog = TopologyPreviewDialog(machines_yaml, connections_json)
-    result = dialog.exec()
-    
-    if result == dialog.accepted:
-        print("✅ User confirmed deployment")
-        sys.exit(0)
-    else:
-        print("❌ User cancelled deployment")
-        sys.exit(1)
+    app.setApplicationName("VisioGNS3 Topology Preview")
+
+    dialog = TopologyPreviewDialog(
+        machines_yaml_path=machines_yaml,
+        connections_json_path=connections_json,
+    )
+
+    result = dialog.exec()   # QDialog.Accepted == 1, Rejected == 0
+
+    # Map Qt result → shell exit code
+    # QDialog.Accepted (user pressed "Confirm & Deploy") → exit 0  ✅
+    # QDialog.Rejected (user cancelled / closed)         → exit 1  ⚠️
+    from PyQt6.QtWidgets import QDialog
+    return 0 if result == QDialog.DialogCode.Accepted else 1
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    sys.exit(main())
