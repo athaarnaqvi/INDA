@@ -193,7 +193,7 @@
     },
     {
         "from": "server_switch",
-        "to": "vpn_server"
+        "to": "backup_server"
     },
     {
         "from": "server_switch",

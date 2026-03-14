@@ -286,7 +286,7 @@ class TopologyPreviewDialog(QDialog):
     
     def fit_to_screen(self):
         """Fit to screen"""
-        self.zoom_spinbox.setValue(75)
+        self.zoom_spinbox.setValue(50)
     
 # Replace the load_preview method:
 
@@ -344,7 +344,6 @@ class TopologyPreviewDialog(QDialog):
                         display: block;
                         width: 100%;
                         height: auto;
-                        max-width: 1400px;
                     }}
                 </style>
             </head>

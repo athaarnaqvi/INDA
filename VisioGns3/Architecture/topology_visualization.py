@@ -291,7 +291,7 @@ class LayoutCalculator:
             
             # Calculate starting X position to center the layer
             total_width = (num_nodes - 1) * node_x_spacing if num_nodes > 1 else 0
-            start_x = 150 + (1000 - total_width) / 2
+            start_x = max(150, (1200 - total_width) / 2)
             
             # Assign positions
             for idx, node_name in enumerate(sorted_nodes):
@@ -539,13 +539,11 @@ class SVGGenerator:
         
         # Generate SVG with viewBox for responsiveness
         svg = f'''<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" 
-     width="{width}" 
-     height="{height}" 
-     viewBox="0 0 {width} {height}" 
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 {width} {height}"
      version="1.1"
      preserveAspectRatio="xMidYMid meet"
-     style="max-width: 100%; height: auto; border: 1px solid #ddd;">
+     style="width:100%; height:auto; border:1px solid #ddd;">
     
     <defs>
         <!-- Arrow marker -->

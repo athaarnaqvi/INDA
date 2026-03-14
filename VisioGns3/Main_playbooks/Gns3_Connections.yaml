@@ -5,7 +5,7 @@
 
   vars:
     gns3_server: "http://localhost:3080"
-    project_name: "architecture_topology_20260314_125949"
+    project_name: "architecture_topology_20260314_131932"
 
   tasks:
     - name: Get all projects
@@ -945,7 +945,7 @@
               adapter_number: 0
               port_number: 0
 
-    - name: Connect server_switch to vpn_server
+    - name: Connect server_switch to backup_server
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -960,7 +960,7 @@
             - node_id: "{{ node_map['server_switch'] }}"
               adapter_number: 0
               port_number: 1
-            - node_id: "{{ node_map['vpn_server'] }}"
+            - node_id: "{{ node_map['backup_server'] }}"
               adapter_number: 0
               port_number: 0
 

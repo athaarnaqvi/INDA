@@ -289,7 +289,7 @@
   },
   {
     "from": "server_switch",
-    "to": "vpn_server",
+    "to": "backup_server",
     "from_adapter_number": 1,
     "to_adapter_number": 0
   },

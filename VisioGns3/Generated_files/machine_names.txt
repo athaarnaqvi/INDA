@@ -1,5 +1,5 @@
 server_switch
-vpn_server
+backup_server
 core_router_1
 dhcp_server
 dns_server
