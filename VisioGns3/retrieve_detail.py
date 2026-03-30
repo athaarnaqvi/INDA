@@ -98,6 +98,14 @@ def save_templates_to_json(templates, output_file):
                     'replicate_network_connection_state': template.get("replicate_network_connection_state", False)
                 }
             }
+        # Custom Ethernet switch (THIS WAS MISSING)
+        elif node_type == "ethernet_switch":
+            formatted_templates[f"{name}"] = {
+                "compute_id": template.get("compute_id", "local"),
+                "node_type": node_type,
+                "symbol": template.get("symbol"),
+                "template_id": template_id,
+            }
 
     try:
         with open(output_file, "w") as file:
