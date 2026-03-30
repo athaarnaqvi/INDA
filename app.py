@@ -1028,6 +1028,70 @@ class VisioGNS3App(QWidget):
         self.add_shadow(start_btn)
 
         c_layout.addWidget(start_btn)
+
+        # ── Terminal Output Panel ──────────────────────────────────────────
+        terminal_header = QHBoxLayout()
+
+        terminal_label = QLabel(">_  Engine Output")
+        terminal_label.setStyleSheet(
+            "color: #22D3EE; font-size: 15px; font-weight: 700; background: transparent;"
+        )
+
+        self.arch_clear_btn = QPushButton("Clear")
+        self.arch_clear_btn.setFixedHeight(30)
+        self.arch_clear_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(6, 182, 212, 0.08);
+                color: #94A3B8;
+                border: 1px solid rgba(100, 116, 139, 0.25);
+                border-radius: 8px;
+                font-size: 12px;
+                font-weight: 600;
+                padding: 0 14px;
+            }
+            QPushButton:hover { background: rgba(6, 182, 212, 0.18); color: #22D3EE; }
+        """)
+        self.arch_clear_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.arch_clear_btn.clicked.connect(lambda: self.arch_terminal.clear())
+
+        self.arch_status_dot = QLabel("●")
+        self.arch_status_dot.setStyleSheet("color: #475569; font-size: 18px; background: transparent;")
+
+        terminal_header.addWidget(self.arch_status_dot)
+        terminal_header.addSpacing(6)
+        terminal_header.addWidget(terminal_label)
+        terminal_header.addStretch()
+        terminal_header.addWidget(self.arch_clear_btn)
+
+        c_layout.addLayout(terminal_header)
+
+        self.arch_terminal = QTextEdit()
+        self.arch_terminal.setReadOnly(True)
+        self.arch_terminal.setMinimumHeight(280)
+        self.arch_terminal.setStyleSheet("""
+            QTextEdit {
+                background: #0A0F1A;
+                color: #A8FF78;
+                border: 1px solid rgba(6, 182, 212, 0.25);
+                border-radius: 12px;
+                padding: 16px 20px;
+                font-family: 'Courier New', 'Consolas', monospace;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+            QScrollBar:vertical {
+                background: rgba(30, 41, 59, 0.5);
+                width: 8px;
+                border-radius: 4px;
+            }
+            QScrollBar::handle:vertical {
+                background: rgba(34, 211, 238, 0.3);
+                border-radius: 4px;
+            }
+        """)
+        self.arch_terminal.setPlaceholderText("Engine output will appear here...")
+        c_layout.addWidget(self.arch_terminal)
+
         c_layout.addStretch()
         content.setLayout(c_layout)
 
@@ -1112,222 +1176,217 @@ QCheckBox::indicator:unchecked:hover {{
             self.server_container.addWidget(cb)
             self.server_checkboxes.append(cb)
 
+    def _arch_log(self, text: str, color: str = "#A8FF78"):
+        """Append a styled line to the architecture terminal."""
+        import html
+        escaped = html.escape(str(text))
+
+        # Colour-code key prefixes automatically
+        if any(k in text for k in ["✅", "SUCCESS", "success"]):
+            color = "#4ADE80"
+        elif any(k in text for k in ["❌", "ERROR", "Error", "error", "FAILED", "failed"]):
+            color = "#F87171"
+        elif any(k in text for k in ["⚠️", "WARNING", "Warning", "warning"]):
+            color = "#FBBF24"
+        elif any(k in text for k in ["🔧", "🚀", "📡", "📋", "INFO", "[INFO]"]):
+            color = "#60A5FA"
+        elif text.startswith("──") or text.startswith("=="):
+            color = "#475569"
+
+        self.arch_terminal.append(
+            f"<span style='color:{color}; white-space:pre;'>{escaped}</span>"
+        )
+        self.arch_terminal.verticalScrollBar().setValue(
+            self.arch_terminal.verticalScrollBar().maximum()
+        )
+        QApplication.processEvents()
+
     def start_architecture_engine(self):
+        # ── Clear terminal & set status ──────────────────────────────────
+        self.arch_terminal.clear()
+        self.arch_status_dot.setStyleSheet(
+            "color: #FBBF24; font-size: 18px; background: transparent;"
+        )
+        self._arch_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        self._arch_log("  🚀  Architecture Abstraction Engine  —  Starting")
+        self._arch_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+        # ── Validation ───────────────────────────────────────────────────
         errors = []
 
-        # --- Floors ---
         floors_text = self.floors_spin.line_edit.text().strip()
         if not floors_text:
-            errors.append("• Number of Floors cannot be empty.")
+            errors.append("Number of Floors cannot be empty.")
         else:
             try:
                 floors = int(floors_text)
-                if floors != float(floors_text):
-                    raise ValueError
-                if floors <= 0:
-                    errors.append("• Number of Floors must be greater than zero.")
-                elif floors > 5:
-                    errors.append("• Number of Floors cannot exceed 5.")
-            except ValueError:
-                errors.append("• Number of Floors must be a whole number (e.g. 2).")
+                if floors <= 0:      errors.append("Floors must be > 0.")
+                elif floors > 5:     errors.append("Floors cannot exceed 5.")
+            except ValueError:       errors.append("Floors must be a whole number.")
 
-        # --- Rooms per floor ---
         rooms_text = self.rooms_spin.line_edit.text().strip()
         if not rooms_text:
-            errors.append("• Rooms Per Floor cannot be empty.")
+            errors.append("Rooms Per Floor cannot be empty.")
         else:
             try:
                 rooms = int(rooms_text)
-                if rooms != float(rooms_text):
-                    raise ValueError
-                if rooms <= 0:
-                    errors.append("• Rooms Per Floor must be greater than zero.")
-                elif rooms > 10:
-                    errors.append("• Rooms Per Floor cannot exceed 10.")
-            except ValueError:
-                errors.append("• Rooms Per Floor must be a whole number (e.g. 4).")
+                if rooms <= 0:       errors.append("Rooms must be > 0.")
+                elif rooms > 10:     errors.append("Rooms cannot exceed 10.")
+            except ValueError:       errors.append("Rooms must be a whole number.")
 
-        # --- Average users per room ---
         users_text = self.users_spin.line_edit.text().strip()
         if not users_text:
-            errors.append("• Average Users Per Room cannot be empty.")
+            errors.append("Users Per Room cannot be empty.")
         else:
             try:
                 users = int(users_text)
-                if users != float(users_text):
-                    raise ValueError
-                if users <= 0:
-                    errors.append("• Average Users Per Room must be greater than zero.")
-                elif users > 20:
-                    errors.append("• Average Users Per Room cannot exceed 20.")
-            except ValueError:
-                errors.append("• Average Users Per Room must be a whole number (e.g. 10).")
+                if users <= 0:       errors.append("Users must be > 0.")
+                elif users > 20:     errors.append("Users cannot exceed 20.")
+            except ValueError:       errors.append("Users must be a whole number.")
 
-        # --- Building width ---
         width_text = self.width_input.text().strip()
         if not width_text:
-            errors.append("• Building Width cannot be empty.")
+            errors.append("Building Width cannot be empty.")
         else:
             try:
                 width = float(width_text)
-                if width <= 0:
-                    errors.append("• Building Width must be greater than zero.")
-            except ValueError:
-                errors.append("• Building Width must be a decimal number (e.g. 50.5).")
+                if width <= 0:       errors.append("Width must be > 0.")
+            except ValueError:       errors.append("Width must be a number.")
 
-        # --- Show errors or proceed ---
         if errors:
-            msg = QMessageBox(self)
-            msg.setWindowTitle("Validation Error")
-            msg.setIcon(QMessageBox.Icon.Warning)
-            msg.setText("<b>Please fix the following issues:</b>")
-            msg.setInformativeText("\n".join(errors))
-            msg.setStyleSheet("""
-                QMessageBox {
-                    background: #1E293B;
-                    color: #F8FAFC;
-                }
-                QMessageBox QLabel {
-                    color: #F8FAFC;
-                    font-size: 14px;
-                }
-                QPushButton {
-                    background: rgba(6, 182, 212, 0.2);
-                    color: #22D3EE;
-                    border: 1px solid rgba(6, 182, 212, 0.4);
-                    border-radius: 8px;
-                    padding: 6px 20px;
-                    font-size: 13px;
-                    font-weight: 600;
-                    min-width: 80px;
-                }
-                QPushButton:hover {
-                    background: rgba(6, 182, 212, 0.35);
-                }
-            """)
-            msg.exec()
+            self.arch_status_dot.setStyleSheet(
+                "color: #F87171; font-size: 18px; background: transparent;"
+            )
+            self._arch_log("\n❌  Validation failed:", "#F87171")
+            for e in errors:
+                self._arch_log(f"   • {e}", "#F87171")
             return
 
-        unit = self.width_unit_combo.currentText()
-        # StyledComboBox wraps a QComboBox as `_combo`
+        # ── Read form values ─────────────────────────────────────────────
+        unit          = self.width_unit_combo.currentText()
         building_type = self.building_type_combo._combo.currentText()
-        firewall_enabled = self.firewall_toggle.isChecked()
-        
-        cost_priority = self.cost_combo._combo.currentText()
-        speed_priority = self.speed_combo._combo.currentText()
+        firewall_enabled   = self.firewall_toggle.isChecked()
+        cost_priority      = self.cost_combo._combo.currentText()
+        speed_priority     = self.speed_combo._combo.currentText()
         reliability_priority = self.reliability_combo._combo.currentText()
-        # --- generate txt file (Architecture module) ---
+
+        self._arch_log(f"\n📋  Configuration Summary")
+        self._arch_log(f"   Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}")
+        self._arch_log(f"   Width : {width} {unit}  |  Type: {building_type}")
+        self._arch_log(f"   Cost: {cost_priority}  |  Speed: {speed_priority}  |  Reliability: {reliability_priority}")
+        self._arch_log(f"   Firewall: {'Enabled ✅' if firewall_enabled else 'Disabled'}")
+
+        # ── Collect selected servers ──────────────────────────────────────
+        selected_servers = []
+        for cb in self.server_checkboxes:
+            try:
+                if cb.isChecked():
+                    key = cb.property('server_key')
+                    if key:
+                        selected_servers.append(key)
+            except Exception:
+                continue
+
+        if selected_servers:
+            self._arch_log(f"   Servers: {', '.join(selected_servers)}")
+        else:
+            self._arch_log("   Servers: None (DHCP + DNS only)")
+
+        # ── Step 1: Generate machine names ───────────────────────────────
+        self._arch_log("\n🔧  [1/4]  Generating device list...", "#60A5FA")
         try:
             from VisioGns3.Architecture.generate_machine_names_architecture import ArchitectureEngine
-            import os
 
-            gui_dir = os.path.dirname(os.path.abspath(__file__))
+            gui_dir  = os.path.dirname(os.path.abspath(__file__))
             visio_dir = os.path.join(gui_dir, "VisioGns3")
-            arch_dir = os.path.join(visio_dir, "Architecture")
-            out_dir = os.path.join(visio_dir, "Generated_files")
-
+            out_dir   = os.path.join(visio_dir, "Generated_files")
             os.makedirs(out_dir, exist_ok=True)
+            out_path  = os.path.join(out_dir, "machine_names.txt")
 
-            out_path = os.path.join(out_dir, "machine_names.txt")
-
-            engine = ArchitectureEngine(
-            floors,
-            rooms,
-            users,
-            width,
-            unit,
-            building_type,
-            firewall_enabled
-        )
-
-            # collect selected servers from the UI checkboxes
-            selected_servers = []
-            for cb in self.server_checkboxes:
-                try:
-                    if cb.isChecked():
-                        key = cb.property('server_key')
-                        if key:
-                            selected_servers.append(key)
-                except Exception:
-                    continue
-
-            # attach and add servers to the architecture engine
+            engine = ArchitectureEngine(floors, rooms, users, width, unit,
+                                        building_type, firewall_enabled)
             engine.servers = selected_servers
             if selected_servers:
                 engine.add_servers()
 
-            engine.run(out_path)
-
-            firewall_status = "Enabled" if firewall_enabled else "Disabled"
-
-            summary = (
-                f"Floors: {floors}  |  Rooms/Floor: {rooms}  |  Users/Room: {users}\n"
-                f"Width: {width} {unit}  |  Type: {building_type}\n"
-                f"Cost: {cost_priority}  |  Speed: {speed_priority}  |  Reliability: {reliability_priority}\n"
-                f"Firewall: {firewall_status}\n\n"
-                f"✅ Architecture devices TXT generated:\n{out_path}"
-            )
-
-            QMessageBox.information(self, "Architecture Abstraction Engine", summary)
+            machines = engine.run(out_path)
+            self._arch_log(f"   ✅  {len(machines)} devices written → {out_path}", "#4ADE80")
 
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Architecture Abstraction Engine",
-                f"Failed to generate architecture devices txt:\n{str(e)}"
+            self._arch_log(f"   ❌  Device generation failed: {e}", "#F87171")
+            self.arch_status_dot.setStyleSheet(
+                "color: #F87171; font-size: 18px; background: transparent;"
             )
-        from VisioGns3.Architecture.generate_connections_architecture import ArchitectureConnections
+            return
 
-        conn_engine = ArchitectureConnections(
-            floors,
-            rooms,
-            users,
-            engine.width_m,
-            building_type,
-            firewall_enabled,
-            selected_servers,
-            cost_priority,
-            speed_priority,
-            reliability_priority
-        )
+        # ── Step 2: Generate connections ─────────────────────────────────
+        self._arch_log("\n🔧  [2/4]  Generating connections...", "#60A5FA")
+        try:
+            from VisioGns3.Architecture.generate_connections_architecture import ArchitectureConnections
 
-        conn_engine.run(os.path.join(visio_dir,"Generated_files", "pre_Connections.json"))
+            conn_engine = ArchitectureConnections(
+                floors, rooms, users, engine.width_m,
+                building_type, firewall_enabled, selected_servers,
+                cost_priority, speed_priority, reliability_priority
+            )
+            pre_conn_path = os.path.join(visio_dir, "Generated_files", "pre_Connections.json")
+            connections   = conn_engine.run(pre_conn_path)
+            self._arch_log(f"   ✅  Topology: {conn_engine.topology.upper()}", "#4ADE80")
+            self._arch_log(f"   ✅  {len(connections)} connections written → {pre_conn_path}", "#4ADE80")
+
+        except Exception as e:
+            self._arch_log(f"   ❌  Connection generation failed: {e}", "#F87171")
+            self.arch_status_dot.setStyleSheet(
+                "color: #F87171; font-size: 18px; background: transparent;"
+            )
+            return
+
+        # ── Step 3: Run automation shell script ──────────────────────────
+        self._arch_log("\n🔧  [3/4]  Running automation script...", "#60A5FA")
 
         script_path = os.path.join(gui_dir, "VisioGns3", "automation_architecture.sh")
 
+        if not os.path.exists(script_path):
+            self._arch_log(f"   ❌  Script not found: {script_path}", "#F87171")
+            self.arch_status_dot.setStyleSheet(
+                "color: #F87171; font-size: 18px; background: transparent;"
+            )
+            return
+
+        # Use a streaming thread so output appears line by line
         self._arch_thread = QThread()
-        self._arch_worker = ScriptWorker(script_path)
-        self._arch_worker.moveToThread(self._arch_thread)
+        self._arch_worker = AutomationRunnerThread(script_path, gui_dir)
+        # AutomationRunnerThread already emits output_signal(str) + finished_signal(int)
+        self._arch_worker.output_signal.connect(
+            lambda line: self._arch_log(f"   {line}")
+        )
+        self._arch_worker.finished_signal.connect(self._on_arch_script_finished)
+        self._arch_worker.start()
 
-        self._arch_thread.started.connect(self._arch_worker.run)
-        self._arch_worker.finished.connect(self._on_arch_script_finished)
-        self._arch_worker.error.connect(self._on_arch_script_error)
-        self._arch_worker.finished.connect(self._arch_thread.quit)
-        self._arch_worker.error.connect(self._arch_thread.quit)
-        self._arch_thread.finished.connect(self._arch_thread.deleteLater)
-
-        self._arch_thread.start()
+        self._arch_log("   Script launched — streaming output below ↓", "#60A5FA")
 
 
     def _on_arch_script_finished(self, exit_code: int):
+        self._arch_log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         if exit_code == 0:
-            QMessageBox.information(
-                self,
-                "Architecture Workflow",
-                "✅ All scripts executed successfully."
+            self._arch_log("  ✅  All steps completed successfully!", "#4ADE80")
+            self.arch_status_dot.setStyleSheet(
+                "color: #4ADE80; font-size: 18px; background: transparent;"
             )
         else:
-            QMessageBox.warning(
-                self,
-                "Architecture Workflow",
-                f"⚠️ Script exited with code {exit_code}.\nDeployment may have been cancelled."
+            self._arch_log(
+                f"  ⚠️  Script exited with code {exit_code}. Deployment may have been cancelled.",
+                "#FBBF24"
             )
+            self.arch_status_dot.setStyleSheet(
+                "color: #FBBF24; font-size: 18px; background: transparent;"
+            )
+        self._arch_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
     def _on_arch_script_error(self, message: str):
-        QMessageBox.critical(
-            self,
-            "Architecture Workflow Error",
-            f"An error occurred while running the scripts:\n{message}"
+        self._arch_log(f"\n❌  Fatal error: {message}", "#F87171")
+        self.arch_status_dot.setStyleSheet(
+            "color: #F87171; font-size: 18px; background: transparent;"
         )
 
 
