@@ -2,12 +2,14 @@ import sys
 import os
 import subprocess
 import traceback
+import math
+import random
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                               QPushButton, QLabel, QLineEdit, QTextEdit,
                               QFileDialog, QMessageBox, QFrame, QStackedWidget,
-                              QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox, QScrollArea)
-from PyQt6.QtGui import QPalette, QColor, QFont, QPainter, QBrush
-from PyQt6.QtCore import QSize, Qt, QPropertyAnimation, QThread, pyqtSignal, QTimer, pyqtProperty, QObject
+                              QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox, QScrollArea, QGraphicsOpacityEffect)
+from PyQt6.QtGui import QPalette, QColor, QFont, QPainter, QBrush, QRadialGradient, QPen, QPainterPath, QLinearGradient
+from PyQt6.QtCore import QSize, Qt, QPropertyAnimation, QThread, pyqtSignal, QTimer, pyqtProperty, QObject,QEasingCurve,QRectF, QPointF, QRectF, QRect
 
 # GNS3 Config File Path
 GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
@@ -389,6 +391,588 @@ class ScriptWorker(QObject):
             self.error.emit(str(e))
 
 
+class NetworkCanvas(QWidget):
+    """Draws animated nodes + connection lines + pulse rings."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+
+        self._tick = 0
+        self._nodes = []
+        self._regen_nodes()
+
+        self._timer = QTimer(self)
+        self._timer.timeout.connect(self._advance)
+        self._timer.start(16)  # ~60 fps
+
+    def _regen_nodes(self):
+        random.seed(42)
+        w, h = max(self.width(), 1200), max(self.height(), 900)
+        self._nodes = [
+            {
+                "x": random.uniform(0.05, 0.95),
+                "y": random.uniform(0.05, 0.95),
+                "vx": random.uniform(-0.00008, 0.00008),
+                "vy": random.uniform(-0.00008, 0.00008),
+                "r": random.uniform(3, 7),
+                "phase": random.uniform(0, math.pi * 2),
+            }
+            for _ in range(55)
+        ]
+        self._edges = []
+        n = len(self._nodes)
+        for i in range(n):
+            for j in range(i + 1, n):
+                dx = self._nodes[i]["x"] - self._nodes[j]["x"]
+                dy = self._nodes[i]["y"] - self._nodes[j]["y"]
+                dist = math.sqrt(dx * dx + dy * dy)
+                if dist < 0.22:
+                    self._edges.append((i, j, dist))
+
+    def resizeEvent(self, e):
+        self._regen_nodes()
+
+    def _advance(self):
+        self._tick += 1
+        for nd in self._nodes:
+            nd["x"] = (nd["x"] + nd["vx"]) % 1.0
+            nd["y"] = (nd["y"] + nd["vy"]) % 1.0
+        if self._tick % 120 == 0:
+            # Rebuild edges periodically
+            self._edges = []
+            n = len(self._nodes)
+            for i in range(n):
+                for j in range(i + 1, n):
+                    dx = self._nodes[i]["x"] - self._nodes[j]["x"]
+                    dy = self._nodes[i]["y"] - self._nodes[j]["y"]
+                    dist = math.sqrt(dx * dx + dy * dy)
+                    if dist < 0.22:
+                        self._edges.append((i, j, dist))
+        self.update()
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        w, h = self.width(), self.height()
+
+        # ── deep background gradient ──
+        bg = QLinearGradient(0, 0, w, h)
+        bg.setColorAt(0.0, QColor(2, 6, 23))
+        bg.setColorAt(0.45, QColor(7, 15, 40))
+        bg.setColorAt(1.0, QColor(3, 10, 30))
+        painter.fillRect(0, 0, w, h, QBrush(bg))
+
+        # ── subtle grid ──
+        grid_pen = QPen(QColor(30, 58, 100, 35))
+        grid_pen.setWidth(1)
+        painter.setPen(grid_pen)
+        step = 55
+        for x in range(0, w, step):
+            painter.drawLine(x, 0, x, h)
+        for y in range(0, h, step):
+            painter.drawLine(0, y, w, y)
+
+        t = self._tick / 60.0  # seconds
+
+        # ── glow orbs ──
+        for ox, oy, cr, cg, cb, rad in [
+            (0.15, 0.25, 0, 100, 220, 320),
+            (0.80, 0.15, 80, 0, 200, 280),
+            (0.50, 0.80, 0, 180, 200, 350),
+            (0.90, 0.70, 0, 60, 180, 240),
+        ]:
+            pulse = 1.0 + 0.15 * math.sin(t * 0.7 + ox * 5)
+            rr = QRadialGradient(ox * w, oy * h, rad * pulse)
+            rr.setColorAt(0, QColor(cr, cg, cb, 55))
+            rr.setColorAt(1, QColor(cr, cg, cb, 0))
+            painter.setBrush(QBrush(rr))
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.drawEllipse(
+                QRectF(ox * w - rad * pulse, oy * h - rad * pulse,
+                       rad * pulse * 2, rad * pulse * 2))
+
+        # ── edges ──
+        for i, j, base_dist in self._edges:
+            ni, nj = self._nodes[i], self._nodes[j]
+            x1, y1 = ni["x"] * w, ni["y"] * h
+            x2, y2 = nj["x"] * w, nj["y"] * h
+            alpha = max(0, int(200 * (1 - base_dist / 0.22)))
+            pen = QPen(QColor(0, 180, 255, alpha))
+            pen.setWidthF(0.8)
+            painter.setPen(pen)
+            painter.drawLine(QPointF(x1, y1), QPointF(x2, y2))
+
+            # Traveling data packet
+            frac = (t * 0.4 + (i * 0.37 + j * 0.23)) % 1.0
+            px = x1 + (x2 - x1) * frac
+            py = y1 + (y2 - y1) * frac
+            packet_pen = QPen(QColor(0, 230, 255, 220))
+            packet_pen.setWidthF(2.5)
+            painter.setPen(packet_pen)
+            painter.setBrush(QBrush(QColor(0, 230, 255, 220)))
+            painter.drawEllipse(QPointF(px, py), 2.0, 2.0)
+
+        # ── nodes ──
+        for nd in self._nodes:
+            nx, ny = nd["x"] * w, nd["y"] * h
+            pulse = 1.0 + 0.3 * math.sin(t * 1.8 + nd["phase"])
+            nr = nd["r"] * pulse
+
+            # outer ring
+            ring_r = nr * 2.2
+            ring = QRadialGradient(nx, ny, ring_r)
+            ring.setColorAt(0, QColor(0, 200, 255, 0))
+            ring.setColorAt(0.6, QColor(0, 200, 255, 30))
+            ring.setColorAt(1, QColor(0, 200, 255, 0))
+            painter.setBrush(QBrush(ring))
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.drawEllipse(QPointF(nx, ny), ring_r, ring_r)
+
+            # core node
+            grad = QRadialGradient(nx - nr * 0.3, ny - nr * 0.3, nr * 1.5)
+            grad.setColorAt(0, QColor(150, 240, 255))
+            grad.setColorAt(0.5, QColor(0, 160, 220))
+            grad.setColorAt(1, QColor(0, 80, 140))
+            painter.setBrush(QBrush(grad))
+            painter.drawEllipse(QPointF(nx, ny), nr, nr)
+
+        painter.end()
+
+
+# ─────────────────────────────────────────────
+#  Animated title label (character fade-in)
+# ─────────────────────────────────────────────
+class GlowLabel(QLabel):
+    def __init__(self, text, color="#00E5FF", glow_radius=30, parent=None):
+        super().__init__(text, parent)
+        self._color = QColor(color)
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(glow_radius)
+        shadow.setOffset(0, 0)
+        shadow.setColor(self._color)
+        self.setGraphicsEffect(shadow)
+
+
+# ─────────────────────────────────────────────
+#  Neon input field
+# ─────────────────────────────────────────────
+NEON_INPUT_STYLE = """
+QLineEdit {{
+    background: rgba(0, 10, 30, 0.75);
+    color: #E0F7FF;
+    border: 1.5px solid rgba(0, 180, 255, 0.35);
+    border-radius: {radius}px;
+    padding: 0 20px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 15px;
+    letter-spacing: 1px;
+    selection-background-color: rgba(0, 200, 255, 0.3);
+}}
+QLineEdit:focus {{
+    border: 1.5px solid #00D4FF;
+    background: rgba(0, 20, 50, 0.85);
+}}
+QLineEdit::placeholder {{
+    color: rgba(120, 180, 200, 0.5);
+}}
+"""
+
+
+# ─────────────────────────────────────────────
+#  Hexagon button
+# ─────────────────────────────────────────────
+class HexButton(QPushButton):
+    def __init__(self, text, parent=None):
+        super().__init__(text, parent)
+        self._glow = 0.0
+        self._anim = QPropertyAnimation(self, b"glow")
+        self._anim.setDuration(300)
+        self._anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setFixedHeight(58)
+
+    @pyqtProperty(float)
+    def glow(self):
+        return self._glow
+
+    @glow.setter
+    def glow(self, v):
+        self._glow = v
+        self.update()
+
+    def enterEvent(self, e):
+        self._anim.stop()
+        self._anim.setStartValue(self._glow)
+        self._anim.setEndValue(1.0)
+        self._anim.start()
+
+    def leaveEvent(self, e):
+        self._anim.stop()
+        self._anim.setStartValue(self._glow)
+        self._anim.setEndValue(0.0)
+        self._anim.start()
+
+    def paintEvent(self, event):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing)
+        w, h = self.width(), self.height()
+
+        # background gradient
+        grad = QLinearGradient(0, 0, w, h)
+        r = int(0 + self._glow * 30)
+        g = int(180 + self._glow * 40)
+        b = int(255)
+        grad.setColorAt(0.0, QColor(r, g - 40, b, 210))
+        grad.setColorAt(1.0, QColor(r + 40, g, b, 210))
+        path = QPainterPath()
+        path.addRoundedRect(QRectF(0, 0, w, h), 14, 14)
+        p.fillPath(path, QBrush(grad))
+
+        # outer glow border
+        pen = QPen(QColor(0, int(200 + self._glow * 55), 255, int(180 + self._glow * 75)))
+        pen.setWidthF(1.5)
+        p.setPen(pen)
+        p.drawPath(path)
+
+        # inner shine
+        shine = QLinearGradient(0, 0, 0, h * 0.55)
+        shine.setColorAt(0, QColor(255, 255, 255, int(60 + self._glow * 40)))
+        shine.setColorAt(1, QColor(255, 255, 255, 0))
+        shine_path = QPainterPath()
+        shine_path.addRoundedRect(QRectF(2, 2, w - 4, h * 0.5), 12, 12)
+        p.fillPath(shine_path, QBrush(shine))
+
+        # text
+        p.setPen(QPen(QColor(255, 255, 255, 240)))
+        font = QFont()
+        font.setPointSize(13)
+        font.setWeight(QFont.Weight.Bold)
+        font.setLetterSpacing(QFont.SpacingType.AbsoluteSpacing, 1.5)
+        p.setFont(font)
+        p.drawText(QRect(0, 0, w, h), Qt.AlignmentFlag.AlignCenter, self.text())
+        p.end()
+
+
+# ─────────────────────────────────────────────
+#  Pulsing ring widget (decorative)
+# ─────────────────────────────────────────────
+class PulseRing(QWidget):
+    def __init__(self, color="#00D4FF", parent=None):
+        super().__init__(parent)
+        self._color = QColor(color)
+        self._phase = 0.0
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+        self.setFixedSize(300, 300)
+        t = QTimer(self)
+        t.timeout.connect(self._tick)
+        t.start(20)
+
+    def _tick(self):
+        self._phase = (self._phase + 0.025) % (math.pi * 2)
+        self.update()
+
+    def paintEvent(self, e):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing)
+        cx, cy = self.width() / 2, self.height() / 2
+        for i, (base_r, speed, alpha_max) in enumerate([
+            (60, 1.0, 120),
+            (90, 0.7, 80),
+            (120, 0.4, 50),
+        ]):
+            phase_offset = i * math.pi / 3
+            r = base_r + 18 * math.sin(self._phase * speed + phase_offset)
+            alpha = int(alpha_max * (0.5 + 0.5 * math.sin(self._phase * speed + phase_offset)))
+            c = QColor(self._color.red(), self._color.green(), self._color.blue(), alpha)
+            pen = QPen(c)
+            pen.setWidthF(1.5)
+            p.setPen(pen)
+            p.setBrush(Qt.BrushStyle.NoBrush)
+            p.drawEllipse(QPointF(cx, cy), r, r)
+        p.end()
+
+
+# ─────────────────────────────────────────────
+#  Scanline overlay (CRT retro-futurism touch)
+# ─────────────────────────────────────────────
+class ScanlineOverlay(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+
+    def paintEvent(self, e):
+        p = QPainter(self)
+        for y in range(0, self.height(), 4):
+            p.fillRect(0, y, self.width(), 1, QColor(0, 0, 0, 18))
+        p.end()
+
+
+# ─────────────────────────────────────────────
+#  Main setup page
+# ─────────────────────────────────────────────
+class SetupPage(QWidget):
+    setup_complete = pyqtSignal(str, str)  # ip, port
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._build()
+
+    def _build(self):
+        # ── background canvas ──
+        self.canvas = NetworkCanvas(self)
+        self.canvas.setGeometry(0, 0, 1600, 1000)
+
+        # ── scanline ──
+        self.scanlines = ScanlineOverlay(self)
+        self.scanlines.setGeometry(0, 0, 1600, 1000)
+
+        # ── pulse rings (decorative, behind card) ──
+        self.ring_tl = PulseRing("#00D4FF", self)
+        self.ring_br = PulseRing("#7B2FFF", self)
+
+        # ── main content (stacked on canvas) ──
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
+        outer.setSpacing(0)
+
+        # spacer top
+        outer.addStretch(1)
+
+        # center row
+        center_row = QHBoxLayout()
+        center_row.setSpacing(0)
+        center_row.addStretch(1)
+
+        # ── card ──
+        card = QFrame()
+        card.setFixedWidth(520)
+        card.setStyleSheet("""
+            QFrame {
+                background: rgba(4, 14, 38, 0.82);
+                border-radius: 28px;
+                border: 1px solid rgba(0, 180, 255, 0.25);
+            }
+        """)
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(80)
+        shadow.setOffset(0, 20)
+        shadow.setColor(QColor(0, 100, 255, 80))
+        card.setGraphicsEffect(shadow)
+
+        card_layout = QVBoxLayout(card)
+        card_layout.setContentsMargins(52, 48, 52, 52)
+        card_layout.setSpacing(0)
+
+        # ── icon row ──
+        icon_row = QHBoxLayout()
+        icon_lbl = QLabel("⬡")
+        icon_lbl.setStyleSheet("""
+            color: #00D4FF;
+            font-size: 42px;
+        """)
+        icon_shadow = QGraphicsDropShadowEffect()
+        icon_shadow.setBlurRadius(30)
+        icon_shadow.setOffset(0, 0)
+        icon_shadow.setColor(QColor(0, 212, 255, 200))
+        icon_lbl.setGraphicsEffect(icon_shadow)
+        icon_row.addStretch()
+        icon_row.addWidget(icon_lbl)
+        icon_row.addStretch()
+        card_layout.addLayout(icon_row)
+        card_layout.addSpacing(12)
+
+        # ── title ──
+        title = GlowLabel("INDA", "#00D4FF", 45)
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setStyleSheet("""
+            color: #FFFFFF;
+            font-size: 52px;
+            font-weight: 900;
+            font-family: 'Orbitron', 'Rajdhani', 'Exo 2', 'Arial Black', sans-serif;
+            letter-spacing: 10px;
+            background: transparent;
+        """)
+        card_layout.addWidget(title)
+        card_layout.addSpacing(6)
+
+        # ── subtitle ──
+        sub = QLabel("INTELLIGENT NETWORK DESIGN AUTOMATION")
+        sub.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        sub.setStyleSheet("""
+            color: rgba(0, 200, 255, 0.7);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-family: 'Rajdhani', 'Exo 2', 'Trebuchet MS', sans-serif;
+            background: transparent;
+        """)
+        card_layout.addWidget(sub)
+        card_layout.addSpacing(6)
+
+        # ── divider ──
+        div = QFrame()
+        div.setFixedHeight(1)
+        div.setStyleSheet("background: qlineargradient(x1:0,y1:0,x2:1,y2:0,"
+                          "stop:0 transparent, stop:0.3 rgba(0,200,255,0.5),"
+                          "stop:0.7 rgba(0,200,255,0.5), stop:1 transparent);")
+        card_layout.addWidget(div)
+        card_layout.addSpacing(32)
+
+        # ── IP field ──
+        ip_label = QLabel("◈  SERVER ADDRESS")
+        ip_label.setStyleSheet("""
+            color: rgba(100, 200, 255, 0.8);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-family: 'Rajdhani', monospace;
+            background: transparent;
+        """)
+        card_layout.addWidget(ip_label)
+        card_layout.addSpacing(8)
+
+        self.ip_input = QLineEdit("127.0.0.1")
+        self.ip_input.setMinimumHeight(52)
+        self.ip_input.setStyleSheet(NEON_INPUT_STYLE.format(radius=13))
+        self.ip_input.setPlaceholderText("e.g.  127.0.0.1")
+        card_layout.addWidget(self.ip_input)
+        card_layout.addSpacing(20)
+
+        # ── Port field ──
+        port_label = QLabel("◈  SERVER PORT")
+        port_label.setStyleSheet("""
+            color: rgba(100, 200, 255, 0.8);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-family: 'Rajdhani', monospace;
+            background: transparent;
+        """)
+        card_layout.addWidget(port_label)
+        card_layout.addSpacing(8)
+
+        self.port_input = QLineEdit("3080")
+        self.port_input.setMinimumHeight(52)
+        self.port_input.setStyleSheet(NEON_INPUT_STYLE.format(radius=13))
+        self.port_input.setPlaceholderText("e.g.  3080")
+        card_layout.addWidget(self.port_input)
+        card_layout.addSpacing(8)
+
+        # ── status label ──
+        self.status_lbl = QLabel("")
+        self.status_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.status_lbl.setMinimumHeight(28)
+        self.status_lbl.setWordWrap(True)
+        self.status_lbl.setStyleSheet("background: transparent; color: transparent; font-size: 12px;")
+        card_layout.addWidget(self.status_lbl)
+        card_layout.addSpacing(10)
+
+        # ── connect button ──
+        self.connect_btn = HexButton("⟶  INITIALIZE CONNECTION")
+        self.connect_btn.clicked.connect(self._on_connect)
+        card_layout.addWidget(self.connect_btn)
+        card_layout.addSpacing(24)
+
+        # ── bottom badge ──
+        badge_row = QHBoxLayout()
+        for dot_color, dot_text in [("#00FF88", "SECURE"), ("#00D4FF", "GNS3 v2.2"), ("#FF6B35", "LIVE")]:
+            dot_lbl = QLabel(f"● {dot_text}")
+            dot_lbl.setStyleSheet(f"""
+                color: {dot_color};
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                font-family: monospace;
+                background: transparent;
+            """)
+            badge_row.addStretch()
+            badge_row.addWidget(dot_lbl)
+        badge_row.addStretch()
+        card_layout.addLayout(badge_row)
+
+        center_row.addWidget(card)
+        center_row.addStretch(1)
+
+        outer.addLayout(center_row)
+        outer.addStretch(1)
+
+        # ── corner decoration labels ──
+        self._add_corner_deco()
+
+        # ── fade-in animation ──
+        self._opacity_effect = QGraphicsOpacityEffect(card)
+        card.setGraphicsEffect(self._opacity_effect)
+        self._opacity_effect.setOpacity(0)
+        self._fade_anim = QPropertyAnimation(self._opacity_effect, b"opacity")
+        self._fade_anim.setDuration(900)
+        self._fade_anim.setStartValue(0.0)
+        self._fade_anim.setEndValue(1.0)
+        self._fade_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+        QTimer.singleShot(100, self._fade_anim.start)
+
+    def _add_corner_deco(self):
+        """Adds small corner decoration labels."""
+        style = """
+            color: rgba(0, 180, 255, 0.4);
+            font-size: 10px;
+            font-family: monospace;
+            background: transparent;
+            letter-spacing: 2px;
+        """
+        tl = QLabel("◤ SYS::INIT", self)
+        tl.setStyleSheet(style)
+        tl.move(24, 20)
+
+        tr = QLabel("NET::OK ◥", self)
+        tr.setStyleSheet(style)
+        tr.adjustSize()
+
+        bl = QLabel("◣ VER::2.2.0", self)
+        bl.setStyleSheet(style)
+
+        self._corner_labels = [tl, tr, bl]
+
+    def resizeEvent(self, e):
+        w, h = self.width(), self.height()
+        self.canvas.setGeometry(0, 0, w, h)
+        self.scanlines.setGeometry(0, 0, w, h)
+        # Position pulse rings
+        self.ring_tl.move(-80, -80)
+        self.ring_br.move(w - 220, h - 220)
+        # Reposition corner labels
+        if hasattr(self, "_corner_labels") and len(self._corner_labels) >= 3:
+            tl, tr, bl = self._corner_labels
+            tl.move(24, 20)
+            tr.adjustSize()
+            tr.move(w - tr.width() - 24, 20)
+            bl.adjustSize()
+            bl.move(24, h - bl.height() - 20)
+
+    def _on_connect(self):
+        ip = self.ip_input.text().strip()
+        port = self.port_input.text().strip()
+
+        if not ip or not port:
+            self._show_status("⚠  Please fill in both fields", "#FF5555")
+            return
+
+        self._show_status("◌  Establishing connection …", "#00D4FF")
+        QTimer.singleShot(700, lambda: self._finalize(ip, port))
+
+    def _finalize(self, ip, port):
+        self._show_status("✔  Connection established!", "#00FF88")
+        QTimer.singleShot(500, lambda: self.setup_complete.emit(ip, port))
+
+    def _show_status(self, msg, color):
+        self.status_lbl.setText(msg)
+        self.status_lbl.setStyleSheet(
+            f"background: transparent; color: {color}; "
+            f"font-size: 12px; font-weight: 700; letter-spacing: 1px; font-family: monospace;")
+
 class VisioGNS3App(QWidget):
     def __init__(self):
         super().__init__()
@@ -440,131 +1024,441 @@ class VisioGNS3App(QWidget):
 
     def create_setup_page(self):
         page = QWidget()
-        layout = QVBoxLayout()
-        layout.setContentsMargins(60, 40, 60, 60)
-        layout.setSpacing(30)
+        page.setStyleSheet("background: transparent;")
+
+        # ── Animated background layers ──
+        self._setup_canvas = NetworkCanvas(page)
+        self._setup_scanlines = ScanlineOverlay(page)
+        self._setup_ring_tl = PulseRing("#00D4FF", page)
+        self._setup_ring_br = PulseRing("#7B2FFF", page)
+
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        # ── Outer vertical centering ──
         layout.addStretch(1)
 
-        # Brand section
-        logo = QLabel("🌐")
-        logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        logo.setStyleSheet("font-size: 72px;")
+        center_row = QHBoxLayout()
+        center_row.setSpacing(0)
+        center_row.addStretch(1)
 
-        title = QLabel("INDA")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setStyleSheet("color: #60A5FA; font-size: 56px; font-weight: 800; letter-spacing: 2px;")
-
-        subtitle = QLabel("Intelligent Network Design Automation")
-        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        subtitle.setStyleSheet("color: #94A3B8; font-size: 18px; font-weight: 500; letter-spacing: 1px;")
-
-        layout.addWidget(logo)
-        layout.addWidget(title)
-        layout.addWidget(subtitle)
-        layout.addSpacing(20)
-
-        # Setup container
+        # ══════════════════════════════════════════
+        #  CARD
+        # ══════════════════════════════════════════
         setup_container = QFrame()
-        setup_container.setMaximumWidth(600)
-        setup_container.setMinimumWidth(500)
+        setup_container.setMaximumWidth(580)
+        setup_container.setMinimumWidth(520)
         setup_container.setStyleSheet("""
             QFrame {
-                background: rgba(30, 41, 59, 0.7);
+                background: rgba(4, 12, 35, 0.78);
                 border-radius: 24px;
+                border: 1px solid rgba(0, 180, 255, 0.18);
             }
         """)
-        self.add_shadow(setup_container)
+        card_shadow = QGraphicsDropShadowEffect()
+        card_shadow.setBlurRadius(60)
+        card_shadow.setOffset(0, 16)
+        card_shadow.setColor(QColor(0, 80, 200, 100))
+        setup_container.setGraphicsEffect(card_shadow)
 
         setup_layout = QVBoxLayout()
-        setup_layout.setContentsMargins(60, 40, 60, 40)
-        setup_layout.setSpacing(25)
+        setup_layout.setContentsMargins(52, 44, 52, 44)
+        setup_layout.setSpacing(0)
+        setup_container.setLayout(setup_layout)
 
-        # IP Label
-        ip_label = QLabel("🔗  GNS3 Server IP")
-        ip_label.setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: 600;")
+        # ── Icon ──────────────────────────────────────
+        icon_row = QHBoxLayout()
+        icon_lbl = QLabel("⬡")
+        icon_lbl.setStyleSheet("""
+            color: #00D4FF;
+            font-size: 38px;
+            background: transparent;
+            border: none;
+        """)
+        icon_shadow = QGraphicsDropShadowEffect()
+        icon_shadow.setBlurRadius(28)
+        icon_shadow.setOffset(0, 0)
+        icon_shadow.setColor(QColor(0, 212, 255, 180))
+        icon_lbl.setGraphicsEffect(icon_shadow)
+        icon_row.addStretch()
+        icon_row.addWidget(icon_lbl)
+        icon_row.addStretch()
+        setup_layout.addLayout(icon_row)
+        setup_layout.addSpacing(10)
 
+        # ── Title ─────────────────────────────────────
+        title_lbl = QLabel("INDA")
+        title_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_lbl.setStyleSheet("""
+            color: #FFFFFF;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            font-family: 'Orbitron', 'Arial Black', sans-serif;
+            background: transparent;
+            border: none;
+        """)
+        title_shadow = QGraphicsDropShadowEffect()
+        title_shadow.setBlurRadius(40)
+        title_shadow.setOffset(0, 0)
+        title_shadow.setColor(QColor(0, 200, 255, 160))
+        title_lbl.setGraphicsEffect(title_shadow)
+        setup_layout.addWidget(title_lbl)
+        setup_layout.addSpacing(6)
+
+        # ── Subtitle ──────────────────────────────────
+        sub_lbl = QLabel("INTELLIGENT NETWORK DESIGN AUTOMATION")
+        sub_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        sub_lbl.setStyleSheet("""
+            color: rgba(0, 200, 255, 0.55);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-family: 'Rajdhani', 'Trebuchet MS', sans-serif;
+            background: transparent;
+            border: none;
+        """)
+        setup_layout.addWidget(sub_lbl)
+        setup_layout.addSpacing(26)
+
+        # ── Top divider ───────────────────────────────
+        div_top = QFrame()
+        div_top.setFixedHeight(1)
+        div_top.setStyleSheet("""
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 transparent,
+                stop:0.3 rgba(0, 180, 255, 0.22),
+                stop:0.7 rgba(0, 180, 255, 0.22),
+                stop:1 transparent);
+            border: none;
+        """)
+        setup_layout.addWidget(div_top)
+        setup_layout.addSpacing(30)
+
+        # ── IP label ──────────────────────────────────
+        ip_label = QLabel("SERVER ADDRESS")
+        ip_label.setStyleSheet("""
+            color: rgba(80, 180, 255, 0.60);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-family: monospace;
+            background: transparent;
+            border: none;
+            padding: 0;
+        """)
+        setup_layout.addWidget(ip_label)
+        setup_layout.addSpacing(7)
+
+        # ── IP input ──────────────────────────────────
         self.setup_input_ip = QLineEdit()
-        self.setup_input_ip.setPlaceholderText("e.g., 127.0.0.1")
+        self.setup_input_ip.setPlaceholderText("127.0.0.1")
         self.setup_input_ip.setText("127.0.0.1")
         self.setup_input_ip.setMinimumHeight(50)
         self.setup_input_ip.setStyleSheet("""
             QLineEdit {
-                background: rgba(15, 23, 42, 0.8); 
-                color: #F8FAFC;
-                border: 2px solid rgba(100, 116, 139, 0.3); 
-                border-radius: 12px;
-                padding: 0 18px; 
+                background: rgba(0, 15, 40, 0.60);
+                color: #D0EFFF;
+                border: none;
+                border-bottom: 1.5px solid rgba(0, 160, 240, 0.28);
+                border-radius: 0px;
+                padding: 0 4px;
                 font-size: 15px;
+                font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+                letter-spacing: 1px;
+                selection-background-color: rgba(0, 180, 255, 0.25);
             }
             QLineEdit:focus {
-                border: 2px solid #60A5FA;
+                border-bottom: 1.5px solid #00C8FF;
+                background: rgba(0, 25, 60, 0.65);
+                color: #FFFFFF;
             }
         """)
+        setup_layout.addWidget(self.setup_input_ip)
+        setup_layout.addSpacing(28)
 
-        # Port Label
-        port_label = QLabel("⚡  GNS3 Server Port")
-        port_label.setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: 600;")
+        # ── Port label ────────────────────────────────
+        port_label = QLabel("SERVER PORT")
+        port_label.setStyleSheet("""
+            color: rgba(80, 180, 255, 0.60);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-family: monospace;
+            background: transparent;
+            border: none;
+            padding: 0;
+        """)
+        setup_layout.addWidget(port_label)
+        setup_layout.addSpacing(7)
 
+        # ── Port input ────────────────────────────────
         self.setup_input_port = QLineEdit()
-        self.setup_input_port.setPlaceholderText("e.g., 3080")
+        self.setup_input_port.setPlaceholderText("3080")
         self.setup_input_port.setText("3080")
         self.setup_input_port.setMinimumHeight(50)
         self.setup_input_port.setStyleSheet("""
             QLineEdit {
-                background: rgba(15, 23, 42, 0.8); 
-                color: #F8FAFC;
-                border: 2px solid rgba(100, 116, 139, 0.3); 
-                border-radius: 12px;
-                padding: 0 18px; 
+                background: rgba(0, 15, 40, 0.60);
+                color: #D0EFFF;
+                border: none;
+                border-bottom: 1.5px solid rgba(0, 160, 240, 0.28);
+                border-radius: 0px;
+                padding: 0 4px;
                 font-size: 15px;
+                font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+                letter-spacing: 1px;
+                selection-background-color: rgba(0, 180, 255, 0.25);
             }
             QLineEdit:focus {
-                border: 2px solid #60A5FA;
+                border-bottom: 1.5px solid #00C8FF;
+                background: rgba(0, 25, 60, 0.65);
+                color: #FFFFFF;
             }
         """)
+        setup_layout.addWidget(self.setup_input_port)
+        setup_layout.addSpacing(10)
 
+        # ── Status label ──────────────────────────────
         self.setup_status = QLabel("")
         self.setup_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setup_status.setMinimumHeight(30)
+        self.setup_status.setMinimumHeight(32)
         self.setup_status.setWordWrap(True)
-        self.setup_status.setStyleSheet("color: #A0AEC0; font-size: 13px;")
-
-        # Continue Button
-        continue_btn = QPushButton("Continue to Dashboard →")
-        continue_btn.setMinimumHeight(56)
-        continue_btn.setStyleSheet("""
-            QPushButton {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #3B82F6, stop:1 #8B5CF6);
-                color: #FFFFFF;
-                border: none;
-                border-radius: 14px;
-                font-size: 16px;
-                font-weight: 700;
-            }
-            QPushButton:hover {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #2563EB, stop:1 #7C3AED);
-            }
+        self.setup_status.setStyleSheet("""
+            color: transparent;
+            font-size: 12px;
+            background: transparent;
+            border: none;
+            padding: 0;
         """)
-        continue_btn.clicked.connect(self.complete_setup)
-        continue_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-
-        setup_layout.addWidget(ip_label)
-        setup_layout.addWidget(self.setup_input_ip)
-        setup_layout.addWidget(port_label)
-        setup_layout.addWidget(self.setup_input_port)
         setup_layout.addWidget(self.setup_status)
+        setup_layout.addSpacing(6)
+
+        # ── Bottom divider ────────────────────────────
+        div_bot = QFrame()
+        div_bot.setFixedHeight(1)
+        div_bot.setStyleSheet("""
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 transparent,
+                stop:0.3 rgba(0, 180, 255, 0.22),
+                stop:0.7 rgba(0, 180, 255, 0.22),
+                stop:1 transparent);
+            border: none;
+        """)
+        setup_layout.addWidget(div_bot)
+        setup_layout.addSpacing(22)
+
+        # ── Connect button ────────────────────────────
+        continue_btn = HexButton("⟶  INITIALIZE CONNECTION")
+        continue_btn.clicked.connect(self.complete_setup)
         setup_layout.addWidget(continue_btn)
-        setup_container.setLayout(setup_layout)
+        setup_layout.addSpacing(22)
 
-        container_layout = QHBoxLayout()
-        container_layout.addStretch()
-        container_layout.addWidget(setup_container)
-        container_layout.addStretch()
-        layout.addLayout(container_layout)
-        layout.addStretch(2)
+        # ── Bottom status dots ────────────────────────
+        dots_row = QHBoxLayout()
+        dots_row.setSpacing(0)
+        for dot_color, dot_text in [
+            ("#00FF88", "● SECURE"),
+            ("#00BFFF", "● GNS3 v2.2"),
+            ("#FF6B35", "● LIVE"),
+        ]:
+            dot = QLabel(dot_text)
+            dot.setStyleSheet(f"""
+                color: {dot_color};
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                font-family: monospace;
+                background: transparent;
+                border: none;
+                padding: 0;
+            """)
+            dots_row.addStretch()
+            dots_row.addWidget(dot)
+        dots_row.addStretch()
+        setup_layout.addLayout(dots_row)
 
-        page.setLayout(layout)
+        # ── Assemble center row ───────────────────────
+        # ── Card shadow — apply to a wrapper, not the card itself ──
+        wrapper = QWidget()
+        wrapper.setStyleSheet("background: transparent;")
+        wrapper_layout = QVBoxLayout(wrapper)
+        wrapper_layout.setContentsMargins(0, 0, 0, 0)
+        wrapper_layout.addWidget(setup_container)
+
+        card_shadow = QGraphicsDropShadowEffect()
+        card_shadow.setBlurRadius(60)
+        card_shadow.setOffset(0, 16)
+        card_shadow.setColor(QColor(0, 80, 200, 100))
+        wrapper.setGraphicsEffect(card_shadow)
+
+        # ── Fade-in — on the card directly (no shadow on same widget) ──
+        self._setup_opacity = QGraphicsOpacityEffect(setup_container)
+        setup_container.setGraphicsEffect(self._setup_opacity)
+        self._setup_opacity.setOpacity(0.0)
+        self._fade_anim = QPropertyAnimation(self._setup_opacity, b"opacity")
+        self._fade_anim.setDuration(900)
+        self._fade_anim.setStartValue(0.0)
+        self._fade_anim.setEndValue(1.0)
+        self._fade_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+        QTimer.singleShot(120, self._fade_anim.start)
+
+        # ── Assemble center row (use wrapper instead of setup_container) ──
+        center_row.addStretch(1)  # bigger = pushes card more to the right
+        center_row.addWidget(wrapper)
+        center_row.addStretch(3)
+        
+
+        layout.addLayout(center_row)
+        layout.addStretch(1)
+
+        # ── Corner decorations ────────────────────────
+        tl = QLabel("◤ SYS::INIT", page)
+        tl.setStyleSheet("""
+            color: rgba(0, 180, 255, 0.35);
+            font-size: 10px;
+            font-family: monospace;
+            background: transparent;
+            border: none;
+            letter-spacing: 2px;
+        """)
+        tl.move(24, 20)
+
+        tr = QLabel("NET::OK ◥", page)
+        tr.setStyleSheet("""
+            color: rgba(0, 180, 255, 0.35);
+            font-size: 10px;
+            font-family: monospace;
+            background: transparent;
+            border: none;
+            letter-spacing: 2px;
+        """)
+
+        bl = QLabel("◣ VER::2.2.0", page)
+        bl.setStyleSheet("""
+            color: rgba(0, 180, 255, 0.35);
+            font-size: 10px;
+            font-family: monospace;
+            background: transparent;
+            border: none;
+            letter-spacing: 2px;
+        """)
+
+        self._setup_corner_labels = [tl, tr, bl]
+
+        # ── Fade-in on card ───────────────────────────
+        self._setup_opacity = QGraphicsOpacityEffect(setup_container)
+        setup_container.setGraphicsEffect(self._setup_opacity)
+        self._setup_opacity.setOpacity(0.0)
+        self._fade_anim = QPropertyAnimation(self._setup_opacity, b"opacity")
+        self._fade_anim.setDuration(900)
+        self._fade_anim.setStartValue(0.0)
+        self._fade_anim.setEndValue(1.0)
+        self._fade_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+        QTimer.singleShot(120, self._fade_anim.start)
+
+        # Store page ref for resizeEvent
+        self._setup_page = page
         return page
+
+
+    def _reposition_setup_bg(self):
+        page = self._setup_page
+        w, h = page.width() or 1200, page.height() or 900
+        self._setup_canvas.setGeometry(0, 0, w, h)
+        self._setup_scanlines.setGeometry(0, 0, w, h)
+        self._setup_ring_tl.move(-80, -80)
+        self._setup_ring_br.move(w - 220, h - 220)
+        self._setup_canvas.lower()
+        # Reposition corner labels
+        if hasattr(self, "_setup_corner_labels"):
+            tl, tr, bl = self._setup_corner_labels
+            tl.move(24, 20)
+            tr.adjustSize()
+            tr.move(w - tr.width() - 24, 20)
+            bl.adjustSize()
+            bl.move(24, h - bl.height() - 20)
+
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if hasattr(self, "_setup_page"):
+            self._reposition_setup_bg()
+
+
+    def complete_setup(self):
+        ip = self.setup_input_ip.text().strip()
+        port = self.setup_input_port.text().strip()
+
+        self.setup_status.setText("")
+        self.setup_status.setStyleSheet("color: transparent; background: transparent; border: none;")
+
+        if not ip or not port:
+            self.setup_status.setText("⚠  Enter both IP and port")
+            self.setup_status.setStyleSheet("""
+                color: #FF5555;
+                font-size: 12px;
+                font-weight: 700;
+                font-family: monospace;
+                letter-spacing: 1px;
+                background: transparent;
+                border: none;
+                padding: 0;
+            """)
+            return
+
+        try:
+            self.server_ip = ip
+            self.server_port = port
+            self.save_gns3_config(ip, port)
+            self.setup_status.setText("✔  Connection established!")
+            self.setup_status.setStyleSheet("""
+                color: #00FF88;
+                font-size: 12px;
+                font-weight: 700;
+                font-family: monospace;
+                letter-spacing: 1px;
+                background: transparent;
+                border: none;
+                padding: 0;
+            """)
+            self.server_configured = True
+            QTimer.singleShot(600, self.show_landing_page)
+        except Exception as e:
+            self.setup_status.setText(f"✘  Error: {str(e)[:50]}")
+            self.setup_status.setStyleSheet("""
+                color: #FF5555;
+                font-size: 12px;
+                font-weight: 700;
+                font-family: monospace;
+                letter-spacing: 1px;
+                background: transparent;
+                border: none;
+                padding: 0;
+            """)
+
+
+    def _position_setup_bg(self, page):
+        w, h = page.width() or 1200, page.height() or 900
+        self._setup_canvas.setGeometry(0, 0, w, h)
+        self._setup_scanlines.setGeometry(0, 0, w, h)
+        self._setup_ring_tl.move(-80, -80)
+        self._setup_ring_br.move(w - 220, h - 220)
+        # Push canvas behind everything
+        self._setup_canvas.lower()
+        self._setup_scanlines.raise_()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        page = self.stacked_widget.widget(0)  # setup page
+        if hasattr(self, '_setup_canvas'):
+            w, h = page.width(), page.height()
+            self._setup_canvas.setGeometry(0, 0, w, h)
+            self._setup_scanlines.setGeometry(0, 0, w, h)
+            self._setup_ring_tl.move(-80, -80)
+            self._setup_ring_br.move(w - 220, h - 220)
+            self._setup_canvas.lower()
 
     def complete_setup(self):
         ip = self.setup_input_ip.text().strip()
