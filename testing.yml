@@ -1,0 +1,48 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    gns3_url: "http://localhost:3080"
+    ansible_python_interpreter: /usr/bin/python3
+    switch_ports: 50
+
+  tasks:
+    - name: Create Architecture GNS3 project
+      uri:
+        url: "{{ gns3_url }}/v2/projects"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body:
+          name: "architecture_topology_20260314_140747"
+        body_format: json
+        status_code: 201
+      register: project_result
+
+    - name: Generate switch ports dynamically
+      set_fact:
+        ports_mapping: "{{ ports_mapping | default([]) + [{'name': 'Ethernet' + item|string, 'port_number': item, 'type': 'access', 'vlan': 1}] }}"
+      loop: "{{ range(0, switch_ports) | list }}"
+
+    - name: Add Ethernet Switch with 50 ports
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body:
+          name: "Ethernet_Switch_50ports"
+          x: 0
+          y: 0
+          compute_id: "local"
+          node_type: "ethernet_switch"
+          symbol: ":/symbols/ethernet_switch.svg"
+          template_id: "f719146d-fe03-4f6f-bd24-340adec62bd4"
+          properties:
+            ports_mapping: "{{ ports_mapping }}"
+        body_format: json
+        status_code: 201
+      register: switch_result
+
+    - name: Show switch creation result
+      debug:
+        var: switch_result.json

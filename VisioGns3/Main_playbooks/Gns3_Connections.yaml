@@ -5,7 +5,7 @@
 
   vars:
     gns3_server: "http://localhost:3080"
-    project_name: "architecture_topology_20260314_140747"
+    project_name: "architecture_topology_20260330_163520"
 
   tasks:
     - name: Get all projects
@@ -33,7 +33,7 @@
         return_content: yes
       register: gns3_nodes
 
-    - name: Connect laptop_f1_r1_u1 to access_switch_f1_r1
+    - name: Connect pc_f1_r1_u1 to access_switch_f1_r1
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -45,12 +45,1703 @@
         status_code: [200, 201]
         body:
           nodes:
-            - node_id: "{{ node_map['laptop_f1_r1_u1'] }}"
+            - node_id: "{{ node_map['pc_f1_r1_u1'] }}"
               adapter_number: 0
               port_number: 0
             - node_id: "{{ node_map['access_switch_f1_r1'] }}"
               adapter_number: 0
               port_number: 0
+
+    - name: Connect pc_f1_r1_u2 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u2'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect pc_f1_r1_u3 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u3'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 2
+
+    - name: Connect pc_f1_r1_u4 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u4'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 3
+
+    - name: Connect pc_f1_r1_u5 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u5'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect pc_f1_r1_u6 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u6'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect pc_f1_r1_u7 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u7'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 6
+
+    - name: Connect pc_f1_r1_u8 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u8'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 7
+
+    - name: Connect pc_f1_r1_u9 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u9'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 8
+
+    - name: Connect pc_f1_r1_u10 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u10'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 9
+
+    - name: Connect pc_f1_r1_u11 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u11'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 10
+
+    - name: Connect pc_f1_r1_u12 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u12'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 11
+
+    - name: Connect pc_f1_r1_u13 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u13'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 12
+
+    - name: Connect pc_f1_r1_u14 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u14'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 13
+
+    - name: Connect pc_f1_r1_u15 to access_switch_f1_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r1_u15'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r1'] }}"
+              adapter_number: 0
+              port_number: 14
+
+    - name: Connect pc_f1_r2_u1 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u1'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect pc_f1_r2_u2 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u2'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect pc_f1_r2_u3 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u3'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 2
+
+    - name: Connect pc_f1_r2_u4 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u4'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 3
+
+    - name: Connect pc_f1_r2_u5 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u5'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect pc_f1_r2_u6 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u6'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect pc_f1_r2_u7 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u7'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 6
+
+    - name: Connect pc_f1_r2_u8 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u8'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 7
+
+    - name: Connect pc_f1_r2_u9 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u9'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 8
+
+    - name: Connect pc_f1_r2_u10 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u10'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 9
+
+    - name: Connect pc_f1_r2_u11 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u11'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 10
+
+    - name: Connect pc_f1_r2_u12 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u12'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 11
+
+    - name: Connect pc_f1_r2_u13 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u13'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 12
+
+    - name: Connect pc_f1_r2_u14 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u14'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 13
+
+    - name: Connect pc_f1_r2_u15 to access_switch_f1_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r2_u15'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 14
+
+    - name: Connect pc_f1_r3_u1 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u1'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect pc_f1_r3_u2 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u2'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect pc_f1_r3_u3 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u3'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 2
+
+    - name: Connect pc_f1_r3_u4 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u4'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 3
+
+    - name: Connect pc_f1_r3_u5 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u5'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect pc_f1_r3_u6 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u6'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect pc_f1_r3_u7 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u7'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 6
+
+    - name: Connect pc_f1_r3_u8 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u8'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 7
+
+    - name: Connect pc_f1_r3_u9 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u9'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 8
+
+    - name: Connect pc_f1_r3_u10 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u10'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 9
+
+    - name: Connect pc_f1_r3_u11 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u11'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 10
+
+    - name: Connect pc_f1_r3_u12 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u12'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 11
+
+    - name: Connect pc_f1_r3_u13 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u13'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 12
+
+    - name: Connect pc_f1_r3_u14 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u14'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 13
+
+    - name: Connect pc_f1_r3_u15 to access_switch_f1_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f1_r3_u15'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 14
+
+    - name: Connect pc_f2_r1_u1 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u1'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect pc_f2_r1_u2 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u2'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect pc_f2_r1_u3 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u3'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 2
+
+    - name: Connect pc_f2_r1_u4 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u4'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 3
+
+    - name: Connect pc_f2_r1_u5 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u5'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect pc_f2_r1_u6 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u6'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect pc_f2_r1_u7 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u7'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 6
+
+    - name: Connect pc_f2_r1_u8 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u8'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 7
+
+    - name: Connect pc_f2_r1_u9 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u9'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 8
+
+    - name: Connect pc_f2_r1_u10 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u10'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 9
+
+    - name: Connect pc_f2_r1_u11 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u11'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 10
+
+    - name: Connect pc_f2_r1_u12 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u12'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 11
+
+    - name: Connect pc_f2_r1_u13 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u13'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 12
+
+    - name: Connect pc_f2_r1_u14 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u14'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 13
+
+    - name: Connect pc_f2_r1_u15 to access_switch_f2_r1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r1_u15'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 14
+
+    - name: Connect pc_f2_r2_u1 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u1'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect pc_f2_r2_u2 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u2'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect pc_f2_r2_u3 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u3'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 2
+
+    - name: Connect pc_f2_r2_u4 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u4'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 3
+
+    - name: Connect pc_f2_r2_u5 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u5'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect pc_f2_r2_u6 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u6'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect pc_f2_r2_u7 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u7'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 6
+
+    - name: Connect pc_f2_r2_u8 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u8'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 7
+
+    - name: Connect pc_f2_r2_u9 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u9'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 8
+
+    - name: Connect pc_f2_r2_u10 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u10'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 9
+
+    - name: Connect pc_f2_r2_u11 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u11'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 10
+
+    - name: Connect pc_f2_r2_u12 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u12'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 11
+
+    - name: Connect pc_f2_r2_u13 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u13'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 12
+
+    - name: Connect pc_f2_r2_u14 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u14'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 13
+
+    - name: Connect pc_f2_r2_u15 to access_switch_f2_r2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r2_u15'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 14
+
+    - name: Connect pc_f2_r3_u1 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u1'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect pc_f2_r3_u2 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u2'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect pc_f2_r3_u3 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u3'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 2
+
+    - name: Connect pc_f2_r3_u4 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u4'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 3
+
+    - name: Connect pc_f2_r3_u5 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u5'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect pc_f2_r3_u6 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u6'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect pc_f2_r3_u7 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u7'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 6
+
+    - name: Connect pc_f2_r3_u8 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u8'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 7
+
+    - name: Connect pc_f2_r3_u9 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u9'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 8
+
+    - name: Connect pc_f2_r3_u10 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u10'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 9
+
+    - name: Connect pc_f2_r3_u11 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u11'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 10
+
+    - name: Connect pc_f2_r3_u12 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u12'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 11
+
+    - name: Connect pc_f2_r3_u13 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u13'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 12
+
+    - name: Connect pc_f2_r3_u14 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u14'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 13
+
+    - name: Connect pc_f2_r3_u15 to access_switch_f2_r3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['pc_f2_r3_u15'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 14
 
     - name: Connect access_switch_f1_r1 to dist_switch_f1
       vars:
@@ -66,10 +1757,105 @@
           nodes:
             - node_id: "{{ node_map['access_switch_f1_r1'] }}"
               adapter_number: 0
-              port_number: 1
+              port_number: 15
             - node_id: "{{ node_map['dist_switch_f1'] }}"
               adapter_number: 0
               port_number: 0
+
+    - name: Connect access_switch_f1_r2 to dist_switch_f1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['access_switch_f1_r2'] }}"
+              adapter_number: 0
+              port_number: 15
+            - node_id: "{{ node_map['dist_switch_f1'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect access_switch_f1_r3 to dist_switch_f1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['access_switch_f1_r3'] }}"
+              adapter_number: 0
+              port_number: 15
+            - node_id: "{{ node_map['dist_switch_f1'] }}"
+              adapter_number: 0
+              port_number: 2
+
+    - name: Connect access_switch_f2_r1 to dist_switch_f2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['access_switch_f2_r1'] }}"
+              adapter_number: 0
+              port_number: 15
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect access_switch_f2_r2 to dist_switch_f2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['access_switch_f2_r2'] }}"
+              adapter_number: 0
+              port_number: 15
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 1
+
+    - name: Connect access_switch_f2_r3 to dist_switch_f2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['access_switch_f2_r3'] }}"
+              adapter_number: 0
+              port_number: 15
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 2
 
     - name: Connect ap_f1_1 to dist_switch_f1
       vars:
@@ -88,7 +1874,7 @@
               port_number: 0
             - node_id: "{{ node_map['dist_switch_f1'] }}"
               adapter_number: 0
-              port_number: 1
+              port_number: 3
 
     - name: Connect ap_f1_2 to dist_switch_f1
       vars:
@@ -107,7 +1893,45 @@
               port_number: 0
             - node_id: "{{ node_map['dist_switch_f1'] }}"
               adapter_number: 0
-              port_number: 2
+              port_number: 4
+
+    - name: Connect ap_f2_1 to dist_switch_f2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['ap_f2_1'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 3
+
+    - name: Connect ap_f2_2 to dist_switch_f2
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['ap_f2_2'] }}"
+              adapter_number: 0
+              port_number: 0
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 4
 
     - name: Connect dist_switch_f1 to core_router_1
       vars:
@@ -123,12 +1947,12 @@
           nodes:
             - node_id: "{{ node_map['dist_switch_f1'] }}"
               adapter_number: 0
-              port_number: 3
+              port_number: 5
             - node_id: "{{ node_map['core_router_1'] }}"
               adapter_number: 0
               port_number: 0
 
-    - name: Connect dhcp_server to core_router_1
+    - name: Connect dist_switch_f1 to dist_switch_f2
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -140,14 +1964,33 @@
         status_code: [200, 201]
         body:
           nodes:
-            - node_id: "{{ node_map['dhcp_server'] }}"
+            - node_id: "{{ node_map['dist_switch_f1'] }}"
               adapter_number: 0
-              port_number: 0
+              port_number: 6
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect dist_switch_f2 to core_router_1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 6
             - node_id: "{{ node_map['core_router_1'] }}"
               adapter_number: 1
               port_number: 0
 
-    - name: Connect dns_server to core_router_1
+    - name: Connect core_router_1 to server_switch
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -159,11 +2002,87 @@
         status_code: [200, 201]
         body:
           nodes:
-            - node_id: "{{ node_map['dns_server'] }}"
-              adapter_number: 0
-              port_number: 0
             - node_id: "{{ node_map['core_router_1'] }}"
               adapter_number: 2
+              port_number: 0
+            - node_id: "{{ node_map['server_switch'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect server_switch to mail_server
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['server_switch'] }}"
+              adapter_number: 0
+              port_number: 1
+            - node_id: "{{ node_map['mail_server'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect server_switch to backup_server
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['server_switch'] }}"
+              adapter_number: 0
+              port_number: 2
+            - node_id: "{{ node_map['backup_server'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect server_switch to dhcp_server
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['server_switch'] }}"
+              adapter_number: 0
+              port_number: 3
+            - node_id: "{{ node_map['dhcp_server'] }}"
+              adapter_number: 0
+              port_number: 0
+
+    - name: Connect server_switch to dns_server
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['server_switch'] }}"
+              adapter_number: 0
+              port_number: 4
+            - node_id: "{{ node_map['dns_server'] }}"
+              adapter_number: 0
               port_number: 0
 
     - name: Connect core_router_1 to firewall_1
