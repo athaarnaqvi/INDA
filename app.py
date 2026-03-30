@@ -2049,15 +2049,6 @@ QCheckBox::indicator:checked {{
 QCheckBox::indicator:unchecked:hover {{
     border: 2px solid rgba(34,211,238,0.35);
 }}
-        for s in servers:
-            cb = QCheckBox(s.replace('_', ' ').title())
-            cb.setStyleSheet(checkbox_css)
-            cb.setChecked(False)
-            cb.setProperty('server_key', s)
-            cb.setCursor(Qt.CursorShape.PointingHandCursor)
-            cb.setMinimumHeight(26)
-            self.server_container.addWidget(cb)
-            self.server_checkboxes.append(cb)
 """
 
         for s in servers:
@@ -2071,11 +2062,9 @@ QCheckBox::indicator:unchecked:hover {{
             self.server_checkboxes.append(cb)
 
     def _arch_log(self, text: str, color: str = "#A8FF78"):
-        """Append a styled line to the architecture terminal."""
         import html
         escaped = html.escape(str(text))
 
-        # Colour-code key prefixes automatically
         if any(k in text for k in ["✅", "SUCCESS", "success"]):
             color = "#4ADE80"
         elif any(k in text for k in ["❌", "ERROR", "Error", "error", "FAILED", "failed"]):
@@ -2093,7 +2082,6 @@ QCheckBox::indicator:unchecked:hover {{
         self.arch_terminal.verticalScrollBar().setValue(
             self.arch_terminal.verticalScrollBar().maximum()
         )
-        QApplication.processEvents()
 
     def start_architecture_engine(self):
         # ── Clear terminal & set status ──────────────────────────────────
@@ -2247,10 +2235,15 @@ QCheckBox::indicator:unchecked:hover {{
             )
             return
 
-        # Use a streaming thread so output appears line by line
-        self._arch_thread = QThread()
+        # Clean up any previous thread
+        if hasattr(self, '_arch_worker') and self._arch_worker is not None:
+            try:
+                self._arch_worker.output_signal.disconnect()
+                self._arch_worker.finished_signal.disconnect()
+            except Exception:
+                pass
+
         self._arch_worker = AutomationRunnerThread(script_path, gui_dir)
-        # AutomationRunnerThread already emits output_signal(str) + finished_signal(int)
         self._arch_worker.output_signal.connect(
             lambda line: self._arch_log(f"   {line}")
         )

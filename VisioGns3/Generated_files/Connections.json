@@ -270,6 +270,96 @@
     "to_adapter_number": 14
   },
   {
+    "from": "pc_f1_r4_u1",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "pc_f1_r4_u2",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "pc_f1_r4_u3",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "pc_f1_r4_u4",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 3
+  },
+  {
+    "from": "pc_f1_r4_u5",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 4
+  },
+  {
+    "from": "pc_f1_r4_u6",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "pc_f1_r4_u7",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
+  },
+  {
+    "from": "pc_f1_r4_u8",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "pc_f1_r4_u9",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 8
+  },
+  {
+    "from": "pc_f1_r4_u10",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 9
+  },
+  {
+    "from": "pc_f1_r4_u11",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 10
+  },
+  {
+    "from": "pc_f1_r4_u12",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 11
+  },
+  {
+    "from": "pc_f1_r4_u13",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 12
+  },
+  {
+    "from": "pc_f1_r4_u14",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 13
+  },
+  {
+    "from": "pc_f1_r4_u15",
+    "to": "access_switch_f1_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 14
+  },
+  {
     "from": "pc_f2_r1_u1",
     "to": "access_switch_f2_r1",
     "from_adapter_number": 0,
@@ -540,6 +630,456 @@
     "to_adapter_number": 14
   },
   {
+    "from": "pc_f2_r4_u1",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "pc_f2_r4_u2",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "pc_f2_r4_u3",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "pc_f2_r4_u4",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 3
+  },
+  {
+    "from": "pc_f2_r4_u5",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 4
+  },
+  {
+    "from": "pc_f2_r4_u6",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "pc_f2_r4_u7",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
+  },
+  {
+    "from": "pc_f2_r4_u8",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "pc_f2_r4_u9",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 8
+  },
+  {
+    "from": "pc_f2_r4_u10",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 9
+  },
+  {
+    "from": "pc_f2_r4_u11",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 10
+  },
+  {
+    "from": "pc_f2_r4_u12",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 11
+  },
+  {
+    "from": "pc_f2_r4_u13",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 12
+  },
+  {
+    "from": "pc_f2_r4_u14",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 13
+  },
+  {
+    "from": "pc_f2_r4_u15",
+    "to": "access_switch_f2_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 14
+  },
+  {
+    "from": "pc_f3_r1_u1",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "pc_f3_r1_u2",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "pc_f3_r1_u3",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "pc_f3_r1_u4",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 3
+  },
+  {
+    "from": "pc_f3_r1_u5",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 4
+  },
+  {
+    "from": "pc_f3_r1_u6",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "pc_f3_r1_u7",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
+  },
+  {
+    "from": "pc_f3_r1_u8",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "pc_f3_r1_u9",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 8
+  },
+  {
+    "from": "pc_f3_r1_u10",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 9
+  },
+  {
+    "from": "pc_f3_r1_u11",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 10
+  },
+  {
+    "from": "pc_f3_r1_u12",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 11
+  },
+  {
+    "from": "pc_f3_r1_u13",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 12
+  },
+  {
+    "from": "pc_f3_r1_u14",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 13
+  },
+  {
+    "from": "pc_f3_r1_u15",
+    "to": "access_switch_f3_r1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 14
+  },
+  {
+    "from": "pc_f3_r2_u1",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "pc_f3_r2_u2",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "pc_f3_r2_u3",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "pc_f3_r2_u4",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 3
+  },
+  {
+    "from": "pc_f3_r2_u5",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 4
+  },
+  {
+    "from": "pc_f3_r2_u6",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "pc_f3_r2_u7",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
+  },
+  {
+    "from": "pc_f3_r2_u8",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "pc_f3_r2_u9",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 8
+  },
+  {
+    "from": "pc_f3_r2_u10",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 9
+  },
+  {
+    "from": "pc_f3_r2_u11",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 10
+  },
+  {
+    "from": "pc_f3_r2_u12",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 11
+  },
+  {
+    "from": "pc_f3_r2_u13",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 12
+  },
+  {
+    "from": "pc_f3_r2_u14",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 13
+  },
+  {
+    "from": "pc_f3_r2_u15",
+    "to": "access_switch_f3_r2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 14
+  },
+  {
+    "from": "pc_f3_r3_u1",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "pc_f3_r3_u2",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "pc_f3_r3_u3",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "pc_f3_r3_u4",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 3
+  },
+  {
+    "from": "pc_f3_r3_u5",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 4
+  },
+  {
+    "from": "pc_f3_r3_u6",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "pc_f3_r3_u7",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
+  },
+  {
+    "from": "pc_f3_r3_u8",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "pc_f3_r3_u9",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 8
+  },
+  {
+    "from": "pc_f3_r3_u10",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 9
+  },
+  {
+    "from": "pc_f3_r3_u11",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 10
+  },
+  {
+    "from": "pc_f3_r3_u12",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 11
+  },
+  {
+    "from": "pc_f3_r3_u13",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 12
+  },
+  {
+    "from": "pc_f3_r3_u14",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 13
+  },
+  {
+    "from": "pc_f3_r3_u15",
+    "to": "access_switch_f3_r3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 14
+  },
+  {
+    "from": "pc_f3_r4_u1",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "pc_f3_r4_u2",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "pc_f3_r4_u3",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "pc_f3_r4_u4",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 3
+  },
+  {
+    "from": "pc_f3_r4_u5",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 4
+  },
+  {
+    "from": "pc_f3_r4_u6",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "pc_f3_r4_u7",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
+  },
+  {
+    "from": "pc_f3_r4_u8",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "pc_f3_r4_u9",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 8
+  },
+  {
+    "from": "pc_f3_r4_u10",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 9
+  },
+  {
+    "from": "pc_f3_r4_u11",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 10
+  },
+  {
+    "from": "pc_f3_r4_u12",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 11
+  },
+  {
+    "from": "pc_f3_r4_u13",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 12
+  },
+  {
+    "from": "pc_f3_r4_u14",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 13
+  },
+  {
+    "from": "pc_f3_r4_u15",
+    "to": "access_switch_f3_r4",
+    "from_adapter_number": 0,
+    "to_adapter_number": 14
+  },
+  {
     "from": "access_switch_f1_r1",
     "to": "dist_switch_f1",
     "from_adapter_number": 15,
@@ -556,6 +1096,12 @@
     "to": "dist_switch_f1",
     "from_adapter_number": 15,
     "to_adapter_number": 2
+  },
+  {
+    "from": "access_switch_f1_r4",
+    "to": "dist_switch_f1",
+    "from_adapter_number": 15,
+    "to_adapter_number": 3
   },
   {
     "from": "access_switch_f2_r1",
@@ -576,87 +1122,195 @@
     "to_adapter_number": 2
   },
   {
+    "from": "access_switch_f2_r4",
+    "to": "dist_switch_f2",
+    "from_adapter_number": 15,
+    "to_adapter_number": 3
+  },
+  {
+    "from": "access_switch_f3_r1",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 15,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "access_switch_f3_r2",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 15,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "access_switch_f3_r3",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 15,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "access_switch_f3_r4",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 15,
+    "to_adapter_number": 3
+  },
+  {
     "from": "ap_f1_1",
     "to": "dist_switch_f1",
     "from_adapter_number": 0,
-    "to_adapter_number": 3
+    "to_adapter_number": 4
   },
   {
     "from": "ap_f1_2",
     "to": "dist_switch_f1",
     "from_adapter_number": 0,
-    "to_adapter_number": 4
+    "to_adapter_number": 5
+  },
+  {
+    "from": "ap_f1_3",
+    "to": "dist_switch_f1",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
   },
   {
     "from": "ap_f2_1",
     "to": "dist_switch_f2",
     "from_adapter_number": 0,
-    "to_adapter_number": 3
+    "to_adapter_number": 4
   },
   {
     "from": "ap_f2_2",
     "to": "dist_switch_f2",
     "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "ap_f2_3",
+    "to": "dist_switch_f2",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
+  },
+  {
+    "from": "ap_f3_1",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 0,
     "to_adapter_number": 4
   },
   {
-    "from": "dist_switch_f1",
-    "to": "core_router_1",
-    "from_adapter_number": 5,
-    "to_adapter_number": 0
+    "from": "ap_f3_2",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "ap_f3_3",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 0,
+    "to_adapter_number": 6
   },
   {
     "from": "dist_switch_f1",
     "to": "dist_switch_f2",
-    "from_adapter_number": 6,
-    "to_adapter_number": 5
+    "from_adapter_number": 7,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "dist_switch_f1",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 8,
+    "to_adapter_number": 7
+  },
+  {
+    "from": "dist_switch_f2",
+    "to": "dist_switch_f3",
+    "from_adapter_number": 8,
+    "to_adapter_number": 8
+  },
+  {
+    "from": "dist_switch_f1",
+    "to": "core_router_1",
+    "from_adapter_number": 9,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "dist_switch_f1",
+    "to": "backup_core_router",
+    "from_adapter_number": 10,
+    "to_adapter_number": 0
   },
   {
     "from": "dist_switch_f2",
     "to": "core_router_1",
-    "from_adapter_number": 6,
+    "from_adapter_number": 9,
     "to_adapter_number": 1
+  },
+  {
+    "from": "dist_switch_f2",
+    "to": "backup_core_router",
+    "from_adapter_number": 10,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "dist_switch_f3",
+    "to": "core_router_1",
+    "from_adapter_number": 9,
+    "to_adapter_number": 2
+  },
+  {
+    "from": "dist_switch_f3",
+    "to": "backup_core_router",
+    "from_adapter_number": 10,
+    "to_adapter_number": 2
   },
   {
     "from": "core_router_1",
     "to": "server_switch",
-    "from_adapter_number": 2,
+    "from_adapter_number": 3,
     "to_adapter_number": 0
+  },
+  {
+    "from": "backup_core_router",
+    "to": "server_switch",
+    "from_adapter_number": 3,
+    "to_adapter_number": 1
   },
   {
     "from": "server_switch",
     "to": "mail_server",
-    "from_adapter_number": 1,
+    "from_adapter_number": 2,
     "to_adapter_number": 0
   },
   {
     "from": "server_switch",
-    "to": "backup_server",
-    "from_adapter_number": 2,
+    "to": "vpn_server",
+    "from_adapter_number": 3,
     "to_adapter_number": 0
   },
   {
     "from": "server_switch",
     "to": "dhcp_server",
-    "from_adapter_number": 3,
+    "from_adapter_number": 4,
     "to_adapter_number": 0
   },
   {
     "from": "server_switch",
     "to": "dns_server",
-    "from_adapter_number": 4,
+    "from_adapter_number": 5,
     "to_adapter_number": 0
   },
   {
     "from": "core_router_1",
     "to": "firewall_1",
-    "from_adapter_number": 3,
+    "from_adapter_number": 4,
     "to_adapter_number": 0
+  },
+  {
+    "from": "backup_core_router",
+    "to": "firewall_1",
+    "from_adapter_number": 4,
+    "to_adapter_number": 1
   },
   {
     "from": "firewall_1",
     "to": "internet_cloud",
-    "from_adapter_number": 1,
+    "from_adapter_number": 2,
     "to_adapter_number": 0
   }
 ]
