@@ -1,0 +1,105 @@
+{
+  "valid_connections": {
+    "router": [
+      "router",
+      "switch",
+      "cloud",
+      "server",
+      "hub"
+    ],
+    "switch": [
+      "router",
+      "switch",
+      "server",
+      "pc",
+      "laptop",
+      "hub"
+    ],
+    "server": [
+      "switch",
+      "router",
+      "hub"
+    ],
+    "pc": [
+      "switch",
+      "hub"
+    ],
+    "laptop": [
+      "switch",
+      "hub"
+    ],
+    "hub": [
+      "switch",
+      "pc",
+      "laptop",
+      "server"
+    ],
+    "cloud": [
+      "router"
+    ]
+  },
+  "hierarchical_order": [
+    "cloud",
+    "router",
+    "switch",
+    "hub",
+    "server",
+    "pc",
+    "laptop"
+  ],
+  "connection_formulas": {
+    "ring": "N connections for N devices",
+    "star": "N connections for 1 center + N peripherals",
+    "tree": "N-1 connections for N devices (minimum)",
+    "bus": "N connections for 1 bus + N devices",
+    "daisy_chain": "N-1 connections for N devices",
+    "partial_mesh": "varies, typically 1.5N to 3N connections",
+    "full_mesh": "N*(N-1)/2 connections for N devices"
+  },
+  "prohibited_connections": [
+    [
+      "pc",
+      "pc"
+    ],
+    [
+      "pc",
+      "laptop"
+    ],
+    [
+      "pc",
+      "server"
+    ],
+    [
+      "laptop",
+      "laptop"
+    ],
+    [
+      "laptop",
+      "server"
+    ],
+    [
+      "server",
+      "server"
+    ],
+    [
+      "cloud",
+      "cloud"
+    ],
+    [
+      "cloud",
+      "switch"
+    ],
+    [
+      "cloud",
+      "pc"
+    ],
+    [
+      "cloud",
+      "laptop"
+    ],
+    [
+      "cloud",
+      "server"
+    ]
+  ]
+}

@@ -1,0 +1,1246 @@
+[
+  {
+    "prompt": "36 routers in a ring configuration.",
+    "machines": [
+      "router 1",
+      "router 2",
+      "router 3",
+      "router 4",
+      "router 5",
+      "router 6",
+      "router 7",
+      "router 8",
+      "router 9",
+      "router 10",
+      "router 11",
+      "router 12",
+      "router 13",
+      "router 14",
+      "router 15",
+      "router 16",
+      "router 17",
+      "router 18",
+      "router 19",
+      "router 20",
+      "router 21",
+      "router 22",
+      "router 23",
+      "router 24",
+      "router 25",
+      "router 26",
+      "router 27",
+      "router 28",
+      "router 29",
+      "router 30",
+      "router 31",
+      "router 32",
+      "router 33",
+      "router 34",
+      "router 35",
+      "router 36"
+    ],
+    "connections": [
+      {
+        "from": "router 1",
+        "to": "router 2"
+      },
+      {
+        "from": "router 2",
+        "to": "router 3"
+      },
+      {
+        "from": "router 3",
+        "to": "router 4"
+      },
+      {
+        "from": "router 4",
+        "to": "router 5"
+      },
+      {
+        "from": "router 5",
+        "to": "router 6"
+      },
+      {
+        "from": "router 6",
+        "to": "router 7"
+      },
+      {
+        "from": "router 7",
+        "to": "router 8"
+      },
+      {
+        "from": "router 8",
+        "to": "router 9"
+      },
+      {
+        "from": "router 9",
+        "to": "router 10"
+      },
+      {
+        "from": "router 10",
+        "to": "router 11"
+      },
+      {
+        "from": "router 11",
+        "to": "router 12"
+      },
+      {
+        "from": "router 12",
+        "to": "router 13"
+      },
+      {
+        "from": "router 13",
+        "to": "router 14"
+      },
+      {
+        "from": "router 14",
+        "to": "router 15"
+      },
+      {
+        "from": "router 15",
+        "to": "router 16"
+      },
+      {
+        "from": "router 16",
+        "to": "router 17"
+      },
+      {
+        "from": "router 17",
+        "to": "router 18"
+      },
+      {
+        "from": "router 18",
+        "to": "router 19"
+      },
+      {
+        "from": "router 19",
+        "to": "router 20"
+      },
+      {
+        "from": "router 20",
+        "to": "router 21"
+      },
+      {
+        "from": "router 21",
+        "to": "router 22"
+      },
+      {
+        "from": "router 22",
+        "to": "router 23"
+      },
+      {
+        "from": "router 23",
+        "to": "router 24"
+      },
+      {
+        "from": "router 24",
+        "to": "router 25"
+      },
+      {
+        "from": "router 25",
+        "to": "router 26"
+      },
+      {
+        "from": "router 26",
+        "to": "router 27"
+      },
+      {
+        "from": "router 27",
+        "to": "router 28"
+      },
+      {
+        "from": "router 28",
+        "to": "router 29"
+      },
+      {
+        "from": "router 29",
+        "to": "router 30"
+      },
+      {
+        "from": "router 30",
+        "to": "router 31"
+      },
+      {
+        "from": "router 31",
+        "to": "router 32"
+      },
+      {
+        "from": "router 32",
+        "to": "router 33"
+      },
+      {
+        "from": "router 33",
+        "to": "router 34"
+      },
+      {
+        "from": "router 34",
+        "to": "router 35"
+      },
+      {
+        "from": "router 35",
+        "to": "router 36"
+      },
+      {
+        "from": "router 36",
+        "to": "router 1"
+      }
+    ],
+    "topology_type": "ring",
+    "device_count": 36,
+    "connection_count": 36
+  },
+  {
+    "prompt": "Tree topology with switch 1 as root, 2 hubs as branches, and 4 servers as leaves.",
+    "machines": [
+      "switch 1",
+      "hub 1",
+      "hub 2",
+      "server 1",
+      "server 2",
+      "server 3",
+      "server 4"
+    ],
+    "connections": [
+      {
+        "from": "switch 1",
+        "to": "hub 1"
+      },
+      {
+        "from": "switch 1",
+        "to": "hub 2"
+      },
+      {
+        "from": "hub 1",
+        "to": "server 1"
+      },
+      {
+        "from": "hub 1",
+        "to": "server 2"
+      },
+      {
+        "from": "hub 2",
+        "to": "server 3"
+      },
+      {
+        "from": "hub 2",
+        "to": "server 4"
+      }
+    ],
+    "topology_type": "tree",
+    "device_count": 7,
+    "connection_count": 6
+  },
+  {
+    "prompt": "31 servers radiating from switch 1.",
+    "machines": [
+      "switch 1",
+      "server 1",
+      "server 2",
+      "server 3",
+      "server 4",
+      "server 5",
+      "server 6",
+      "server 7",
+      "server 8",
+      "server 9",
+      "server 10",
+      "server 11",
+      "server 12",
+      "server 13",
+      "server 14",
+      "server 15",
+      "server 16",
+      "server 17",
+      "server 18",
+      "server 19",
+      "server 20",
+      "server 21",
+      "server 22",
+      "server 23",
+      "server 24",
+      "server 25",
+      "server 26",
+      "server 27",
+      "server 28",
+      "server 29",
+      "server 30",
+      "server 31"
+    ],
+    "connections": [
+      {
+        "from": "switch 1",
+        "to": "server 1"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 2"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 3"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 4"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 5"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 6"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 7"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 8"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 9"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 10"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 11"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 12"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 13"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 14"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 15"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 16"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 17"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 18"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 19"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 20"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 21"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 22"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 23"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 24"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 25"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 26"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 27"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 28"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 29"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 30"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 31"
+      }
+    ],
+    "topology_type": "star",
+    "device_count": 32,
+    "connection_count": 31
+  },
+  {
+    "prompt": "partial mesh topology with 19 routers.",
+    "machines": [
+      "router 1",
+      "router 2",
+      "router 3",
+      "router 4",
+      "router 5",
+      "router 6",
+      "router 7",
+      "router 8",
+      "router 9",
+      "router 10",
+      "router 11",
+      "router 12",
+      "router 13",
+      "router 14",
+      "router 15",
+      "router 16",
+      "router 17",
+      "router 18",
+      "router 19"
+    ],
+    "connections": [
+      {
+        "from": "router 1",
+        "to": "router 10"
+      },
+      {
+        "from": "router 2",
+        "to": "router 16"
+      },
+      {
+        "from": "router 3",
+        "to": "router 16"
+      },
+      {
+        "from": "router 4",
+        "to": "router 14"
+      },
+      {
+        "from": "router 4",
+        "to": "router 5"
+      },
+      {
+        "from": "router 4",
+        "to": "router 1"
+      },
+      {
+        "from": "router 4",
+        "to": "router 8"
+      },
+      {
+        "from": "router 5",
+        "to": "router 8"
+      },
+      {
+        "from": "router 6",
+        "to": "router 1"
+      },
+      {
+        "from": "router 6",
+        "to": "router 11"
+      },
+      {
+        "from": "router 6",
+        "to": "router 10"
+      },
+      {
+        "from": "router 7",
+        "to": "router 10"
+      },
+      {
+        "from": "router 7",
+        "to": "router 17"
+      },
+      {
+        "from": "router 7",
+        "to": "router 12"
+      },
+      {
+        "from": "router 8",
+        "to": "router 6"
+      },
+      {
+        "from": "router 8",
+        "to": "router 13"
+      },
+      {
+        "from": "router 9",
+        "to": "router 19"
+      },
+      {
+        "from": "router 10",
+        "to": "router 12"
+      },
+      {
+        "from": "router 11",
+        "to": "router 8"
+      },
+      {
+        "from": "router 12",
+        "to": "router 13"
+      },
+      {
+        "from": "router 13",
+        "to": "router 19"
+      },
+      {
+        "from": "router 13",
+        "to": "router 6"
+      },
+      {
+        "from": "router 14",
+        "to": "router 17"
+      },
+      {
+        "from": "router 14",
+        "to": "router 8"
+      },
+      {
+        "from": "router 15",
+        "to": "router 8"
+      },
+      {
+        "from": "router 15",
+        "to": "router 11"
+      },
+      {
+        "from": "router 15",
+        "to": "router 10"
+      },
+      {
+        "from": "router 16",
+        "to": "router 17"
+      },
+      {
+        "from": "router 16",
+        "to": "router 11"
+      },
+      {
+        "from": "router 17",
+        "to": "router 8"
+      },
+      {
+        "from": "router 17",
+        "to": "router 10"
+      },
+      {
+        "from": "router 17",
+        "to": "router 19"
+      },
+      {
+        "from": "router 17",
+        "to": "router 18"
+      },
+      {
+        "from": "router 18",
+        "to": "router 16"
+      },
+      {
+        "from": "router 19",
+        "to": "router 4"
+      },
+      {
+        "from": "router 19",
+        "to": "router 7"
+      },
+      {
+        "from": "router 19",
+        "to": "router 15"
+      }
+    ],
+    "topology_type": "partial_mesh",
+    "device_count": 19,
+    "connection_count": 37
+  },
+  {
+    "prompt": "Linear bus using router 1 and 43 pcs.",
+    "machines": [
+      "router 1",
+      "pc 1",
+      "pc 2",
+      "pc 3",
+      "pc 4",
+      "pc 5",
+      "pc 6",
+      "pc 7",
+      "pc 8",
+      "pc 9",
+      "pc 10",
+      "pc 11",
+      "pc 12",
+      "pc 13",
+      "pc 14",
+      "pc 15",
+      "pc 16",
+      "pc 17",
+      "pc 18",
+      "pc 19",
+      "pc 20",
+      "pc 21",
+      "pc 22",
+      "pc 23",
+      "pc 24",
+      "pc 25",
+      "pc 26",
+      "pc 27",
+      "pc 28",
+      "pc 29",
+      "pc 30",
+      "pc 31",
+      "pc 32",
+      "pc 33",
+      "pc 34",
+      "pc 35",
+      "pc 36",
+      "pc 37",
+      "pc 38",
+      "pc 39",
+      "pc 40",
+      "pc 41",
+      "pc 42",
+      "pc 43"
+    ],
+    "connections": [
+      {
+        "from": "router 1",
+        "to": "pc 1"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 2"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 3"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 4"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 5"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 6"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 7"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 8"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 9"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 10"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 11"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 12"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 13"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 14"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 15"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 16"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 17"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 18"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 19"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 20"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 21"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 22"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 23"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 24"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 25"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 26"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 27"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 28"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 29"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 30"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 31"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 32"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 33"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 34"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 35"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 36"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 37"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 38"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 39"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 40"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 41"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 42"
+      },
+      {
+        "from": "router 1",
+        "to": "pc 43"
+      }
+    ],
+    "topology_type": "bus",
+    "device_count": 44,
+    "connection_count": 43
+  },
+  {
+    "prompt": "Daisy-chained routers topology with endpoints.",
+    "machines": [
+      "router 1",
+      "router 2",
+      "router 3",
+      "router 4",
+      "router 5",
+      "router 6",
+      "router 7",
+      "router 8",
+      "router 9",
+      "router 10",
+      "router 11",
+      "router 12",
+      "router 13",
+      "router 14",
+      "server 1",
+      "server 2",
+      "server 3",
+      "server 4",
+      "server 5",
+      "server 6",
+      "server 7",
+      "server 8",
+      "server 9",
+      "server 10",
+      "server 11",
+      "server 12",
+      "server 13",
+      "server 14",
+      "server 15",
+      "server 16",
+      "server 17",
+      "server 18",
+      "server 19",
+      "server 20",
+      "server 21",
+      "server 22",
+      "server 23",
+      "server 24",
+      "server 25",
+      "server 26",
+      "server 27",
+      "server 28"
+    ],
+    "connections": [
+      {
+        "from": "router 1",
+        "to": "router 2"
+      },
+      {
+        "from": "router 2",
+        "to": "router 3"
+      },
+      {
+        "from": "router 3",
+        "to": "router 4"
+      },
+      {
+        "from": "router 4",
+        "to": "router 5"
+      },
+      {
+        "from": "router 5",
+        "to": "router 6"
+      },
+      {
+        "from": "router 6",
+        "to": "router 7"
+      },
+      {
+        "from": "router 7",
+        "to": "router 8"
+      },
+      {
+        "from": "router 8",
+        "to": "router 9"
+      },
+      {
+        "from": "router 9",
+        "to": "router 10"
+      },
+      {
+        "from": "router 10",
+        "to": "router 11"
+      },
+      {
+        "from": "router 11",
+        "to": "router 12"
+      },
+      {
+        "from": "router 12",
+        "to": "router 13"
+      },
+      {
+        "from": "router 13",
+        "to": "router 14"
+      },
+      {
+        "from": "router 1",
+        "to": "server 1"
+      },
+      {
+        "from": "router 2",
+        "to": "server 3"
+      },
+      {
+        "from": "router 3",
+        "to": "server 5"
+      },
+      {
+        "from": "router 4",
+        "to": "server 7"
+      },
+      {
+        "from": "router 5",
+        "to": "server 9"
+      },
+      {
+        "from": "router 6",
+        "to": "server 11"
+      },
+      {
+        "from": "router 7",
+        "to": "server 13"
+      },
+      {
+        "from": "router 8",
+        "to": "server 15"
+      },
+      {
+        "from": "router 9",
+        "to": "server 17"
+      },
+      {
+        "from": "router 10",
+        "to": "server 19"
+      },
+      {
+        "from": "router 11",
+        "to": "server 21"
+      },
+      {
+        "from": "router 12",
+        "to": "server 23"
+      },
+      {
+        "from": "router 13",
+        "to": "server 25"
+      },
+      {
+        "from": "router 14",
+        "to": "server 27"
+      },
+      {
+        "from": "router 1",
+        "to": "server 2"
+      },
+      {
+        "from": "router 2",
+        "to": "server 4"
+      },
+      {
+        "from": "router 3",
+        "to": "server 6"
+      },
+      {
+        "from": "router 4",
+        "to": "server 8"
+      },
+      {
+        "from": "router 5",
+        "to": "server 10"
+      },
+      {
+        "from": "router 6",
+        "to": "server 12"
+      },
+      {
+        "from": "router 7",
+        "to": "server 14"
+      },
+      {
+        "from": "router 8",
+        "to": "server 16"
+      },
+      {
+        "from": "router 9",
+        "to": "server 18"
+      },
+      {
+        "from": "router 10",
+        "to": "server 20"
+      },
+      {
+        "from": "router 11",
+        "to": "server 22"
+      },
+      {
+        "from": "router 12",
+        "to": "server 24"
+      },
+      {
+        "from": "router 13",
+        "to": "server 26"
+      },
+      {
+        "from": "router 14",
+        "to": "server 28"
+      }
+    ],
+    "topology_type": "daisy_chain",
+    "device_count": 42,
+    "connection_count": 41
+  },
+  {
+    "prompt": "Three-tier network with 2 routers, 1 switch, and 20 servers.",
+    "machines": [
+      "router 1",
+      "router 2",
+      "switch 1",
+      "server 1",
+      "server 2",
+      "server 3",
+      "server 4",
+      "server 5",
+      "server 6",
+      "server 7",
+      "server 8",
+      "server 9",
+      "server 10",
+      "server 11",
+      "server 12",
+      "server 13",
+      "server 14",
+      "server 15",
+      "server 16",
+      "server 17",
+      "server 18",
+      "server 19",
+      "server 20"
+    ],
+    "connections": [
+      {
+        "from": "router 1",
+        "to": "switch 1"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 1"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 2"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 3"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 4"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 5"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 6"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 7"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 8"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 9"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 10"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 11"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 12"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 13"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 14"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 15"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 16"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 17"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 18"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 19"
+      },
+      {
+        "from": "switch 1",
+        "to": "server 20"
+      }
+    ],
+    "topology_type": "tree",
+    "device_count": 23,
+    "connection_count": 21
+  },
+  {
+    "prompt": "Layered network using 1 router, 2 switches, 18 pcs.",
+    "machines": [
+      "router 1",
+      "switch 1",
+      "switch 2",
+      "pc 1",
+      "pc 2",
+      "pc 3",
+      "pc 4",
+      "pc 5",
+      "pc 6",
+      "pc 7",
+      "pc 8",
+      "pc 9",
+      "pc 10",
+      "pc 11",
+      "pc 12",
+      "pc 13",
+      "pc 14",
+      "pc 15",
+      "pc 16",
+      "pc 17",
+      "pc 18"
+    ],
+    "connections": [
+      {
+        "from": "router 1",
+        "to": "switch 1"
+      },
+      {
+        "from": "router 1",
+        "to": "switch 2"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 1"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 2"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 3"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 4"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 5"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 6"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 7"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 8"
+      },
+      {
+        "from": "switch 1",
+        "to": "pc 9"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 10"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 11"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 12"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 13"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 14"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 15"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 16"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 17"
+      },
+      {
+        "from": "switch 2",
+        "to": "pc 18"
+      }
+    ],
+    "topology_type": "tree",
+    "device_count": 21,
+    "connection_count": 20
+  }
+]

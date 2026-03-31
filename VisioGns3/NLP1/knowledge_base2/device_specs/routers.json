@@ -1,0 +1,37 @@
+{
+  "device_type": "router",
+  "description": "Layer 3 network device that forwards packets between networks",
+  "naming_convention": "router [number]",
+  "examples": [
+    "router 1",
+    "router 2",
+    "router 10"
+  ],
+  "typical_connections": {
+    "can_connect_to": [
+      "router",
+      "switch",
+      "cloud",
+      "server",
+      "hub"
+    ],
+    "typically_connects_to": [
+      "switch",
+      "cloud",
+      "router"
+    ],
+    "layer": "Layer 3 (Network Layer)"
+  },
+  "role_in_topology": {
+    "primary": "Core/Distribution layer",
+    "can_be_root": true,
+    "can_be_branch": true,
+    "can_be_leaf": false
+  },
+  "characteristics": [
+    "Routes traffic between networks",
+    "Makes forwarding decisions based on IP addresses",
+    "Can connect different network segments",
+    "Often connects to WAN/Internet (via cloud)"
+  ]
+}

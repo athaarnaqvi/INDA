@@ -1,164 +1,335 @@
 [
     {
-        "chunk_id": "daisy_chain_topology_0",
-        "text": "# Daisy Chain Topology\n\n## Description\nA daisy chain topology connects devices in a linear sequence, where each device connects to the next one in line, forming a chain without returning to the start.\n\n## Characteristics\n- Linear sequence of connections\n- Each device connects to the next (except endpoints)\n- First device: only 1 connection (to second)\n- Last device: only 1 connection (to second-to-last)\n- Middle devices: 2 connections each\n- NOT a loop (doesn't connect back)\n\n## Connection Formula\n- For N devices: (N-1) connections\n- Pattern: 1→2, 2→3, 3→4, ..., (N-1)→N\n\n## Keywords\n- \"daisy chain\"\n- \"series\"\n- \"sequential\"\n- \"linear\"\n- \"chained\"\n- \"in series\"\n- \"daisy-chained\"\n\n## Example Patterns\n```\n4 devices: 1→2, 2→3, 3→4\n7 devices: 1→2, 2→3, 3→4, 4→5, 5→6, 6→7\n```\n\n## Additional Pattern: Daisy Chain with Endpoints\n- Main chain of devices (e.g., routers)\n- Each chain device has additional endpoint connections (e.g., servers)\n- Creates a spine-and-leaf variation\n\n## Use Cases\n- Simple expansion\n- Cable",
+        "chunk_id": "README_0",
+        "text": "# Network Topology RAG Knowledge Base\n\nThis knowledge base contains reference documents for generating network topologies from natural language descriptions.\n\n## Directory Structure\n\n```\nknowledge_base2/\n├── topology_patterns/      # Topology type definitions and patterns\n├── device_specs/          # Network device specifications\n├── connection_rules/      # Connection patterns and constraints\n├── terminology/           # Keywords, synonyms, and glossary\n└── examples/             # Annotated example topologies\n```\n\n## Contents\n\n### Topology Patterns\nReference documents for different network topology types:\n- Ring/Loop Topology\n- Star Topology\n- Tree Topology\n- Partial Mesh Topology\n- Bus/Linear Bus Topology\n- Daisy Chain Topology\n- Full Mesh Topology\n- Hybrid/Mixed Topology\n\n### Device Specifications\nDetailed specifications for network devices:\n- Routers (Layer 3)\n- Switches (Layer 2)\n- Servers (End Devices)\n- PCs (End Devices)\n- Laptops (End Devices)\n- Hubs (Layer 1)\n- Clouds (External Networks)\n\n### Connection Rules\nRules and constraints for valid network connections:\n- Hierarchical connection patterns\n- Valid connection pairs\n- Connection directionality\n- Prohibited patterns\n- B",
         "metadata": {
-            "source_file": "daisy_chain_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/daisy_chain_topology.md",
+            "source_file": "README.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/README.md",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "daisy_chain_topology_1",
-        "text": "Daisy Chain with Endpoints\n- Main chain of devices (e.g., routers)\n- Each chain device has additional endpoint connections (e.g., servers)\n- Creates a spine-and-leaf variation\n\n## Use Cases\n- Simple expansion\n- Cable cost reduction\n- Controlled data flow",
+        "chunk_id": "README_1",
+        "text": "l Networks)\n\n### Connection Rules\nRules and constraints for valid network connections:\n- Hierarchical connection patterns\n- Valid connection pairs\n- Connection directionality\n- Prohibited patterns\n- Best practices\n\n### Terminology\nKeywords, synonyms, and terminology mappings:\n- Topology type synonyms\n- Device type synonyms\n- Connection phrases\n- Action verbs\n- Quantity extractors\n\n### Examples\nAnnotated example topologies with:\n- Natural language prompts\n- Structured machine lists\n- Connection specifications\n- Topology type classifications\n\n## Usage in RAG System\n\n1. **Query Processing**: User provides natural language topology description\n2. **Retrieval**: System retrieves relevant documents based on keywords and patterns\n3. **Context Building**: Combines retrieved documents with user query\n4. **LLM Processing**: LLM generates structured output (machines + connections)\n5. **Validation**: Output validated against connection rules\n6. **Pipeline Integration**: Structured data passed to topology generation pipeline\n\n## Document Types\n\n- **Markdown (.md)**: Human-readable reference documentation\n- **JSON (.json)**: Machine-readable specifications and rules\n- Both formats available for",
         "metadata": {
-            "source_file": "daisy_chain_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/daisy_chain_topology.md",
+            "source_file": "README.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/README.md",
             "chunk_index": 1
         }
     },
     {
-        "chunk_id": "star_topology_0",
-        "text": "# Star Topology\n\n## Description\nA star topology features a central device (hub/switch/router) with all other devices connected directly to it, radiating outward like spokes on a wheel.\n\n## Characteristics\n- One central device\n- All peripheral devices connect only to the center\n- No direct connections between peripheral devices\n- Central point of failure\n\n## Connection Formula\n- For 1 central + N peripheral devices: Exactly N connections\n- All connections: Central → Peripheral device\n\n## Keywords\n- \"star\"\n- \"radiating from\"\n- \"hub-and-spoke\"\n- \"centralized\"\n- \"central hub\"\n\n## Example Patterns\n```\n1 center + 3 peripherals: C→1, C→2, C→3\n1 switch + 5 servers: S→S1, S→S2, S→S3, S→S4, S→S5\n```\n\n## Use Cases\n- Most common LAN topology\n- Easy to manage and troubleshoot\n- Simple to add/remove devices",
+        "chunk_id": "README_2",
+        "text": "opology generation pipeline\n\n## Document Types\n\n- **Markdown (.md)**: Human-readable reference documentation\n- **JSON (.json)**: Machine-readable specifications and rules\n- Both formats available for maximum flexibility\n\n## Updating the Knowledge Base\n\nTo add new topology types or device specifications:\n1. Create new document in appropriate subdirectory\n2. Follow existing format and structure\n3. Add entries to terminology mappings if needed\n4. Update this README with new content\n\n## Integration with LLM\n\nThese documents serve as context for the LLM to:\n- Understand topology patterns\n- Recognize device types and naming conventions\n- Apply connection rules and constraints\n- Parse natural language descriptions\n- Generate valid structured outputs\n\n## Version\n\nKnowledge Base Version: 1.0\nGenerated: 2025",
         "metadata": {
-            "source_file": "star_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/star_topology.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "tree_topology_0",
-        "text": "# Tree Topology\n\n## Description\nA tree topology is a hierarchical structure with a root device at the top, branch devices in the middle, and leaf devices at the bottom. No loops or redundant paths exist.\n\n## Characteristics\n- Hierarchical structure: root → branches → leaves\n- Root connects to branch devices\n- Branch devices connect to leaf devices\n- No loops or redundant connections\n- Clear parent-child relationships\n\n## Connection Formula\n- Varies based on branching factor\n- Each branch can have multiple leaves\n- No leaf-to-leaf connections\n\n## Keywords\n- \"tree\"\n- \"hierarchical\"\n- \"root\"\n- \"branches\"\n- \"leaves\"\n- \"as root\"\n- \"as branches\"\n- \"as leaves\"\n\n## Example Patterns\n```\n1 root, 2 branches, 4 leaves:\n  Root → Branch1, Root → Branch2\n  Branch1 → Leaf1, Branch1 → Leaf2\n  Branch2 → Leaf3, Branch2 → Leaf4\n```\n\n## Use Cases\n- Enterprise networks\n- Scalable architectures\n- Clear hierarchy needed",
-        "metadata": {
-            "source_file": "tree_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/tree_topology.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "hybrid_topology_0",
-        "text": "# Hybrid/Mixed Topology\n\n## Description\nA hybrid topology combines two or more different topology types to create a complex network that leverages advantages of each topology type.\n\n## Characteristics\n- Combines multiple topology types\n- Can include star, tree, bus, ring elements\n- Flexible and scalable\n- Common in enterprise networks\n\n## Keywords\n- \"hybrid\"\n- \"mixed\"\n- \"heterogeneous\"\n- \"complex\"\n- \"multi-tier\"\n- \"layered\"\n\n## Common Patterns\n- Star-Bus: Multiple star networks connected via bus\n- Star-Ring: Multiple star networks in ring configuration\n- Tree-Star: Tree topology with star configurations at leaves\n- Three-tier: Hierarchical with core, distribution, access layers\n\n## Example Patterns\n```\nThree-tier network:\n  Core: Routers interconnected\n  Distribution: Switches connected to routers\n  Access: End devices connected to switches\n```\n\n## Use Cases\n- Enterprise networks\n- Campus networks\n- Large organizations\n- Complex requirements",
-        "metadata": {
-            "source_file": "hybrid_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/hybrid_topology.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "full_mesh_topology_0",
-        "text": "# Full Mesh Topology\n\n## Description\nA full mesh topology connects every device to every other device, creating maximum redundancy and fault tolerance.\n\n## Characteristics\n- Every device connects to every other device\n- Maximum redundancy\n- Highest fault tolerance\n- Most expensive and complex\n\n## Connection Formula\n- For N devices: N*(N-1)/2 connections\n- Each device has (N-1) connections\n\n## Keywords\n- \"full mesh\"\n- \"fully connected\"\n- \"complete mesh\"\n- \"all-to-all\"\n\n## Example Patterns\n```\n3 devices: 1↔2, 1↔3, 2↔3 (3 connections)\n4 devices: 1↔2, 1↔3, 1↔4, 2↔3, 2↔4, 3↔4 (6 connections)\n5 devices: 10 connections\n```\n\n## Use Cases\n- Critical systems requiring maximum uptime\n- Small networks where cost isn't primary concern\n- High reliability requirements",
-        "metadata": {
-            "source_file": "full_mesh_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/full_mesh_topology.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "bus_topology_0",
-        "text": "# Bus/Linear Bus Topology\n\n## Description\nA bus topology uses a single backbone (main cable/device) with all other devices connected directly to it. All devices share the same communication medium.\n\n## Characteristics\n- Single central backbone/bus\n- All devices connect directly to the bus\n- One device acts as the bus (router/switch)\n- Simple linear structure\n\n## Connection Formula\n- For 1 bus + N devices: Exactly N connections\n- All connections: Bus → Device\n\n## Keywords\n- \"bus\"\n- \"linear bus\"\n- \"backbone\"\n- \"using [device] and [N] [devices]\"\n\n## Example Patterns\n```\n1 router + 5 PCs: R→PC1, R→PC2, R→PC3, R→PC4, R→PC5\n1 switch + 10 servers: S→S1, S→S2, ..., S→S10\n```\n\n## Use Cases\n- Simple networks\n- Small office setups\n- Legacy systems",
-        "metadata": {
-            "source_file": "bus_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/bus_topology.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "ring_topology_0",
-        "text": "# Ring/Loop Topology\n\n## Description\nA ring topology connects devices in a circular chain where each device is connected to exactly two neighbors, forming a closed loop.\n\n## Characteristics\n- Each device connects to exactly 2 neighbors\n- The last device connects back to the first device\n- Creates a circular data path\n- No central node\n\n## Connection Formula\n- For N devices: Exactly N connections\n- Connection pattern: Device i → Device (i+1), with Device N → Device 1\n\n## Keywords\n- \"ring\"\n- \"loop\"\n- \"circular\"\n- \"ring configuration\"\n- \"circular chain\"\n\n## Example Patterns\n```\n3 devices: 1→2, 2→3, 3→1\n5 devices: 1→2, 2→3, 3→4, 4→5, 5→1\nN devices: 1→2, 2→3, ..., (N-1)→N, N→1\n```\n\n## Use Cases\n- Token passing networks\n- Fault-tolerant systems (can detect breaks)\n- Equal access networks",
-        "metadata": {
-            "source_file": "ring_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/ring_topology.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "partial_mesh_topology_0",
-        "text": "# Partial Mesh Topology\n\n## Description\nA partial mesh topology has some devices with multiple connections to other devices, but not all devices are connected to all others. Provides redundancy without full mesh complexity.\n\n## Characteristics\n- Some devices have multiple connections\n- Not every device connects to every other device\n- Provides some redundancy and alternate paths\n- More connections than tree, fewer than full mesh\n- No fixed pattern - connections vary\n\n## Connection Formula\n- Variable: More than (N-1), less than N*(N-1)/2\n- Typically 2-4 connections per device on average\n- Strategic connections for redundancy\n\n## Keywords\n- \"partial mesh\"\n- \"redundant\"\n- \"some redundancy\"\n- \"mesh\"\n- \"interconnected\"\n\n## Example Patterns\n```\n5 devices with partial mesh:\n  Could have 8-12 connections\n  Some devices connect to 2-3 others\n  Not all pairs connected\n```\n\n## Use Cases\n- Redundant networks\n- Critical infrastructure\n- Balance between cost and reliability",
-        "metadata": {
-            "source_file": "partial_mesh_topology.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/topology_patterns/partial_mesh_topology.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "glossary_0",
-        "text": "# Network Topology Terminology Glossary\n\n## Topology Types\n\n### Ring/Loop Topology\n- **Keywords**: ring, loop, circular, ring configuration\n- **Pattern**: Devices connected in circular chain\n- **Characteristics**: Each device connects to 2 neighbors, closed loop\n\n### Star Topology\n- **Keywords**: star, radiating from, hub-and-spoke, centralized\n- **Pattern**: Central device with peripherals radiating outward\n- **Characteristics**: Single central point, all others connect to it\n\n### Tree Topology\n- **Keywords**: tree, hierarchical, root, branches, leaves\n- **Pattern**: Hierarchical structure with levels\n- **Characteristics**: Root device, branch devices, leaf devices\n\n### Bus Topology\n- **Keywords**: bus, linear bus, backbone\n- **Pattern**: Single backbone with attached devices\n- **Characteristics**: One central device, all others connect to it\n\n### Mesh Topology\n- **Keywords**: mesh, fully connected, interconnected\n- **Pattern**: All devices connected to all others (full mesh)\n- **Characteristics**: Maximum redundancy, highest connection count\n\n### Partial Mesh Topology\n- **Keywords**: partial mesh, redundant, some redundancy\n- **Pattern**: Some redundant connections, not fully connected\n- **Characteristics**: Balance between redundancy and complexity\n\n### Daisy Chain Topology\n- **Keywords**: daisy chain, series, sequential, chained\n- **Pattern**:",
-        "metadata": {
-            "source_file": "glossary.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/glossary.md",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "glossary_1",
-        "text": "some redundancy\n- **Pattern**: Some redundant connections, not fully connected\n- **Characteristics**: Balance between redundancy and complexity\n\n### Daisy Chain Topology\n- **Keywords**: daisy chain, series, sequential, chained\n- **Pattern**: Linear sequence without closing loop\n- **Characteristics**: Each device connects to next, no return to start\n\n### Hybrid/Mixed Topology\n- **Keywords**: hybrid, mixed, heterogeneous, multi-tier\n- **Pattern**: Combination of multiple topology types\n- **Characteristics**: Flexible, complex, uses multiple patterns\n\n## Device Types\n\n### Router\n- **Synonyms**: R, gateway\n- **Layer**: Layer 3 (Network)\n- **Function**: Routes between networks\n- **Naming**: router 1, router 2, etc.\n\n### Switch\n- **Synonyms**: SW\n- **Layer**: Layer 2 (Data Link)\n- **Function**: Forwards frames within network\n- **Naming**: switch 1, switch 2, etc.\n\n### Server\n- **Synonyms**: SRV, host\n- **Layer**: Application (End Device)\n- **Function**: Provides services\n- **Naming**: server 1, server 2, etc.\n\n### PC\n- **Synonyms**: computer, workstation, desktop\n- **Layer**: Application (End Device)\n- **Function**: User workstation\n- **Naming**: pc 1, pc 2, etc.\n\n### Laptop\n- **",
-        "metadata": {
-            "source_file": "glossary.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/glossary.md",
-            "chunk_index": 1
-        }
-    },
-    {
-        "chunk_id": "glossary_2",
-        "text": ".\n\n### PC\n- **Synonyms**: computer, workstation, desktop\n- **Layer**: Application (End Device)\n- **Function**: User workstation\n- **Naming**: pc 1, pc 2, etc.\n\n### Laptop\n- **Synonyms**: notebook, portable\n- **Layer**: Application (End Device)\n- **Function**: Portable workstation\n- **Naming**: laptop 1, laptop 2, etc.\n\n### Hub\n- **Synonyms**: repeater (though technically different)\n- **Layer**: Layer 1 (Physical)\n- **Function**: Broadcasts to all ports\n- **Naming**: hub 1, hub 2, etc.\n\n### Cloud\n- **Synonyms**: WAN, Internet\n- **Layer**: External Network\n- **Function**: Represents external connectivity\n- **Naming**: cloud 1, cloud 2, etc.\n\n## Connection Terminology\n\n### Directional Terms\n- **Connected to**: General connection\n- **Links to**: Connection between devices\n- **Attached to**: Physical connection\n- **Wired to**: Physical cabling\n- **Points to**: Directional connection\n\n### Structural Terms\n- **Root**: Top of hierarchy, starting point\n- **Branch**: Intermediate level in hierarchy\n- **Leaf**: End point, terminal device\n- **Center**: Central point in star topology\n- **Peripheral**: Outer devices in star topology\n- **Backbone**: Main communication path in bus topology\n- **Endpoint",
-        "metadata": {
-            "source_file": "glossary.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/glossary.md",
+            "source_file": "README.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/README.md",
             "chunk_index": 2
         }
     },
     {
-        "chunk_id": "glossary_3",
-        "text": "Intermediate level in hierarchy\n- **Leaf**: End point, terminal device\n- **Center**: Central point in star topology\n- **Peripheral**: Outer devices in star topology\n- **Backbone**: Main communication path in bus topology\n- **Endpoint**: Terminal device or connection end\n\n### Pattern Terms\n- **Sequential**: One after another in order\n- **Hierarchical**: Organized in levels/tiers\n- **Redundant**: Multiple paths for reliability\n- **Centralized**: Organized around central point\n- **Distributed**: Spread across multiple devices\n- **Meshed**: Interconnected with multiple paths\n\n## Quantity Expressions\n\n### Common Formats\n- \"X routers\" (e.g., \"5 routers\")\n- \"with X switches\" (e.g., \"with 3 switches\")\n- \"using X servers\" (e.g., \"using 10 servers\")\n- \"having X PCs\" (e.g., \"having 20 PCs\")\n\n### Action Verbs\n- **Create**: Build new topology\n- **Prepare**: Setup topology\n- **Design**: Plan topology\n- **Configure**: Setup devices\n- **Build**: Construct topology\n- **Setup**: Arrange devices",
+        "chunk_id": "connection_rules_0",
+        "text": "{\n  \"valid_connections\": {\n    \"router\": [\n      \"router\",\n      \"switch\",\n      \"cloud\",\n      \"server\",\n      \"hub\"\n    ],\n    \"switch\": [\n      \"router\",\n      \"switch\",\n      \"server\",\n      \"pc\",\n      \"laptop\",\n      \"hub\"\n    ],\n    \"server\": [\n      \"switch\",\n      \"router\",\n      \"hub\"\n    ],\n    \"pc\": [\n      \"switch\",\n      \"hub\"\n    ],\n    \"laptop\": [\n      \"switch\",\n      \"hub\"\n    ],\n    \"hub\": [\n      \"switch\",\n      \"pc\",\n      \"laptop\",\n      \"server\"\n    ],\n    \"cloud\": [\n      \"router\"\n    ]\n  },\n  \"hierarchical_order\": [\n    \"cloud\",\n    \"router\",\n    \"switch\",\n    \"hub\",\n    \"server\",\n    \"pc\",\n    \"laptop\"\n  ],\n  \"connection_formulas\": {\n    \"ring\": \"N connections for N devices\",\n    \"star\": \"N connections for 1 center + N peripherals\",\n    \"tree\": \"N-1 connections for N devices (minimum)\",\n    \"bus\": \"N connections for 1 bus + N devices\",\n    \"daisy_chain\": \"N-1 connections for N devices\",\n    \"partial_mesh\": \"varies, typically 1.5N to 3N connections\",\n    \"full_mesh\": \"N*(N-1)/2 connections for N devices\"\n  },\n  \"prohibited_connections\": [\n    [\n      \"pc\",\n      \"pc\"\n    ],\n    [\n      \"pc\",\n      \"laptop\"\n    ],\n    [\n      \"pc\",\n      \"server\"\n    ],",
         "metadata": {
-            "source_file": "glossary.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/glossary.md",
-            "chunk_index": 3
-        }
-    },
-    {
-        "chunk_id": "network_terminology_0",
-        "text": "{\n  \"topology_synonyms\": {\n    \"ring\": [\n      \"loop\",\n      \"circular\",\n      \"ring configuration\",\n      \"circular chain\",\n      \"ring topology\"\n    ],\n    \"star\": [\n      \"radiating from\",\n      \"hub-and-spoke\",\n      \"centralized\",\n      \"star topology\",\n      \"radial\"\n    ],\n    \"tree\": [\n      \"hierarchical\",\n      \"root-branch-leaf\",\n      \"tree topology\",\n      \"branching\"\n    ],\n    \"bus\": [\n      \"linear bus\",\n      \"backbone\",\n      \"bus topology\"\n    ],\n    \"mesh\": [\n      \"fully connected\",\n      \"interconnected\",\n      \"complete mesh\"\n    ],\n    \"partial_mesh\": [\n      \"redundant\",\n      \"some redundancy\",\n      \"partial mesh\",\n      \"partially connected\"\n    ],\n    \"daisy_chain\": [\n      \"series\",\n      \"sequential\",\n      \"linear\",\n      \"chained\",\n      \"daisy-chained\",\n      \"in series\"\n    ],\n    \"hybrid\": [\n      \"mixed\",\n      \"heterogeneous\",\n      \"complex\",\n      \"multi-tier\",\n      \"combined\"\n    ]\n  },\n  \"topology_keywords\": {\n    \"ring\": [\n      \"ring\",\n      \"loop\",\n      \"circular\"\n    ],\n    \"star\": [\n      \"radiating\",\n      \"star\",\n      \"central\"\n    ],",
-        "metadata": {
-            "source_file": "network_terminology.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/network_terminology.json",
+            "source_file": "connection_rules.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/connection_rules/connection_rules.json",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "network_terminology_1",
-        "text": "},\n  \"topology_keywords\": {\n    \"ring\": [\n      \"ring\",\n      \"loop\",\n      \"circular\"\n    ],\n    \"star\": [\n      \"radiating\",\n      \"star\",\n      \"central\"\n    ],\n    \"tree\": [\n      \"tree\",\n      \"root\",\n      \"branches\",\n      \"leaves\",\n      \"hierarchical\"\n    ],\n    \"bus\": [\n      \"bus\",\n      \"linear bus\",\n      \"backbone\"\n    ],\n    \"mesh\": [\n      \"mesh\",\n      \"interconnected\"\n    ],\n    \"partial_mesh\": [\n      \"partial mesh\",\n      \"redundant\"\n    ],\n    \"daisy_chain\": [\n      \"daisy\",\n      \"series\",\n      \"sequential\",\n      \"chain\"\n    ],\n    \"hybrid\": [\n      \"mixed\",\n      \"heterogeneous\",\n      \"layered\",\n      \"multi-tier\",\n      \"three-tier\"\n    ]\n  },\n  \"device_type_synonyms\": {\n    \"router\": [\n      \"router\",\n      \"routers\",\n      \"R\"\n    ],\n    \"switch\": [\n      \"switch\",\n      \"switches\",\n      \"SW\"\n    ],\n    \"server\": [\n      \"server\",\n      \"servers\",\n      \"SRV\"\n    ],\n    \"pc\": [\n      \"pc\",\n      \"pcs\",\n      \"computer\",\n      \"computers\",\n      \"workstation\",\n      \"workstations\"\n    ],\n    \"",
+        "chunk_id": "connection_rules_1",
+        "text": "mesh\": \"N*(N-1)/2 connections for N devices\"\n  },\n  \"prohibited_connections\": [\n    [\n      \"pc\",\n      \"pc\"\n    ],\n    [\n      \"pc\",\n      \"laptop\"\n    ],\n    [\n      \"pc\",\n      \"server\"\n    ],\n    [\n      \"laptop\",\n      \"laptop\"\n    ],\n    [\n      \"laptop\",\n      \"server\"\n    ],\n    [\n      \"server\",\n      \"server\"\n    ],\n    [\n      \"cloud\",\n      \"cloud\"\n    ],\n    [\n      \"cloud\",\n      \"switch\"\n    ],\n    [\n      \"cloud\",\n      \"pc\"\n    ],\n    [\n      \"cloud\",\n      \"laptop\"\n    ],\n    [\n      \"cloud\",\n      \"server\"\n    ]\n  ]\n}",
         "metadata": {
-            "source_file": "network_terminology.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/network_terminology.json",
+            "source_file": "connection_rules.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/connection_rules/connection_rules.json",
             "chunk_index": 1
         }
     },
     {
-        "chunk_id": "network_terminology_2",
-        "text": "\"server\",\n      \"servers\",\n      \"SRV\"\n    ],\n    \"pc\": [\n      \"pc\",\n      \"pcs\",\n      \"computer\",\n      \"computers\",\n      \"workstation\",\n      \"workstations\"\n    ],\n    \"laptop\": [\n      \"laptop\",\n      \"laptops\",\n      \"notebook\",\n      \"notebooks\"\n    ],\n    \"hub\": [\n      \"hub\",\n      \"hubs\"\n    ],\n    \"cloud\": [\n      \"cloud\",\n      \"clouds\",\n      \"internet\",\n      \"wan\"\n    ]\n  },\n  \"connection_phrases\": {\n    \"sequential\": [\n      \"in series\",\n      \"daisy-chained\",\n      \"chained\",\n      \"sequentially\",\n      \"one after another\"\n    ],\n    \"centralized\": [\n      \"radiating from\",\n      \"connected to central\",\n      \"hub-and-spoke\",\n      \"emanating from\"\n    ],\n    \"hierarchical\": [\n      \"as root\",\n      \"as branches\",\n      \"as leaves\",\n      \"root at\",\n      \"with root\"\n    ],\n    \"redundant\": [\n      \"with redundancy\",\n      \"redundant paths\",\n      \"backup connections\",\n      \"multiple paths\"\n    ],\n    \"direct\": [\n      \"directly connected\",\n      \"point-to-point\",\n      \"dedicated link\"\n    ]\n  },\n  \"count_phrases\": {\n    \"with\": [\n      \"",
+        "chunk_id": "connection_patterns_0",
+        "text": "# Network Connection Rules and Constraints\n\n## Hierarchical Connection Patterns\n\n### Standard Network Hierarchy\n```\nCloud (Internet/WAN)\n  ↓\nRouter (Core/Edge Layer)\n  ↓\nSwitch (Distribution/Access Layer)\n  ↓\nEnd Devices (Servers, PCs, Laptops)\n```\n\n### Typical Flow\n1. **Cloud → Router**: WAN/Internet entry\n2. **Router → Router**: Inter-network routing\n3. **Router → Switch**: Distribution to access layer\n4. **Switch → Switch**: Redundancy or extended access\n5. **Switch → End Devices**: Access layer connectivity\n6. **Hub → End Devices**: Legacy access (rare)\n\n## Valid Connection Pairs\n\n### Layer 3 Devices (Routers)\n- **Router ↔ Router**: Valid - inter-router connections for routing\n- **Router ↔ Switch**: Valid - most common distribution pattern\n- **Router ↔ Cloud**: Valid - WAN/Internet connectivity\n- **Router ↔ Server**: Valid - direct server connection (less common)\n- **Router ↔ Hub**: Valid - legacy configuration\n\n### Layer 2 Devices (Switches)\n- **Switch ↔ Switch**: Valid - redundancy, extended access\n- **Switch ↔ Router**: Valid - uplink to core\n- **Switch ↔ Server**: Valid - most common server connection\n- **Switch ↔ PC**: Valid - most common PC connection\n- **Switch ↔ Laptop*",
         "metadata": {
-            "source_file": "network_terminology.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/network_terminology.json",
+            "source_file": "connection_patterns.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/connection_rules/connection_patterns.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "connection_patterns_1",
+        "text": "cy, extended access\n- **Switch ↔ Router**: Valid - uplink to core\n- **Switch ↔ Server**: Valid - most common server connection\n- **Switch ↔ PC**: Valid - most common PC connection\n- **Switch ↔ Laptop**: Valid - most common laptop connection\n- **Switch ↔ Hub**: Valid - legacy extension\n\n### Layer 1 Devices (Hubs)\n- **Hub ↔ PC**: Valid - legacy workstation connection\n- **Hub ↔ Laptop**: Valid - legacy laptop connection\n- **Hub ↔ Server**: Valid - legacy server connection\n- **Hub ↔ Switch**: Valid - uplink to better equipment\n\n### End Devices\n- **Server ↔ Switch**: Most common\n- **Server ↔ Router**: Direct connection (DMZ, special cases)\n- **PC ↔ Switch**: Most common\n- **PC ↔ Hub**: Legacy\n- **Laptop ↔ Switch**: Most common\n- **Laptop ↔ Hub**: Legacy\n\n### External Connections\n- **Cloud ↔ Router**: Standard WAN/Internet entry point\n- **Cloud ↔ Cloud**: Invalid (clouds represent external networks)\n\n## Connection Directionality\n\n### Directional Connections\n- Most connections in topology descriptions are **directional**\n- Format: `device1 -> device2` means device1 connects TO device2\n- In implementation, many are bidirectional for data flow\n\n### Bidirectional Implications\n- Physical conn",
+        "metadata": {
+            "source_file": "connection_patterns.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/connection_rules/connection_patterns.md",
+            "chunk_index": 1
+        }
+    },
+    {
+        "chunk_id": "connection_patterns_2",
+        "text": "criptions are **directional**\n- Format: `device1 -> device2` means device1 connects TO device2\n- In implementation, many are bidirectional for data flow\n\n### Bidirectional Implications\n- Physical connections are typically bidirectional\n- Data can flow both ways\n- In ring/loop topologies, direction matters for token passing\n\n### Special Cases\n- **Ring/Loop**: Strictly directional in pattern (1→2→3→...→N→1)\n- **Star**: All connections point from center to peripherals\n- **Daisy Chain**: Sequential directional (1→2→3→4)\n- **Mesh**: Can be bidirectional or specific paths\n\n## Connection Constraints\n\n### Prohibited Patterns\n- **End Device ↔ End Device**: Generally not direct\n  - PC ↔ PC: No direct connection\n  - Server ↔ Server: No direct connection\n  - Laptop ↔ Laptop: No direct connection\n- **Cloud ↔ End Device**: Clouds don't connect directly to end devices\n- **Cloud ↔ Switch**: Typically not direct (goes through router)\n\n### Logical Constraints\n- **No Loops** (except ring/loop topology): Tree topologies must be acyclic\n- **Single Root**: Tree topologies have one root device\n- **Star Center**: Star topology needs exactly one central device\n- **Ring Closure**: Ring topology must close (",
+        "metadata": {
+            "source_file": "connection_patterns.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/connection_rules/connection_patterns.md",
             "chunk_index": 2
         }
     },
     {
-        "chunk_id": "network_terminology_3",
-        "text": "connections\",\n      \"multiple paths\"\n    ],\n    \"direct\": [\n      \"directly connected\",\n      \"point-to-point\",\n      \"dedicated link\"\n    ]\n  },\n  \"count_phrases\": {\n    \"with\": [\n      \"with\",\n      \"having\",\n      \"using\",\n      \"containing\"\n    ],\n    \"count\": [\n      \"X devices\",\n      \"X [device_type]\",\n      \"[number] [device_type]\"\n    ]\n  },\n  \"structure_keywords\": {\n    \"root\": [\n      \"root\",\n      \"top\",\n      \"head\",\n      \"main\",\n      \"primary\"\n    ],\n    \"branch\": [\n      \"branch\",\n      \"branches\",\n      \"intermediate\",\n      \"distribution\"\n    ],\n    \"leaf\": [\n      \"leaf\",\n      \"leaves\",\n      \"endpoint\",\n      \"end device\",\n      \"terminal\"\n    ],\n    \"center\": [\n      \"center\",\n      \"central\",\n      \"hub\",\n      \"core\"\n    ],\n    \"peripheral\": [\n      \"peripheral\",\n      \"edge\",\n      \"outer\",\n      \"remote\"\n    ]\n  },\n  \"action_verbs\": {\n    \"create\": [\n      \"create\",\n      \"build\",\n      \"make\",\n      \"construct\",\n      \"design\",\n      \"setup\",\n      \"configure\"\n    ],\n    \"connect\": [\n      \"connect\",\n      \"link\",\n      \"attach\",\n      \"wire\",\n      \"join\",",
+        "chunk_id": "connection_patterns_3",
+        "text": "Tree topologies must be acyclic\n- **Single Root**: Tree topologies have one root device\n- **Star Center**: Star topology needs exactly one central device\n- **Ring Closure**: Ring topology must close (last connects to first)\n\n## Common Network Patterns\n\n### Three-Tier Architecture\n```\nCore Layer: Routers\n  ↓\nDistribution Layer: Switches\n  ↓\nAccess Layer: End Devices\n```\n\n### DMZ Pattern\n```\nInternet (Cloud) → Edge Router → DMZ Switch → Public Servers\n                              → Internal Network\n```\n\n### Redundant Pattern\n```\nDevice A → Primary Path → Device B\n        → Backup Path  → Device B\n```\n\n## Connection Density Guidelines\n\n### Topology Type vs Connection Count\n- **Ring**: N devices = N connections\n- **Star**: N peripherals + 1 center = N connections\n- **Tree**: N devices ≈ N-1 connections (minimum)\n- **Bus**: N devices + 1 bus = N connections\n- **Partial Mesh**: N devices = 1.5N to 3N connections (typical)\n- **Full Mesh**: N devices = N*(N-1)/2 connections\n- **Daisy Chain**: N devices = N-1 connections\n\n## Best Practices\n\n1. **Hierarchical Design**: Follow OSI model layers\n2. **Redundancy**: Critical paths should have backups\n3. **Scalability**: Design for growth\n4. **Si",
         "metadata": {
-            "source_file": "network_terminology.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/network_terminology.json",
+            "source_file": "connection_patterns.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/connection_rules/connection_patterns.md",
             "chunk_index": 3
         }
     },
     {
-        "chunk_id": "network_terminology_4",
-        "text": "build\",\n      \"make\",\n      \"construct\",\n      \"design\",\n      \"setup\",\n      \"configure\"\n    ],\n    \"connect\": [\n      \"connect\",\n      \"link\",\n      \"attach\",\n      \"wire\",\n      \"join\",\n      \"bridge\"\n    ],\n    \"prepare\": [\n      \"prepare\",\n      \"setup\",\n      \"arrange\",\n      \"organize\"\n    ]\n  },\n  \"quantity_extractors\": {\n    \"patterns\": [\n      \"\\\\d+\\\\s+(router|switch|server|pc|laptop|hub|cloud)s?\",\n      \"(router|switch|server|pc|laptop|hub|cloud)\\\\s+\\\\d+\",\n      \"with\\\\s+\\\\d+\\\\s+(router|switch|server|pc|laptop|hub|cloud)s?\",\n      \"using\\\\s+\\\\d+\\\\s+(router|switch|server|pc|laptop|hub|cloud)s?\"\n    ]\n  }\n}",
+        "chunk_id": "connection_patterns_4",
+        "text": "N devices = N-1 connections\n\n## Best Practices\n\n1. **Hierarchical Design**: Follow OSI model layers\n2. **Redundancy**: Critical paths should have backups\n3. **Scalability**: Design for growth\n4. **Simplicity**: Minimize unnecessary complexity\n5. **Standards**: Follow industry best practices",
         "metadata": {
-            "source_file": "network_terminology.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/terminology/network_terminology.json",
+            "source_file": "connection_patterns.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/connection_rules/connection_patterns.md",
             "chunk_index": 4
+        }
+    },
+    {
+        "chunk_id": "annotated_examples_0",
+        "text": "# Annotated Topology Examples\n\nThis document contains examples of topology descriptions with their structured outputs.\n\n## Example 1: Ring Topology\n\n**Prompt**: 36 routers in a ring configuration.\n\n**Topology Type**: ring\n\n**Device Count**: 36\n\n**Connection Count**: 36\n\n**Machines**: router 1, router 2, router 3, router 4, router 5...\n\n**Sample Connections**:\n- router 1 → router 2\n- router 2 → router 3\n- router 3 → router 4\n- router 4 → router 5\n- router 5 → router 6\n- ... (31 more connections)\n\n---\n\n## Example 2: Tree Topology\n\n**Prompt**: Tree topology with switch 1 as root, 2 hubs as branches, and 4 servers as leaves.\n\n**Topology Type**: tree\n\n**Device Count**: 7\n\n**Connection Count**: 6\n\n**Machines**: switch 1, hub 1, hub 2, server 1, server 2...\n\n**Sample Connections**:\n- switch 1 → hub 1\n- switch 1 → hub 2\n- hub 1 → server 1\n- hub 1 → server 2\n- hub 2 → server 3\n- ... (1 more connections)\n\n---\n\n## Example 3: Star Topology\n\n**Prompt**: 31 servers radiating from switch 1.\n\n**Topology Type**: star\n\n**Device Count**: 32\n\n**Connection Count**: 31\n\n**Machines**: switch 1, server 1, server 2, server 3, server 4...\n\n**Sample Connections**:\n- switch 1 → server 1\n- switch 1 → server 2",
+        "metadata": {
+            "source_file": "annotated_examples.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_examples.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "annotated_examples_1",
+        "text": "gy Type**: star\n\n**Device Count**: 32\n\n**Connection Count**: 31\n\n**Machines**: switch 1, server 1, server 2, server 3, server 4...\n\n**Sample Connections**:\n- switch 1 → server 1\n- switch 1 → server 2\n- switch 1 → server 3\n- switch 1 → server 4\n- switch 1 → server 5\n- ... (26 more connections)\n\n---\n\n## Example 4: Partial_Mesh Topology\n\n**Prompt**: partial mesh topology with 19 routers.\n\n**Topology Type**: partial_mesh\n\n**Device Count**: 19\n\n**Connection Count**: 37\n\n**Machines**: router 1, router 2, router 3, router 4, router 5...\n\n**Sample Connections**:\n- router 1 → router 10\n- router 2 → router 16\n- router 3 → router 16\n- router 4 → router 14\n- router 4 → router 5\n- ... (32 more connections)\n\n---\n\n## Example 5: Bus Topology\n\n**Prompt**: Linear bus using router 1 and 43 pcs.\n\n**Topology Type**: bus\n\n**Device Count**: 44\n\n**Connection Count**: 43\n\n**Machines**: router 1, pc 1, pc 2, pc 3, pc 4...\n\n**Sample Connections**:\n- router 1 → pc 1\n- router 1 → pc 2\n- router 1 → pc 3\n- router 1 → pc 4\n- router 1 → pc 5\n- ... (38 more connections)\n\n---\n\n## Example 6: Daisy_Chain Topology\n\n**Prompt**: Daisy-chained routers topology with endpoints.\n\n**Topology Type**: daisy_chain\n\n**Device Coun",
+        "metadata": {
+            "source_file": "annotated_examples.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_examples.md",
+            "chunk_index": 1
+        }
+    },
+    {
+        "chunk_id": "annotated_examples_2",
+        "text": "→ pc 4\n- router 1 → pc 5\n- ... (38 more connections)\n\n---\n\n## Example 6: Daisy_Chain Topology\n\n**Prompt**: Daisy-chained routers topology with endpoints.\n\n**Topology Type**: daisy_chain\n\n**Device Count**: 42\n\n**Connection Count**: 41\n\n**Machines**: router 1, router 2, router 3, router 4, router 5...\n\n**Sample Connections**:\n- router 1 → router 2\n- router 2 → router 3\n- router 3 → router 4\n- router 4 → router 5\n- router 5 → router 6\n- ... (36 more connections)\n\n---\n\n## Example 7: Tree Topology\n\n**Prompt**: Three-tier network with 2 routers, 1 switch, and 20 servers.\n\n**Topology Type**: tree\n\n**Device Count**: 23\n\n**Connection Count**: 21\n\n**Machines**: router 1, router 2, switch 1, server 1, server 2...\n\n**Sample Connections**:\n- router 1 → switch 1\n- switch 1 → server 1\n- switch 1 → server 2\n- switch 1 → server 3\n- switch 1 → server 4\n- ... (16 more connections)\n\n---\n\n## Example 8: Tree Topology\n\n**Prompt**: Layered network using 1 router, 2 switches, 18 pcs.\n\n**Topology Type**: tree\n\n**Device Count**: 21\n\n**Connection Count**: 20\n\n**Machines**: router 1, switch 1, switch 2, pc 1, pc 2...\n\n**Sample Connections**:\n- router 1 → switch 1\n- router 1 → switch 2\n- switch 1 → pc 1\n- switc",
+        "metadata": {
+            "source_file": "annotated_examples.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_examples.md",
+            "chunk_index": 2
+        }
+    },
+    {
+        "chunk_id": "annotated_examples_3",
+        "text": "**Device Count**: 21\n\n**Connection Count**: 20\n\n**Machines**: router 1, switch 1, switch 2, pc 1, pc 2...\n\n**Sample Connections**:\n- router 1 → switch 1\n- router 1 → switch 2\n- switch 1 → pc 1\n- switch 1 → pc 2\n- switch 1 → pc 3\n- ... (15 more connections)\n\n---",
+        "metadata": {
+            "source_file": "annotated_examples.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_examples.md",
+            "chunk_index": 3
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_0",
+        "text": "[\n  {\n    \"prompt\": \"36 routers in a ring configuration.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",\n      \"router 6\",\n      \"router 7\",\n      \"router 8\",\n      \"router 9\",\n      \"router 10\",\n      \"router 11\",\n      \"router 12\",\n      \"router 13\",\n      \"router 14\",\n      \"router 15\",\n      \"router 16\",\n      \"router 17\",\n      \"router 18\",\n      \"router 19\",\n      \"router 20\",\n      \"router 21\",\n      \"router 22\",\n      \"router 23\",\n      \"router 24\",\n      \"router 25\",\n      \"router 26\",\n      \"router 27\",\n      \"router 28\",\n      \"router 29\",\n      \"router 30\",\n      \"router 31\",\n      \"router 32\",\n      \"router 33\",\n      \"router 34\",\n      \"router 35\",\n      \"router 36\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"router 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"router 4\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 5\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 7\"\n      },",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_1",
+        "text": "\"from\": \"router 4\",\n        \"to\": \"router 5\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 7\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 9\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 14\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"router 15\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 16\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 18\"\n      },\n      {\n        \"from\": \"router 18\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 20\"\n      },\n      {\n        \"from\": \"router 20\",\n        \"to\": \"router 21\"\n      }",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 1
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_2",
+        "text": "\"from\": \"router 18\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 20\"\n      },\n      {\n        \"from\": \"router 20\",\n        \"to\": \"router 21\"\n      },\n      {\n        \"from\": \"router 21\",\n        \"to\": \"router 22\"\n      },\n      {\n        \"from\": \"router 22\",\n        \"to\": \"router 23\"\n      },\n      {\n        \"from\": \"router 23\",\n        \"to\": \"router 24\"\n      },\n      {\n        \"from\": \"router 24\",\n        \"to\": \"router 25\"\n      },\n      {\n        \"from\": \"router 25\",\n        \"to\": \"router 26\"\n      },\n      {\n        \"from\": \"router 26\",\n        \"to\": \"router 27\"\n      },\n      {\n        \"from\": \"router 27\",\n        \"to\": \"router 28\"\n      },\n      {\n        \"from\": \"router 28\",\n        \"to\": \"router 29\"\n      },\n      {\n        \"from\": \"router 29\",\n        \"to\": \"router 30\"\n      },\n      {\n        \"from\": \"router 30\",\n        \"to\": \"router 31\"\n      },\n      {\n        \"from\": \"router 31\",\n        \"to\": \"router 32\"\n      },\n      {\n        \"from\": \"router 32\",\n        \"to\": \"router 33\"\n      },\n      {\n        \"from\": \"router 33\",\n        \"to\": \"router 34\"\n      },\n      {\n        \"from\": \"router 34\",\n        \"to\": \"router 35\"",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 2
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_3",
+        "text": "{\n        \"from\": \"router 32\",\n        \"to\": \"router 33\"\n      },\n      {\n        \"from\": \"router 33\",\n        \"to\": \"router 34\"\n      },\n      {\n        \"from\": \"router 34\",\n        \"to\": \"router 35\"\n      },\n      {\n        \"from\": \"router 35\",\n        \"to\": \"router 36\"\n      },\n      {\n        \"from\": \"router 36\",\n        \"to\": \"router 1\"\n      }\n    ],\n    \"topology_type\": \"ring\",\n    \"device_count\": 36,\n    \"connection_count\": 36\n  },\n  {\n    \"prompt\": \"Tree topology with switch 1 as root, 2 hubs as branches, and 4 servers as leaves.\",\n    \"machines\": [\n      \"switch 1\",\n      \"hub 1\",\n      \"hub 2\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"hub 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"hub 2\"\n      },\n      {\n        \"from\": \"hub 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"hub 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"hub 2\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"hub 2\",\n        \"to\": \"server 4\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 7,\n    \"connection_count\": 6",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 3
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_4",
+        "text": "m\": \"hub 2\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"hub 2\",\n        \"to\": \"server 4\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 7,\n    \"connection_count\": 6\n  },\n  {\n    \"prompt\": \"31 servers radiating from switch 1.\",\n    \"machines\": [\n      \"switch 1\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\",\n      \"server 5\",\n      \"server 6\",\n      \"server 7\",\n      \"server 8\",\n      \"server 9\",\n      \"server 10\",\n      \"server 11\",\n      \"server 12\",\n      \"server 13\",\n      \"server 14\",\n      \"server 15\",\n      \"server 16\",\n      \"server 17\",\n      \"server 18\",\n      \"server 19\",\n      \"server 20\",\n      \"server 21\",\n      \"server 22\",\n      \"server 23\",\n      \"server 24\",\n      \"server 25\",\n      \"server 26\",\n      \"server 27\",\n      \"server 28\",\n      \"server 29\",\n      \"server 30\",\n      \"server 31\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 4
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_5",
+        "text": "itch 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 9\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 10\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 11\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 12\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 13\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 14\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 15\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 16\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 18\"\n      },\n      {\n        \"from\": \"swi",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 5
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_6",
+        "text": "\"to\": \"server 16\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 18\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 19\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 20\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 21\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 22\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 23\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 24\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 25\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 26\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 27\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 28\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 29\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 30\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 31\"\n      }\n    ],\n    \"topology_type\": \"star\",\n    \"device_count\": 32,\n    \"connection_count\": 31\n  },\n  {\n    \"promp",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 6
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_7",
+        "text": "\": \"server 30\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 31\"\n      }\n    ],\n    \"topology_type\": \"star\",\n    \"device_count\": 32,\n    \"connection_count\": 31\n  },\n  {\n    \"prompt\": \"partial mesh topology with 19 routers.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",\n      \"router 6\",\n      \"router 7\",\n      \"router 8\",\n      \"router 9\",\n      \"router 10\",\n      \"router 11\",\n      \"router 12\",\n      \"router 13\",\n      \"router 14\",\n      \"router 15\",\n      \"router 16\",\n      \"router 17\",\n      \"router 18\",\n      \"router 19\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 14\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 5\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 1\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 8\"",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 7
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_8",
+        "text": "{\n        \"from\": \"router 4\",\n        \"to\": \"router 1\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 1\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 6\"\n      }",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 8
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_9",
+        "text": "\"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 16\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 16\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 18\"\n      },\n      {\n        \"from\": \"router 18\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 4\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 7\"",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 9
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_10",
+        "text": "\"from\": \"router 18\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 4\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 7\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 15\"\n      }\n    ],\n    \"topology_type\": \"partial_mesh\",\n    \"device_count\": 19,\n    \"connection_count\": 37\n  },\n  {\n    \"prompt\": \"Linear bus using router 1 and 43 pcs.\",\n    \"machines\": [\n      \"router 1\",\n      \"pc 1\",\n      \"pc 2\",\n      \"pc 3\",\n      \"pc 4\",\n      \"pc 5\",\n      \"pc 6\",\n      \"pc 7\",\n      \"pc 8\",\n      \"pc 9\",\n      \"pc 10\",\n      \"pc 11\",\n      \"pc 12\",\n      \"pc 13\",\n      \"pc 14\",\n      \"pc 15\",\n      \"pc 16\",\n      \"pc 17\",\n      \"pc 18\",\n      \"pc 19\",\n      \"pc 20\",\n      \"pc 21\",\n      \"pc 22\",\n      \"pc 23\",\n      \"pc 24\",\n      \"pc 25\",\n      \"pc 26\",\n      \"pc 27\",\n      \"pc 28\",\n      \"pc 29\",\n      \"pc 30\",\n      \"pc 31\",\n      \"pc 32\",\n      \"pc 33\",\n      \"pc 34\",\n      \"pc 35\",\n      \"pc 36\",\n      \"pc 37\",\n      \"pc 38\",\n      \"pc 39\",\n      \"pc 40\",\n      \"pc 41\",\n      \"pc 42\",\n      \"pc 43\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 1\"\n      },",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 10
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_11",
+        "text": ",\n      \"pc 37\",\n      \"pc 38\",\n      \"pc 39\",\n      \"pc 40\",\n      \"pc 41\",\n      \"pc 42\",\n      \"pc 43\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 1\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 2\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 3\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 4\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 5\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 6\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 7\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 8\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 9\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 10\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 11\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 12\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 13\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 14\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 15\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 16\"\n      },",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 11
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_12",
+        "text": "{\n        \"from\": \"router 1\",\n        \"to\": \"pc 14\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 15\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 16\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 17\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 18\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 19\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 20\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 21\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 22\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 23\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 24\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 25\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 26\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 27\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 28\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 29\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 30\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 31\"\n      }",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 12
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_13",
+        "text": "{\n        \"from\": \"router 1\",\n        \"to\": \"pc 29\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 30\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 31\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 32\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 33\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 34\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 35\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 36\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 37\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 38\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 39\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 40\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 41\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 42\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 43\"\n      }\n    ],\n    \"topology_type\": \"bus\",\n    \"device_count\": 44,\n    \"connection_count\": 43\n  },\n  {\n    \"prompt\": \"Daisy-chained routers topology with endpoints.\",\n    \"machines\": [\n      \"router 1\",",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 13
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_14",
+        "text": "}\n    ],\n    \"topology_type\": \"bus\",\n    \"device_count\": 44,\n    \"connection_count\": 43\n  },\n  {\n    \"prompt\": \"Daisy-chained routers topology with endpoints.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",\n      \"router 6\",\n      \"router 7\",\n      \"router 8\",\n      \"router 9\",\n      \"router 10\",\n      \"router 11\",\n      \"router 12\",\n      \"router 13\",\n      \"router 14\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\",\n      \"server 5\",\n      \"server 6\",\n      \"server 7\",\n      \"server 8\",\n      \"server 9\",\n      \"server 10\",\n      \"server 11\",\n      \"server 12\",\n      \"server 13\",\n      \"server 14\",\n      \"server 15\",\n      \"server 16\",\n      \"server 17\",\n      \"server 18\",\n      \"server 19\",\n      \"server 20\",\n      \"server 21\",\n      \"server 22\",\n      \"server 23\",\n      \"server 24\",\n      \"server 25\",\n      \"server 26\",\n      \"server 27\",\n      \"server 28\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"router 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"router 4\"\n      },",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 14
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_15",
+        "text": "\"from\": \"router 1\",\n        \"to\": \"router 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"router 4\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 5\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 7\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 9\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 14\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"server 7\"\n      },\n      {",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 15
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_16",
+        "text": ": \"router 2\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"server 7\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"server 9\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"server 11\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"server 13\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"server 15\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"server 19\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"server 21\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"server 23\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"server 25\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"server 27\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"f",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 16
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_17",
+        "text": "ter 2\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"server 10\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"server 12\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"server 14\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"server 16\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"server 18\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"server 20\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"server 22\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"server 24\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"server 26\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"server 28\"\n      }\n    ],\n    \"topology_type\": \"daisy_chain\",\n    \"device_count\": 42,\n    \"connection_count\": 41\n  },\n  {\n    \"prompt\": \"Three-tier network with 2 routers, 1 switch, and 20 servers.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"switch 1\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 17
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_18",
+        "text": "\"prompt\": \"Three-tier network with 2 routers, 1 switch, and 20 servers.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"switch 1\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\",\n      \"server 5\",\n      \"server 6\",\n      \"server 7\",\n      \"server 8\",\n      \"server 9\",\n      \"server 10\",\n      \"server 11\",\n      \"server 12\",\n      \"server 13\",\n      \"server 14\",\n      \"server 15\",\n      \"server 16\",\n      \"server 17\",\n      \"server 18\",\n      \"server 19\",\n      \"server 20\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"switch 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"from\":",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 18
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_19",
+        "text": "\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 9\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 10\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 11\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 12\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 13\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 14\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 15\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 16\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 18\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 19\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 20\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 23,\n    \"connection_count\": 21\n  },\n  {\n    \"prompt\": \"Layered network using 1 router, 2 switches, 18 pcs.\",\n    \"mac",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 19
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_20",
+        "text": "\"to\": \"server 20\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 23,\n    \"connection_count\": 21\n  },\n  {\n    \"prompt\": \"Layered network using 1 router, 2 switches, 18 pcs.\",\n    \"machines\": [\n      \"router 1\",\n      \"switch 1\",\n      \"switch 2\",\n      \"pc 1\",\n      \"pc 2\",\n      \"pc 3\",\n      \"pc 4\",\n      \"pc 5\",\n      \"pc 6\",\n      \"pc 7\",\n      \"pc 8\",\n      \"pc 9\",\n      \"pc 10\",\n      \"pc 11\",\n      \"pc 12\",\n      \"pc 13\",\n      \"pc 14\",\n      \"pc 15\",\n      \"pc 16\",\n      \"pc 17\",\n      \"pc 18\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"switch 1\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"switch 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 3\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 4\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"t",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 20
+        }
+    },
+    {
+        "chunk_id": "annotated_topologies_21",
+        "text": "\"to\": \"pc 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 8\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 9\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 10\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 11\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 12\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 13\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 14\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 15\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 16\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 17\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 18\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 21,\n    \"connection_count\": 20\n  }\n]",
+        "metadata": {
+            "source_file": "annotated_topologies.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/examples/annotated_topologies.json",
+            "chunk_index": 21
+        }
+    },
+    {
+        "chunk_id": "routers_0",
+        "text": "{\n  \"device_type\": \"router\",\n  \"description\": \"Layer 3 network device that forwards packets between networks\",\n  \"naming_convention\": \"router [number]\",\n  \"examples\": [\n    \"router 1\",\n    \"router 2\",\n    \"router 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"router\",\n      \"switch\",\n      \"cloud\",\n      \"server\",\n      \"hub\"\n    ],\n    \"typically_connects_to\": [\n      \"switch\",\n      \"cloud\",\n      \"router\"\n    ],\n    \"layer\": \"Layer 3 (Network Layer)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Core/Distribution layer\",\n    \"can_be_root\": true,\n    \"can_be_branch\": true,\n    \"can_be_leaf\": false\n  },\n  \"characteristics\": [\n    \"Routes traffic between networks\",\n    \"Makes forwarding decisions based on IP addresses\",\n    \"Can connect different network segments\",\n    \"Often connects to WAN/Internet (via cloud)\"\n  ]\n}",
+        "metadata": {
+            "source_file": "routers.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/device_specs/routers.json",
+            "chunk_index": 0
         }
     },
     {
@@ -166,7 +337,7 @@
         "text": "{\n  \"device_type\": \"hub\",\n  \"description\": \"Basic Layer 1 device that broadcasts to all ports\",\n  \"naming_convention\": \"hub [number]\",\n  \"examples\": [\n    \"hub 1\",\n    \"hub 2\",\n    \"hub 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"switch\",\n      \"pc\",\n      \"laptop\",\n      \"server\"\n    ],\n    \"typically_connects_to\": [\n      \"pc\",\n      \"laptop\",\n      \"server\"\n    ],\n    \"layer\": \"Layer 1 (Physical Layer)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Access layer (legacy)\",\n    \"can_be_root\": false,\n    \"can_be_branch\": true,\n    \"can_be_leaf\": false\n  },\n  \"characteristics\": [\n    \"Legacy device (mostly replaced by switches)\",\n    \"Broadcasts to all ports\",\n    \"No intelligence\",\n    \"Simple connectivity\"\n  ]\n}",
         "metadata": {
             "source_file": "hubs.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/device_specs/hubs.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/device_specs/hubs.json",
             "chunk_index": 0
         }
     },
@@ -175,25 +346,7 @@
         "text": "{\n  \"device_type\": \"server\",\n  \"description\": \"End device that provides services to other network devices\",\n  \"naming_convention\": \"server [number]\",\n  \"examples\": [\n    \"server 1\",\n    \"server 2\",\n    \"server 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"switch\",\n      \"router\",\n      \"hub\"\n    ],\n    \"typically_connects_to\": [\n      \"switch\"\n    ],\n    \"layer\": \"Application Layer (End Device)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Access layer / End device\",\n    \"can_be_root\": false,\n    \"can_be_branch\": false,\n    \"can_be_leaf\": true\n  },\n  \"characteristics\": [\n    \"Provides services (web, database, file storage)\",\n    \"End point in topology\",\n    \"Usually connects to switches\",\n    \"Can have redundant connections\"\n  ]\n}",
         "metadata": {
             "source_file": "servers.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/device_specs/servers.json",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "routers_0",
-        "text": "{\n  \"device_type\": \"router\",\n  \"description\": \"Layer 3 network device that forwards packets between networks\",\n  \"naming_convention\": \"router [number]\",\n  \"examples\": [\n    \"router 1\",\n    \"router 2\",\n    \"router 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"router\",\n      \"switch\",\n      \"cloud\",\n      \"server\",\n      \"hub\"\n    ],\n    \"typically_connects_to\": [\n      \"switch\",\n      \"cloud\",\n      \"router\"\n    ],\n    \"layer\": \"Layer 3 (Network Layer)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Core/Distribution layer\",\n    \"can_be_root\": true,\n    \"can_be_branch\": true,\n    \"can_be_leaf\": false\n  },\n  \"characteristics\": [\n    \"Routes traffic between networks\",\n    \"Makes forwarding decisions based on IP addresses\",\n    \"Can connect different network segments\",\n    \"Often connects to WAN/Internet (via cloud)\"\n  ]\n}",
-        "metadata": {
-            "source_file": "routers.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/device_specs/routers.json",
-            "chunk_index": 0
-        }
-    },
-    {
-        "chunk_id": "clouds_0",
-        "text": "{\n  \"device_type\": \"cloud\",\n  \"description\": \"Represents external network, WAN, or Internet connection\",\n  \"naming_convention\": \"cloud [number]\",\n  \"examples\": [\n    \"cloud 1\",\n    \"cloud 2\",\n    \"cloud 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"router\"\n    ],\n    \"typically_connects_to\": [\n      \"router\"\n    ],\n    \"layer\": \"External Network\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"WAN/Internet entry point\",\n    \"can_be_root\": true,\n    \"can_be_branch\": false,\n    \"can_be_leaf\": false\n  },\n  \"characteristics\": [\n    \"Represents Internet or WAN\",\n    \"External network connection\",\n    \"Usually connects to edge routers\",\n    \"Entry/exit point of topology\"\n  ]\n}",
-        "metadata": {
-            "source_file": "clouds.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/device_specs/clouds.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/device_specs/servers.json",
             "chunk_index": 0
         }
     },
@@ -202,16 +355,16 @@
         "text": "{\n  \"device_type\": \"laptop\",\n  \"description\": \"Portable computer workstation, end user device\",\n  \"naming_convention\": \"laptop [number]\",\n  \"examples\": [\n    \"laptop 1\",\n    \"laptop 2\",\n    \"laptop 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"switch\",\n      \"hub\",\n      \"router\"\n    ],\n    \"typically_connects_to\": [\n      \"switch\",\n      \"hub\"\n    ],\n    \"layer\": \"Application Layer (End Device)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Access layer / End device\",\n    \"can_be_root\": false,\n    \"can_be_branch\": false,\n    \"can_be_leaf\": true\n  },\n  \"characteristics\": [\n    \"Portable end user device\",\n    \"Client device\",\n    \"Mobile workstation\",\n    \"Leaf node in topology\"\n  ]\n}",
         "metadata": {
             "source_file": "laptops.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/device_specs/laptops.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/device_specs/laptops.json",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "switches_0",
-        "text": "{\n  \"device_type\": \"switch\",\n  \"description\": \"Layer 2 network device that forwards frames within a network\",\n  \"naming_convention\": \"switch [number]\",\n  \"examples\": [\n    \"switch 1\",\n    \"switch 2\",\n    \"switch 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"router\",\n      \"switch\",\n      \"server\",\n      \"pc\",\n      \"laptop\",\n      \"hub\"\n    ],\n    \"typically_connects_to\": [\n      \"router\",\n      \"server\",\n      \"pc\",\n      \"laptop\"\n    ],\n    \"layer\": \"Layer 2 (Data Link Layer)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Distribution/Access layer\",\n    \"can_be_root\": true,\n    \"can_be_branch\": true,\n    \"can_be_leaf\": false\n  },\n  \"characteristics\": [\n    \"Forwards traffic based on MAC addresses\",\n    \"Connects devices in same network segment\",\n    \"Provides multiple ports for end devices\",\n    \"Common in star topology centers\"\n  ]\n}",
+        "chunk_id": "clouds_0",
+        "text": "{\n  \"device_type\": \"cloud\",\n  \"description\": \"Represents external network, WAN, or Internet connection\",\n  \"naming_convention\": \"cloud [number]\",\n  \"examples\": [\n    \"cloud 1\",\n    \"cloud 2\",\n    \"cloud 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"router\"\n    ],\n    \"typically_connects_to\": [\n      \"router\"\n    ],\n    \"layer\": \"External Network\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"WAN/Internet entry point\",\n    \"can_be_root\": true,\n    \"can_be_branch\": false,\n    \"can_be_leaf\": false\n  },\n  \"characteristics\": [\n    \"Represents Internet or WAN\",\n    \"External network connection\",\n    \"Usually connects to edge routers\",\n    \"Entry/exit point of topology\"\n  ]\n}",
         "metadata": {
-            "source_file": "switches.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/device_specs/switches.json",
+            "source_file": "clouds.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/device_specs/clouds.json",
             "chunk_index": 0
         }
     },
@@ -220,377 +373,188 @@
         "text": "{\n  \"device_type\": \"pc\",\n  \"description\": \"Personal computer workstation, end user device\",\n  \"naming_convention\": \"pc [number]\",\n  \"examples\": [\n    \"pc 1\",\n    \"pc 2\",\n    \"pc 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"switch\",\n      \"hub\",\n      \"router\"\n    ],\n    \"typically_connects_to\": [\n      \"switch\",\n      \"hub\"\n    ],\n    \"layer\": \"Application Layer (End Device)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Access layer / End device\",\n    \"can_be_root\": false,\n    \"can_be_branch\": false,\n    \"can_be_leaf\": true\n  },\n  \"characteristics\": [\n    \"End user workstation\",\n    \"Client device\",\n    \"Typically has single network connection\",\n    \"Leaf node in topology\"\n  ]\n}",
         "metadata": {
             "source_file": "pcs.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/device_specs/pcs.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/device_specs/pcs.json",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "annotated_examples_0",
-        "text": "# Annotated Topology Examples\n\nThis document contains examples of topology descriptions with their structured outputs.\n\n## Example 1: Ring Topology\n\n**Prompt**: 36 routers in a ring configuration.\n\n**Topology Type**: ring\n\n**Device Count**: 36\n\n**Connection Count**: 36\n\n**Machines**: router 1, router 2, router 3, router 4, router 5...\n\n**Sample Connections**:\n- router 1 → router 2\n- router 2 → router 3\n- router 3 → router 4\n- router 4 → router 5\n- router 5 → router 6\n- ... (31 more connections)\n\n---\n\n## Example 2: Tree Topology\n\n**Prompt**: Tree topology with switch 1 as root, 2 hubs as branches, and 4 servers as leaves.\n\n**Topology Type**: tree\n\n**Device Count**: 7\n\n**Connection Count**: 6\n\n**Machines**: switch 1, hub 1, hub 2, server 1, server 2...\n\n**Sample Connections**:\n- switch 1 → hub 1\n- switch 1 → hub 2\n- hub 1 → server 1\n- hub 1 → server 2\n- hub 2 → server 3\n- ... (1 more connections)\n\n---\n\n## Example 3: Star Topology\n\n**Prompt**: 31 servers radiating from switch 1.\n\n**",
+        "chunk_id": "switches_0",
+        "text": "{\n  \"device_type\": \"switch\",\n  \"description\": \"Layer 2 network device that forwards frames within a network\",\n  \"naming_convention\": \"switch [number]\",\n  \"examples\": [\n    \"switch 1\",\n    \"switch 2\",\n    \"switch 10\"\n  ],\n  \"typical_connections\": {\n    \"can_connect_to\": [\n      \"router\",\n      \"switch\",\n      \"server\",\n      \"pc\",\n      \"laptop\",\n      \"hub\"\n    ],\n    \"typically_connects_to\": [\n      \"router\",\n      \"server\",\n      \"pc\",\n      \"laptop\"\n    ],\n    \"layer\": \"Layer 2 (Data Link Layer)\"\n  },\n  \"role_in_topology\": {\n    \"primary\": \"Distribution/Access layer\",\n    \"can_be_root\": true,\n    \"can_be_branch\": true,\n    \"can_be_leaf\": false\n  },\n  \"characteristics\": [\n    \"Forwards traffic based on MAC addresses\",\n    \"Connects devices in same network segment\",\n    \"Provides multiple ports for end devices\",\n    \"Common in star topology centers\"\n  ]\n}",
         "metadata": {
-            "source_file": "annotated_examples.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_examples.md",
+            "source_file": "switches.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/device_specs/switches.json",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "annotated_examples_1",
-        "text": "- hub 1 → server 2\n- hub 2 → server 3\n- ... (1 more connections)\n\n---\n\n## Example 3: Star Topology\n\n**Prompt**: 31 servers radiating from switch 1.\n\n**Topology Type**: star\n\n**Device Count**: 32\n\n**Connection Count**: 31\n\n**Machines**: switch 1, server 1, server 2, server 3, server 4...\n\n**Sample Connections**:\n- switch 1 → server 1\n- switch 1 → server 2\n- switch 1 → server 3\n- switch 1 → server 4\n- switch 1 → server 5\n- ... (26 more connections)\n\n---\n\n## Example 4: Partial_Mesh Topology\n\n**Prompt**: partial mesh topology with 19 routers.\n\n**Topology Type**: partial_mesh\n\n**Device Count**: 19\n\n**Connection Count**: 37\n\n**Machines**: router 1, router 2, router 3, router 4, router 5...\n\n**Sample Connections**:\n- router 1 → router 10\n- router 2 → router 16\n- router 3 → router 16\n- router 4 → router 14\n- router 4 → router 5\n- ... (32 more connections)\n\n---\n\n## Example 5: Bus Topology\n\n**Prompt**: Linear bus using router 1 and 43 pcs.\n\n**",
+        "chunk_id": "glossary_0",
+        "text": "# Network Topology Terminology Glossary\n\n## Topology Types\n\n### Ring/Loop Topology\n- **Keywords**: ring, loop, circular, ring configuration\n- **Pattern**: Devices connected in circular chain\n- **Characteristics**: Each device connects to 2 neighbors, closed loop\n\n### Star Topology\n- **Keywords**: star, radiating from, hub-and-spoke, centralized\n- **Pattern**: Central device with peripherals radiating outward\n- **Characteristics**: Single central point, all others connect to it\n\n### Tree Topology\n- **Keywords**: tree, hierarchical, root, branches, leaves\n- **Pattern**: Hierarchical structure with levels\n- **Characteristics**: Root device, branch devices, leaf devices\n\n### Bus Topology\n- **Keywords**: bus, linear bus, backbone\n- **Pattern**: Single backbone with attached devices\n- **Characteristics**: One central device, all others connect to it\n\n### Mesh Topology\n- **Keywords**: mesh, fully connected, interconnected\n- **Pattern**: All devices connected to all others (full mesh)\n- **Characteristics**: Maximum redundancy, highest connection count\n\n### Partial Mesh Topology\n- **Keywords**: partial mesh, redundant, some redundancy\n- **Pattern**: Some redundant connections, not fully con",
         "metadata": {
-            "source_file": "annotated_examples.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_examples.md",
+            "source_file": "glossary.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/glossary.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "glossary_1",
+        "text": "acteristics**: Maximum redundancy, highest connection count\n\n### Partial Mesh Topology\n- **Keywords**: partial mesh, redundant, some redundancy\n- **Pattern**: Some redundant connections, not fully connected\n- **Characteristics**: Balance between redundancy and complexity\n\n### Daisy Chain Topology\n- **Keywords**: daisy chain, series, sequential, chained\n- **Pattern**: Linear sequence without closing loop\n- **Characteristics**: Each device connects to next, no return to start\n\n### Hybrid/Mixed Topology\n- **Keywords**: hybrid, mixed, heterogeneous, multi-tier\n- **Pattern**: Combination of multiple topology types\n- **Characteristics**: Flexible, complex, uses multiple patterns\n\n## Device Types\n\n### Router\n- **Synonyms**: R, gateway\n- **Layer**: Layer 3 (Network)\n- **Function**: Routes between networks\n- **Naming**: router 1, router 2, etc.\n\n### Switch\n- **Synonyms**: SW\n- **Layer**: Layer 2 (Data Link)\n- **Function**: Forwards frames within network\n- **Naming**: switch 1, switch 2, etc.\n\n### Server\n- **Synonyms**: SRV, host\n- **Layer**: Application (End Device)\n- **Function**: Provides services\n- **Naming**: server 1, server 2, etc.\n\n### PC\n- **Synonyms**: computer, workstation, deskto",
+        "metadata": {
+            "source_file": "glossary.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/glossary.md",
             "chunk_index": 1
         }
     },
     {
-        "chunk_id": "annotated_examples_2",
-        "text": "- router 4 → router 14\n- router 4 → router 5\n- ... (32 more connections)\n\n---\n\n## Example 5: Bus Topology\n\n**Prompt**: Linear bus using router 1 and 43 pcs.\n\n**Topology Type**: bus\n\n**Device Count**: 44\n\n**Connection Count**: 43\n\n**Machines**: router 1, pc 1, pc 2, pc 3, pc 4...\n\n**Sample Connections**:\n- router 1 → pc 1\n- router 1 → pc 2\n- router 1 → pc 3\n- router 1 → pc 4\n- router 1 → pc 5\n- ... (38 more connections)\n\n---\n\n## Example 6: Daisy_Chain Topology\n\n**Prompt**: Daisy-chained routers topology with endpoints.\n\n**Topology Type**: daisy_chain\n\n**Device Count**: 42\n\n**Connection Count**: 41\n\n**Machines**: router 1, router 2, router 3, router 4, router 5...\n\n**Sample Connections**:\n- router 1 → router 2\n- router 2 → router 3\n- router 3 → router 4\n- router 4 → router 5\n- router 5 → router 6\n- ... (36 more connections)\n\n---\n\n## Example 7: Tree Topology\n\n**Prompt**: Three-tier network with 2 routers, 1 switch",
+        "chunk_id": "glossary_2",
+        "text": "## Server\n- **Synonyms**: SRV, host\n- **Layer**: Application (End Device)\n- **Function**: Provides services\n- **Naming**: server 1, server 2, etc.\n\n### PC\n- **Synonyms**: computer, workstation, desktop\n- **Layer**: Application (End Device)\n- **Function**: User workstation\n- **Naming**: pc 1, pc 2, etc.\n\n### Laptop\n- **Synonyms**: notebook, portable\n- **Layer**: Application (End Device)\n- **Function**: Portable workstation\n- **Naming**: laptop 1, laptop 2, etc.\n\n### Hub\n- **Synonyms**: repeater (though technically different)\n- **Layer**: Layer 1 (Physical)\n- **Function**: Broadcasts to all ports\n- **Naming**: hub 1, hub 2, etc.\n\n### Cloud\n- **Synonyms**: WAN, Internet\n- **Layer**: External Network\n- **Function**: Represents external connectivity\n- **Naming**: cloud 1, cloud 2, etc.\n\n## Connection Terminology\n\n### Directional Terms\n- **Connected to**: General connection\n- **Links to**: Connection between devices\n- **Attached to**: Physical connection\n- **Wired to**: Physical cabling\n- **Points to**: Directional connection\n\n### Structural Terms\n- **Root**: Top of hierarchy, starting point\n- **Branch**: Intermediate level in hierarchy\n- **Leaf**: End point, terminal device\n- **Center**",
         "metadata": {
-            "source_file": "annotated_examples.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_examples.md",
+            "source_file": "glossary.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/glossary.md",
             "chunk_index": 2
         }
     },
     {
-        "chunk_id": "annotated_examples_3",
-        "text": "- router 4 → router 5\n- router 5 → router 6\n- ... (36 more connections)\n\n---\n\n## Example 7: Tree Topology\n\n**Prompt**: Three-tier network with 2 routers, 1 switch, and 20 servers.\n\n**Topology Type**: tree\n\n**Device Count**: 23\n\n**Connection Count**: 21\n\n**Machines**: router 1, router 2, switch 1, server 1, server 2...\n\n**Sample Connections**:\n- router 1 → switch 1\n- switch 1 → server 1\n- switch 1 → server 2\n- switch 1 → server 3\n- switch 1 → server 4\n- ... (16 more connections)\n\n---\n\n## Example 8: Tree Topology\n\n**Prompt**: Layered network using 1 router, 2 switches, 18 pcs.\n\n**Topology Type**: tree\n\n**Device Count**: 21\n\n**Connection Count**: 20\n\n**Machines**: router 1, switch 1, switch 2, pc 1, pc 2...\n\n**Sample Connections**:\n- router 1 → switch 1\n- router 1 → switch 2\n- switch 1 → pc 1\n- switch 1 → pc 2\n- switch 1 → pc 3\n- ... (15 more connections)\n\n---",
+        "chunk_id": "glossary_3",
+        "text": "Points to**: Directional connection\n\n### Structural Terms\n- **Root**: Top of hierarchy, starting point\n- **Branch**: Intermediate level in hierarchy\n- **Leaf**: End point, terminal device\n- **Center**: Central point in star topology\n- **Peripheral**: Outer devices in star topology\n- **Backbone**: Main communication path in bus topology\n- **Endpoint**: Terminal device or connection end\n\n### Pattern Terms\n- **Sequential**: One after another in order\n- **Hierarchical**: Organized in levels/tiers\n- **Redundant**: Multiple paths for reliability\n- **Centralized**: Organized around central point\n- **Distributed**: Spread across multiple devices\n- **Meshed**: Interconnected with multiple paths\n\n## Quantity Expressions\n\n### Common Formats\n- \"X routers\" (e.g., \"5 routers\")\n- \"with X switches\" (e.g., \"with 3 switches\")\n- \"using X servers\" (e.g., \"using 10 servers\")\n- \"having X PCs\" (e.g., \"having 20 PCs\")\n\n### Action Verbs\n- **Create**: Build new topology\n- **Prepare**: Setup topology\n- **Design**: Plan topology\n- **Configure**: Setup devices\n- **Build**: Construct topology\n- **Setup**: Arrange devices",
         "metadata": {
-            "source_file": "annotated_examples.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_examples.md",
+            "source_file": "glossary.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/glossary.md",
             "chunk_index": 3
         }
     },
     {
-        "chunk_id": "annotated_examples_4",
-        "text": "2\n- switch 1 → pc 1\n- switch 1 → pc 2\n- switch 1 → pc 3\n- ... (15 more connections)\n\n---",
+        "chunk_id": "glossary_4",
+        "text": "*: Plan topology\n- **Configure**: Setup devices\n- **Build**: Construct topology\n- **Setup**: Arrange devices",
         "metadata": {
-            "source_file": "annotated_examples.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_examples.md",
+            "source_file": "glossary.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/glossary.md",
             "chunk_index": 4
         }
     },
     {
-        "chunk_id": "annotated_topologies_0",
-        "text": "[\n  {\n    \"prompt\": \"36 routers in a ring configuration.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",\n      \"router 6\",\n      \"router 7\",\n      \"router 8\",\n      \"router 9\",\n      \"router 10\",\n      \"router 11\",\n      \"router 12\",\n      \"router 13\",\n      \"router 14\",\n      \"router 15\",\n      \"router 16\",\n      \"router 17\",\n      \"router 18\",\n      \"router 19\",\n      \"router 20\",\n      \"router 21\",\n      \"router 22\",\n      \"router 23\",\n      \"router 24\",\n      \"router 25\",\n      \"router 26\",\n      \"router 27\",\n      \"router 28\",\n      \"router 29\",\n      \"router 30\",\n      \"router 31\",\n      \"router 32\",\n      \"router 33\",\n      \"router 34\",\n      \"router 35\",\n      \"router 36\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"router 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 3\"\n      },\n      {\n        \"from\": \"router 3\",",
+        "chunk_id": "network_terminology_0",
+        "text": "{\n  \"topology_synonyms\": {\n    \"ring\": [\n      \"loop\",\n      \"circular\",\n      \"ring configuration\",\n      \"circular chain\",\n      \"ring topology\"\n    ],\n    \"star\": [\n      \"radiating from\",\n      \"hub-and-spoke\",\n      \"centralized\",\n      \"star topology\",\n      \"radial\"\n    ],\n    \"tree\": [\n      \"hierarchical\",\n      \"root-branch-leaf\",\n      \"tree topology\",\n      \"branching\"\n    ],\n    \"bus\": [\n      \"linear bus\",\n      \"backbone\",\n      \"bus topology\"\n    ],\n    \"mesh\": [\n      \"fully connected\",\n      \"interconnected\",\n      \"complete mesh\"\n    ],\n    \"partial_mesh\": [\n      \"redundant\",\n      \"some redundancy\",\n      \"partial mesh\",\n      \"partially connected\"\n    ],\n    \"daisy_chain\": [\n      \"series\",\n      \"sequential\",\n      \"linear\",\n      \"chained\",\n      \"daisy-chained\",\n      \"in series\"\n    ],\n    \"hybrid\": [\n      \"mixed\",\n      \"heterogeneous\",\n      \"complex\",\n      \"multi-tier\",\n      \"combined\"\n    ]\n  },\n  \"topology_keywords\": {\n    \"ring\": [\n      \"ring\",\n      \"loop\",\n      \"circular\"\n    ],\n    \"star\": [\n      \"radiating\",\n      \"star\",\n      \"central\"\n    ],\n    \"tree\": [\n      \"tree\",\n      \"root\",\n      \"branches\",\n      \"leaves\",\n      \"hierarchical\"",
         "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
+            "source_file": "network_terminology.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/network_terminology.json",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "annotated_topologies_1",
-        "text": "\"router 1\",\n        \"to\": \"router 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"router 4\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 5\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 7\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 9\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 14\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"router 15\"",
+        "chunk_id": "network_terminology_1",
+        "text": "\"loop\",\n      \"circular\"\n    ],\n    \"star\": [\n      \"radiating\",\n      \"star\",\n      \"central\"\n    ],\n    \"tree\": [\n      \"tree\",\n      \"root\",\n      \"branches\",\n      \"leaves\",\n      \"hierarchical\"\n    ],\n    \"bus\": [\n      \"bus\",\n      \"linear bus\",\n      \"backbone\"\n    ],\n    \"mesh\": [\n      \"mesh\",\n      \"interconnected\"\n    ],\n    \"partial_mesh\": [\n      \"partial mesh\",\n      \"redundant\"\n    ],\n    \"daisy_chain\": [\n      \"daisy\",\n      \"series\",\n      \"sequential\",\n      \"chain\"\n    ],\n    \"hybrid\": [\n      \"mixed\",\n      \"heterogeneous\",\n      \"layered\",\n      \"multi-tier\",\n      \"three-tier\"\n    ]\n  },\n  \"device_type_synonyms\": {\n    \"router\": [\n      \"router\",\n      \"routers\",\n      \"R\"\n    ],\n    \"switch\": [\n      \"switch\",\n      \"switches\",\n      \"SW\"\n    ],\n    \"server\": [\n      \"server\",\n      \"servers\",\n      \"SRV\"\n    ],\n    \"pc\": [\n      \"pc\",\n      \"pcs\",\n      \"computer\",\n      \"computers\",\n      \"workstation\",\n      \"workstations\"\n    ],\n    \"laptop\": [\n      \"laptop\",\n      \"laptops\",\n      \"notebook\",\n      \"notebooks\"\n    ],\n    \"hub\": [\n      \"hub\",\n      \"hubs\"\n    ],\n    \"cloud\": [\n      \"cloud\",\n      \"clouds\",\n      \"internet\",\n      \"wan\"\n    ]\n  },\n  \"c",
         "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
+            "source_file": "network_terminology.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/network_terminology.json",
             "chunk_index": 1
         }
     },
     {
-        "chunk_id": "annotated_topologies_2",
-        "text": "\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 14\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"router 15\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 16\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 18\"\n      },\n      {\n        \"from\": \"router 18\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 20\"\n      },\n      {\n        \"from\": \"router 20\",\n        \"to\": \"router 21\"\n      },\n      {\n        \"from\": \"router 21\",\n        \"to\": \"router 22\"\n      },\n      {\n        \"from\": \"router 22\",\n        \"to\": \"router 23\"\n      },\n      {\n        \"from\": \"router 23\",\n        \"to\": \"router 24\"\n      },\n      {\n        \"from\": \"router 24\",\n        \"to\": \"router 25\"\n      },\n      {\n        \"from\": \"router 25\",\n        \"to\": \"router 26\"\n      },\n      {\n        \"from\":",
+        "chunk_id": "network_terminology_2",
+        "text": "\",\n      \"laptops\",\n      \"notebook\",\n      \"notebooks\"\n    ],\n    \"hub\": [\n      \"hub\",\n      \"hubs\"\n    ],\n    \"cloud\": [\n      \"cloud\",\n      \"clouds\",\n      \"internet\",\n      \"wan\"\n    ]\n  },\n  \"connection_phrases\": {\n    \"sequential\": [\n      \"in series\",\n      \"daisy-chained\",\n      \"chained\",\n      \"sequentially\",\n      \"one after another\"\n    ],\n    \"centralized\": [\n      \"radiating from\",\n      \"connected to central\",\n      \"hub-and-spoke\",\n      \"emanating from\"\n    ],\n    \"hierarchical\": [\n      \"as root\",\n      \"as branches\",\n      \"as leaves\",\n      \"root at\",\n      \"with root\"\n    ],\n    \"redundant\": [\n      \"with redundancy\",\n      \"redundant paths\",\n      \"backup connections\",\n      \"multiple paths\"\n    ],\n    \"direct\": [\n      \"directly connected\",\n      \"point-to-point\",\n      \"dedicated link\"\n    ]\n  },\n  \"count_phrases\": {\n    \"with\": [\n      \"with\",\n      \"having\",\n      \"using\",\n      \"containing\"\n    ],\n    \"count\": [\n      \"X devices\",\n      \"X [device_type]\",\n      \"[number] [device_type]\"\n    ]\n  },\n  \"structure_keywords\": {\n    \"root\": [\n      \"root\",\n      \"top\",\n      \"head\",\n      \"main\",\n      \"primary\"\n    ],\n    \"branch\": [\n      \"branch\",\n      \"br",
         "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
+            "source_file": "network_terminology.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/network_terminology.json",
             "chunk_index": 2
         }
     },
     {
-        "chunk_id": "annotated_topologies_3",
-        "text": "{\n        \"from\": \"router 24\",\n        \"to\": \"router 25\"\n      },\n      {\n        \"from\": \"router 25\",\n        \"to\": \"router 26\"\n      },\n      {\n        \"from\": \"router 26\",\n        \"to\": \"router 27\"\n      },\n      {\n        \"from\": \"router 27\",\n        \"to\": \"router 28\"\n      },\n      {\n        \"from\": \"router 28\",\n        \"to\": \"router 29\"\n      },\n      {\n        \"from\": \"router 29\",\n        \"to\": \"router 30\"\n      },\n      {\n        \"from\": \"router 30\",\n        \"to\": \"router 31\"\n      },\n      {\n        \"from\": \"router 31\",\n        \"to\": \"router 32\"\n      },\n      {\n        \"from\": \"router 32\",\n        \"to\": \"router 33\"\n      },\n      {\n        \"from\": \"router 33\",\n        \"to\": \"router 34\"\n      },\n      {\n        \"from\": \"router 34\",\n        \"to\": \"router 35\"\n      },\n      {\n        \"from\": \"router 35\",\n        \"to\": \"router 36\"\n      },\n      {\n        \"from\": \"router 36\",\n        \"to\": \"router 1\"\n      }\n    ],\n    \"topology_type\": \"ring\",\n    \"device",
+        "chunk_id": "network_terminology_3",
+        "text": "\"[number] [device_type]\"\n    ]\n  },\n  \"structure_keywords\": {\n    \"root\": [\n      \"root\",\n      \"top\",\n      \"head\",\n      \"main\",\n      \"primary\"\n    ],\n    \"branch\": [\n      \"branch\",\n      \"branches\",\n      \"intermediate\",\n      \"distribution\"\n    ],\n    \"leaf\": [\n      \"leaf\",\n      \"leaves\",\n      \"endpoint\",\n      \"end device\",\n      \"terminal\"\n    ],\n    \"center\": [\n      \"center\",\n      \"central\",\n      \"hub\",\n      \"core\"\n    ],\n    \"peripheral\": [\n      \"peripheral\",\n      \"edge\",\n      \"outer\",\n      \"remote\"\n    ]\n  },\n  \"action_verbs\": {\n    \"create\": [\n      \"create\",\n      \"build\",\n      \"make\",\n      \"construct\",\n      \"design\",\n      \"setup\",\n      \"configure\"\n    ],\n    \"connect\": [\n      \"connect\",\n      \"link\",\n      \"attach\",\n      \"wire\",\n      \"join\",\n      \"bridge\"\n    ],\n    \"prepare\": [\n      \"prepare\",\n      \"setup\",\n      \"arrange\",\n      \"organize\"\n    ]\n  },\n  \"quantity_extractors\": {\n    \"patterns\": [\n      \"\\\\d+\\\\s+(router|switch|server|pc|laptop|hub|cloud)s?\",\n      \"(router|switch|server|pc|laptop|hub|cloud)\\\\s+\\\\d+\",\n      \"with\\\\s+\\\\d+\\\\s+(router|switch|server|pc|laptop|hub|cloud)s?\",\n      \"using\\\\s+\\\\d+\\\\s+(router|switch|server|pc|laptop|h",
         "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
+            "source_file": "network_terminology.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/network_terminology.json",
             "chunk_index": 3
         }
     },
     {
-        "chunk_id": "annotated_topologies_4",
-        "text": "35\",\n        \"to\": \"router 36\"\n      },\n      {\n        \"from\": \"router 36\",\n        \"to\": \"router 1\"\n      }\n    ],\n    \"topology_type\": \"ring\",\n    \"device_count\": 36,\n    \"connection_count\": 36\n  },\n  {\n    \"prompt\": \"Tree topology with switch 1 as root, 2 hubs as branches, and 4 servers as leaves.\",\n    \"machines\": [\n      \"switch 1\",\n      \"hub 1\",\n      \"hub 2\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"hub 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"hub 2\"\n      },\n      {\n        \"from\": \"hub 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"hub 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"hub 2\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"hub 2\",\n        \"to\": \"server 4\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 7,",
+        "chunk_id": "network_terminology_4",
+        "text": "b|cloud)s?\",\n      \"(router|switch|server|pc|laptop|hub|cloud)\\\\s+\\\\d+\",\n      \"with\\\\s+\\\\d+\\\\s+(router|switch|server|pc|laptop|hub|cloud)s?\",\n      \"using\\\\s+\\\\d+\\\\s+(router|switch|server|pc|laptop|hub|cloud)s?\"\n    ]\n  }\n}",
         "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
+            "source_file": "network_terminology.json",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/terminology/network_terminology.json",
             "chunk_index": 4
         }
     },
     {
-        "chunk_id": "annotated_topologies_5",
-        "text": "to\": \"server 3\"\n      },\n      {\n        \"from\": \"hub 2\",\n        \"to\": \"server 4\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 7,\n    \"connection_count\": 6\n  },\n  {\n    \"prompt\": \"31 servers radiating from switch 1.\",\n    \"machines\": [\n      \"switch 1\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\",\n      \"server 5\",\n      \"server 6\",\n      \"server 7\",\n      \"server 8\",\n      \"server 9\",\n      \"server 10\",\n      \"server 11\",\n      \"server 12\",\n      \"server 13\",\n      \"server 14\",\n      \"server 15\",\n      \"server 16\",\n      \"server 17\",\n      \"server 18\",\n      \"server 19\",\n      \"server 20\",\n      \"server 21\",\n      \"server 22\",\n      \"server 23\",\n      \"server 24\",\n      \"server 25\",\n      \"server 26\",\n      \"server 27\",\n      \"server 28\",\n      \"server 29\",\n      \"server 30\",\n      \"server 31\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 1",
+        "chunk_id": "partial_mesh_topology_0",
+        "text": "# Partial Mesh Topology\n\n## Description\nA partial mesh topology has some devices with multiple connections to other devices, but not all devices are connected to all others. Provides redundancy without full mesh complexity.\n\n## Characteristics\n- Some devices have multiple connections\n- Not every device connects to every other device\n- Provides some redundancy and alternate paths\n- More connections than tree, fewer than full mesh\n- No fixed pattern - connections vary\n\n## Connection Formula\n- Variable: More than (N-1), less than N*(N-1)/2\n- Typically 2-4 connections per device on average\n- Strategic connections for redundancy\n\n## Keywords\n- \"partial mesh\"\n- \"redundant\"\n- \"some redundancy\"\n- \"mesh\"\n- \"interconnected\"\n\n## Example Patterns\n```\n5 devices with partial mesh:\n  Could have 8-12 connections\n  Some devices connect to 2-3 others\n  Not all pairs connected\n```\n\n## Use Cases\n- Redundant networks\n- Critical infrastructure\n- Balance between cost and reliability",
         "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 5
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_6",
-        "text": "\"server 28\",\n      \"server 29\",\n      \"server 30\",\n      \"server 31\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 9\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 10\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 11\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 12\"\n      },\n      {\n        \"from",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 6
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_7",
-        "text": "},\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 11\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 12\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 13\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 14\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 15\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 16\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 18\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 19\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 20\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 21\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 22\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 23\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 7
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_8",
-        "text": "switch 1\",\n        \"to\": \"server 22\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 23\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 24\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 25\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 26\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 27\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 28\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 29\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 30\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 31\"\n      }\n    ],\n    \"topology_type\": \"star\",\n    \"device_count\": 32,\n    \"connection_count\": 31\n  },\n  {\n    \"prompt\": \"partial mesh topology with 19 routers.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",\n      \"router 6\",",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 8
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_9",
-        "text": "mesh topology with 19 routers.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",\n      \"router 6\",\n      \"router 7\",\n      \"router 8\",\n      \"router 9\",\n      \"router 10\",\n      \"router 11\",\n      \"router 12\",\n      \"router 13\",\n      \"router 14\",\n      \"router 15\",\n      \"router 16\",\n      \"router 17\",\n      \"router 18\",\n      \"router 19\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 14\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 5\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 1\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 5\",",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 9
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_10",
-        "text": "\"router 4\",\n        \"to\": \"router 1\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 1\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"router 8\"",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 10
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_11",
-        "text": "\": \"router 19\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 15\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 16\",\n        \"to\": \"router 17\"\n      },\n      {\n        \"from\": \"router 16\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\":",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 11
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_12",
-        "text": "{\n        \"from\": \"router 16\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 19\"\n      },\n      {\n        \"from\": \"router 17\",\n        \"to\": \"router 18\"\n      },\n      {\n        \"from\": \"router 18\",\n        \"to\": \"router 16\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 4\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 7\"\n      },\n      {\n        \"from\": \"router 19\",\n        \"to\": \"router 15\"\n      }\n    ],\n    \"topology_type\": \"partial_mesh\",\n    \"device_count\": 19,\n    \"connection_count\": 37\n  },\n  {\n    \"prompt\": \"Linear bus using router 1 and 43 pcs.\",\n    \"machines\": [\n      \"router 1\",\n      \"pc 1\",\n      \"pc 2\",\n      \"pc 3\",\n      \"pc 4\",\n      \"pc 5\",\n      \"pc 6\",\n      \"pc 7\",",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 12
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_13",
-        "text": "\": [\n      \"router 1\",\n      \"pc 1\",\n      \"pc 2\",\n      \"pc 3\",\n      \"pc 4\",\n      \"pc 5\",\n      \"pc 6\",\n      \"pc 7\",\n      \"pc 8\",\n      \"pc 9\",\n      \"pc 10\",\n      \"pc 11\",\n      \"pc 12\",\n      \"pc 13\",\n      \"pc 14\",\n      \"pc 15\",\n      \"pc 16\",\n      \"pc 17\",\n      \"pc 18\",\n      \"pc 19\",\n      \"pc 20\",\n      \"pc 21\",\n      \"pc 22\",\n      \"pc 23\",\n      \"pc 24\",\n      \"pc 25\",\n      \"pc 26\",\n      \"pc 27\",\n      \"pc 28\",\n      \"pc 29\",\n      \"pc 30\",\n      \"pc 31\",\n      \"pc 32\",\n      \"pc 33\",\n      \"pc 34\",\n      \"pc 35\",\n      \"pc 36\",\n      \"pc 37\",\n      \"pc 38\",\n      \"pc 39\",\n      \"pc 40\",\n      \"pc 41\",\n      \"pc 42\",\n      \"pc 43\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 1\"\n      },\n      {\n        \"from",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 13
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_14",
-        "text": "pc 41\",\n      \"pc 42\",\n      \"pc 43\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 1\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 2\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 3\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 4\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 5\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 6\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 7\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 8\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 9\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 10\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 11\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 12\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 14
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_15",
-        "text": "router 1\",\n        \"to\": \"pc 11\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 12\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 13\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 14\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 15\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 16\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 17\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 18\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 19\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 20\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 21\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 22\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 23\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 24\"",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 15
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_16",
-        "text": "\"pc 22\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 23\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 24\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 25\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 26\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 27\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 28\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 29\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 30\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 31\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 32\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 33\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 34\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 35\"\n      },\n      {\n        \"from\": \"",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 16
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_17",
-        "text": "{\n        \"from\": \"router 1\",\n        \"to\": \"pc 34\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 35\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 36\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 37\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 38\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 39\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 40\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 41\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 42\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"pc 43\"\n      }\n    ],\n    \"topology_type\": \"bus\",\n    \"device_count\": 44,\n    \"connection_count\": 43\n  },\n  {\n    \"prompt\": \"Daisy-chained routers topology with endpoints.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 17
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_18",
-        "text": "\"prompt\": \"Daisy-chained routers topology with endpoints.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"router 3\",\n      \"router 4\",\n      \"router 5\",\n      \"router 6\",\n      \"router 7\",\n      \"router 8\",\n      \"router 9\",\n      \"router 10\",\n      \"router 11\",\n      \"router 12\",\n      \"router 13\",\n      \"router 14\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\",\n      \"server 5\",\n      \"server 6\",\n      \"server 7\",\n      \"server 8\",\n      \"server 9\",\n      \"server 10\",\n      \"server 11\",\n      \"server 12\",\n      \"server 13\",\n      \"server 14\",\n      \"server 15\",\n      \"server 16\",\n      \"server 17\",\n      \"server 18\",\n      \"server 19\",\n      \"server 20\",\n      \"server 21\",\n      \"server 22\",\n      \"server 23\",\n      \"server 24\",\n      \"server 25\",\n      \"server 26\",\n      \"server 27\",\n      \"server 28\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"router 2\"",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 18
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_19",
-        "text": "server 25\",\n      \"server 26\",\n      \"server 27\",\n      \"server 28\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"router 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"router 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"router 4\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"router 5\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"router 6\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"router 7\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"router 8\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"router 9\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"router 10\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"router 11\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 19
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_20",
-        "text": "{\n        \"from\": \"router 11\",\n        \"to\": \"router 12\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"router 13\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"router 14\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"server 7\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"server 9\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"server 11\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"server 13\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"server 15\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"server 19\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\":",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 20
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_21",
-        "text": "9\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"server 19\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"server 21\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"server 23\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"server 25\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"server 27\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"router 2\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"from\": \"router 3\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"router 4\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"from\": \"router 5\",\n        \"to\": \"server 10\"\n      },\n      {\n        \"from\": \"router 6\",\n        \"to\": \"server 12\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"server 14\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"server 16\"\n      },",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 21
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_22",
-        "text": "12\"\n      },\n      {\n        \"from\": \"router 7\",\n        \"to\": \"server 14\"\n      },\n      {\n        \"from\": \"router 8\",\n        \"to\": \"server 16\"\n      },\n      {\n        \"from\": \"router 9\",\n        \"to\": \"server 18\"\n      },\n      {\n        \"from\": \"router 10\",\n        \"to\": \"server 20\"\n      },\n      {\n        \"from\": \"router 11\",\n        \"to\": \"server 22\"\n      },\n      {\n        \"from\": \"router 12\",\n        \"to\": \"server 24\"\n      },\n      {\n        \"from\": \"router 13\",\n        \"to\": \"server 26\"\n      },\n      {\n        \"from\": \"router 14\",\n        \"to\": \"server 28\"\n      }\n    ],\n    \"topology_type\": \"daisy_chain\",\n    \"device_count\": 42,\n    \"connection_count\": 41\n  },\n  {\n    \"prompt\": \"Three-tier network with 2 routers, 1 switch, and 20 servers.\",\n    \"machines\": [\n      \"router 1\",\n      \"router 2\",\n      \"switch 1\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\",\n      \"server 5\",\n      \"server 6\",\n      \"server",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 22
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_23",
-        "text": "router 2\",\n      \"switch 1\",\n      \"server 1\",\n      \"server 2\",\n      \"server 3\",\n      \"server 4\",\n      \"server 5\",\n      \"server 6\",\n      \"server 7\",\n      \"server 8\",\n      \"server 9\",\n      \"server 10\",\n      \"server 11\",\n      \"server 12\",\n      \"server 13\",\n      \"server 14\",\n      \"server 15\",\n      \"server 16\",\n      \"server 17\",\n      \"server 18\",\n      \"server 19\",\n      \"server 20\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"switch 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 3\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 4\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"switch",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 23
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_24",
-        "text": "\"from\": \"switch 1\",\n        \"to\": \"server 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 8\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 9\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 10\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 11\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 12\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 13\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 14\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 15\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 16\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 24
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_25",
-        "text": "\"to\": \"server 16\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 17\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 18\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 19\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"server 20\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 23,\n    \"connection_count\": 21\n  },\n  {\n    \"prompt\": \"Layered network using 1 router, 2 switches, 18 pcs.\",\n    \"machines\": [\n      \"router 1\",\n      \"switch 1\",\n      \"switch 2\",\n      \"pc 1\",\n      \"pc 2\",\n      \"pc 3\",\n      \"pc 4\",\n      \"pc 5\",\n      \"pc 6\",\n      \"pc 7\",\n      \"pc 8\",\n      \"pc 9\",\n      \"pc 10\",\n      \"pc 11\",\n      \"pc 12\",\n      \"pc 13\",\n      \"pc 14\",\n      \"pc 15\",\n      \"pc 16\",\n      \"pc 17\",\n      \"pc 18\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 25
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_26",
-        "text": "13\",\n      \"pc 14\",\n      \"pc 15\",\n      \"pc 16\",\n      \"pc 17\",\n      \"pc 18\"\n    ],\n    \"connections\": [\n      {\n        \"from\": \"router 1\",\n        \"to\": \"switch 1\"\n      },\n      {\n        \"from\": \"router 1\",\n        \"to\": \"switch 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 1\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 2\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 3\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 4\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 5\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 6\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 7\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 8\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 9\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 26
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_27",
-        "text": "\"to\": \"pc 8\"\n      },\n      {\n        \"from\": \"switch 1\",\n        \"to\": \"pc 9\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 10\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 11\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 12\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 13\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 14\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 15\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 16\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 17\"\n      },\n      {\n        \"from\": \"switch 2\",\n        \"to\": \"pc 18\"\n      }\n    ],\n    \"topology_type\": \"tree\",\n    \"device_count\": 21,\n    \"connection_count\": 20\n  }\n]",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 27
-        }
-    },
-    {
-        "chunk_id": "annotated_topologies_28",
-        "text": "\"connection_count\": 20\n  }\n]",
-        "metadata": {
-            "source_file": "annotated_topologies.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/examples/annotated_topologies.json",
-            "chunk_index": 28
-        }
-    },
-    {
-        "chunk_id": "connection_patterns_0",
-        "text": "# Network Connection Rules and Constraints\n\n## Hierarchical Connection Patterns\n\n### Standard Network Hierarchy\n```\nCloud (Internet/WAN)\n  ↓\nRouter (Core/Edge Layer)\n  ↓\nSwitch (Distribution/Access Layer)\n  ↓\nEnd Devices (Servers, PCs, Laptops)\n```\n\n### Typical Flow\n1. **Cloud → Router**: WAN/Internet entry\n2. **Router → Router**: Inter-network routing\n3. **Router → Switch**: Distribution to access layer\n4. **Switch → Switch**: Redundancy or extended access\n5. **Switch → End Devices**: Access layer connectivity\n6. **Hub → End Devices**: Legacy access (rare)\n\n## Valid Connection Pairs\n\n### Layer 3 Devices (Routers)\n- **Router ↔ Router**: Valid - inter-router connections for routing\n- **Router ↔ Switch**: Valid - most common distribution pattern\n- **Router ↔ Cloud**: Valid - WAN/Internet connectivity\n- **Router ↔ Server**: Valid - direct server connection (less common)\n- **Router ↔ Hub**: Valid - legacy configuration\n\n### Layer 2 Devices (Switches)\n- **Switch ↔ Switch**: Valid - redundancy, extended access\n- **Switch ↔ Router**: Valid - uplink to core\n- **Switch ↔ Server**: Valid - most common server connection\n- **Switch ↔ PC**: Valid - most common PC connection\n- **Switch ↔ Laptop**: Valid - most common laptop connection\n- **Switch ↔",
-        "metadata": {
-            "source_file": "connection_patterns.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/connection_rules/connection_patterns.md",
+            "source_file": "partial_mesh_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/partial_mesh_topology.md",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "connection_patterns_1",
-        "text": "Valid - uplink to core\n- **Switch ↔ Server**: Valid - most common server connection\n- **Switch ↔ PC**: Valid - most common PC connection\n- **Switch ↔ Laptop**: Valid - most common laptop connection\n- **Switch ↔ Hub**: Valid - legacy extension\n\n### Layer 1 Devices (Hubs)\n- **Hub ↔ PC**: Valid - legacy workstation connection\n- **Hub ↔ Laptop**: Valid - legacy laptop connection\n- **Hub ↔ Server**: Valid - legacy server connection\n- **Hub ↔ Switch**: Valid - uplink to better equipment\n\n### End Devices\n- **Server ↔ Switch**: Most common\n- **Server ↔ Router**: Direct connection (DMZ, special cases)\n- **PC ↔ Switch**: Most common\n- **PC ↔ Hub**: Legacy\n- **Laptop ↔ Switch**: Most common\n- **Laptop ↔ Hub**: Legacy\n\n### External Connections\n- **Cloud ↔ Router**: Standard WAN/Internet entry point\n- **Cloud ↔ Cloud**: Invalid (clouds represent external networks)\n\n## Connection Directionality\n\n### Directional Connections\n- Most connections in topology descriptions are **directional**\n- Format: `device1 -> device2` means device1 connects TO device2\n- In implementation, many are bidirectional for data flow\n\n### Bidirectional Implications\n- Physical connections are typically bidirectional\n- Data can flow both ways\n- In ring/loop topologies, direction matters for token passing\n\n### Special Cases",
+        "chunk_id": "daisy_chain_topology_0",
+        "text": "# Daisy Chain Topology\n\n## Description\nA daisy chain topology connects devices in a linear sequence, where each device connects to the next one in line, forming a chain without returning to the start.\n\n## Characteristics\n- Linear sequence of connections\n- Each device connects to the next (except endpoints)\n- First device: only 1 connection (to second)\n- Last device: only 1 connection (to second-to-last)\n- Middle devices: 2 connections each\n- NOT a loop (doesn't connect back)\n\n## Connection Formula\n- For N devices: (N-1) connections\n- Pattern: 1→2, 2→3, 3→4, ..., (N-1)→N\n\n## Keywords\n- \"daisy chain\"\n- \"series\"\n- \"sequential\"\n- \"linear\"\n- \"chained\"\n- \"in series\"\n- \"daisy-chained\"\n\n## Example Patterns\n```\n4 devices: 1→2, 2→3, 3→4\n7 devices: 1→2, 2→3, 3→4, 4→5, 5→6, 6→7\n```\n\n## Additional Pattern: Daisy Chain with Endpoints\n- Main chain of devices (e.g., routers)\n- Each chain device has additional endpoint connections (e.g., servers)\n- Creates a spine-and-leaf variation\n\n## Use Cases\n- Simple expansion\n- Cable cost reduction\n- Controlled data flow",
         "metadata": {
-            "source_file": "connection_patterns.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/connection_rules/connection_patterns.md",
-            "chunk_index": 1
-        }
-    },
-    {
-        "chunk_id": "connection_patterns_2",
-        "text": "- In implementation, many are bidirectional for data flow\n\n### Bidirectional Implications\n- Physical connections are typically bidirectional\n- Data can flow both ways\n- In ring/loop topologies, direction matters for token passing\n\n### Special Cases\n- **Ring/Loop**: Strictly directional in pattern (1→2→3→...→N→1)\n- **Star**: All connections point from center to peripherals\n- **Daisy Chain**: Sequential directional (1→2→3→4)\n- **Mesh**: Can be bidirectional or specific paths\n\n## Connection Constraints\n\n### Prohibited Patterns\n- **End Device ↔ End Device**: Generally not direct\n  - PC ↔ PC: No direct connection\n  - Server ↔ Server: No direct connection\n  - Laptop ↔ Laptop: No direct connection\n- **Cloud ↔ End Device**: Clouds don't connect directly to end devices\n- **Cloud ↔ Switch**: Typically not direct (goes through router)\n\n### Logical Constraints\n- **No Loops** (except ring/loop topology): Tree topologies must be acyclic\n- **Single Root**: Tree topologies have one root device\n- **Star Center**: Star topology needs exactly one central device\n- **Ring Closure**: Ring topology must close (last connects to first)\n\n## Common Network Patterns\n\n### Three-Tier Architecture\n```\nCore Layer: Routers\n  ↓\nDistribution Layer: Switches\n  ↓\nAccess Layer: End",
-        "metadata": {
-            "source_file": "connection_patterns.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/connection_rules/connection_patterns.md",
-            "chunk_index": 2
-        }
-    },
-    {
-        "chunk_id": "connection_patterns_3",
-        "text": "- **Ring Closure**: Ring topology must close (last connects to first)\n\n## Common Network Patterns\n\n### Three-Tier Architecture\n```\nCore Layer: Routers\n  ↓\nDistribution Layer: Switches\n  ↓\nAccess Layer: End Devices\n```\n\n### DMZ Pattern\n```\nInternet (Cloud) → Edge Router → DMZ Switch → Public Servers\n                              → Internal Network\n```\n\n### Redundant Pattern\n```\nDevice A → Primary Path → Device B\n        → Backup Path  → Device B\n```\n\n## Connection Density Guidelines\n\n### Topology Type vs Connection Count\n- **Ring**: N devices = N connections\n- **Star**: N peripherals + 1 center = N connections\n- **Tree**: N devices ≈ N-1 connections (minimum)\n- **Bus**: N devices + 1 bus = N connections\n- **Partial Mesh**: N devices = 1.5N to 3N connections (typical)\n- **Full Mesh**: N devices = N*(N-1)/2 connections\n- **Daisy Chain**: N devices = N-1 connections\n\n## Best Practices\n\n1. **Hierarchical Design**: Follow OSI model layers\n2. **Redundancy**: Critical paths should have backups\n3. **Scalability**: Design for growth\n4. **Simplicity**: Minimize unnecessary complexity\n5. **Standards**: Follow industry best practices",
-        "metadata": {
-            "source_file": "connection_patterns.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/connection_rules/connection_patterns.md",
-            "chunk_index": 3
-        }
-    },
-    {
-        "chunk_id": "connection_patterns_4",
-        "text": "undancy**: Critical paths should have backups\n3. **Scalability**: Design for growth\n4. **Simplicity**: Minimize unnecessary complexity\n5. **Standards**: Follow industry best practices",
-        "metadata": {
-            "source_file": "connection_patterns.md",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/connection_rules/connection_patterns.md",
-            "chunk_index": 4
-        }
-    },
-    {
-        "chunk_id": "connection_rules_0",
-        "text": "{\n  \"valid_connections\": {\n    \"router\": [\n      \"router\",\n      \"switch\",\n      \"cloud\",\n      \"server\",\n      \"hub\"\n    ],\n    \"switch\": [\n      \"router\",\n      \"switch\",\n      \"server\",\n      \"pc\",\n      \"laptop\",\n      \"hub\"\n    ],\n    \"server\": [\n      \"switch\",\n      \"router\",\n      \"hub\"\n    ],\n    \"pc\": [\n      \"switch\",\n      \"hub\"\n    ],\n    \"laptop\": [\n      \"switch\",\n      \"hub\"\n    ],\n    \"hub\": [\n      \"switch\",\n      \"pc\",\n      \"laptop\",\n      \"server\"\n    ],\n    \"cloud\": [\n      \"router\"\n    ]\n  },\n  \"hierarchical_order\": [\n    \"cloud\",\n    \"router\",\n    \"switch\",\n    \"hub\",\n    \"server\",\n    \"pc\",\n    \"laptop\"\n  ],\n  \"connection_formulas\": {\n    \"ring\": \"N connections for N devices\",\n    \"star\": \"N connections for 1 center + N peripherals\",\n    \"tree\": \"N-1 connections for N devices (minimum)\",\n    \"bus\": \"N connections for 1 bus + N devices\",\n    \"daisy_chain\": \"N-1 connections for N devices\",\n    \"partial_mesh\": \"varies, typically 1.5N to 3N connections\",\n    \"full_mesh\": \"N*(N-",
-        "metadata": {
-            "source_file": "connection_rules.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/connection_rules/connection_rules.json",
+            "source_file": "daisy_chain_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/daisy_chain_topology.md",
             "chunk_index": 0
         }
     },
     {
-        "chunk_id": "connection_rules_1",
-        "text": "+ N devices\",\n    \"daisy_chain\": \"N-1 connections for N devices\",\n    \"partial_mesh\": \"varies, typically 1.5N to 3N connections\",\n    \"full_mesh\": \"N*(N-1)/2 connections for N devices\"\n  },\n  \"prohibited_connections\": [\n    [\n      \"pc\",\n      \"pc\"\n    ],\n    [\n      \"pc\",\n      \"laptop\"\n    ],\n    [\n      \"pc\",\n      \"server\"\n    ],\n    [\n      \"laptop\",\n      \"laptop\"\n    ],\n    [\n      \"laptop\",\n      \"server\"\n    ],\n    [\n      \"server\",\n      \"server\"\n    ],\n    [\n      \"cloud\",\n      \"cloud\"\n    ],\n    [\n      \"cloud\",\n      \"switch\"\n    ],\n    [\n      \"cloud\",\n      \"pc\"\n    ],\n    [\n      \"cloud\",\n      \"laptop\"\n    ],\n    [\n      \"cloud\",\n      \"server\"\n    ]\n  ]\n}",
+        "chunk_id": "daisy_chain_topology_1",
+        "text": "ple expansion\n- Cable cost reduction\n- Controlled data flow",
         "metadata": {
-            "source_file": "connection_rules.json",
-            "source_path": "/home/athaar/INDA/VisioGns3/NLP1/knowledge_base/connection_rules/connection_rules.json",
+            "source_file": "daisy_chain_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/daisy_chain_topology.md",
             "chunk_index": 1
+        }
+    },
+    {
+        "chunk_id": "full_mesh_topology_0",
+        "text": "# Full Mesh Topology\n\n## Description\nA full mesh topology connects every device to every other device, creating maximum redundancy and fault tolerance.\n\n## Characteristics\n- Every device connects to every other device\n- Maximum redundancy\n- Highest fault tolerance\n- Most expensive and complex\n\n## Connection Formula\n- For N devices: N*(N-1)/2 connections\n- Each device has (N-1) connections\n\n## Keywords\n- \"full mesh\"\n- \"fully connected\"\n- \"complete mesh\"\n- \"all-to-all\"\n\n## Example Patterns\n```\n3 devices: 1↔2, 1↔3, 2↔3 (3 connections)\n4 devices: 1↔2, 1↔3, 1↔4, 2↔3, 2↔4, 3↔4 (6 connections)\n5 devices: 10 connections\n```\n\n## Use Cases\n- Critical systems requiring maximum uptime\n- Small networks where cost isn't primary concern\n- High reliability requirements",
+        "metadata": {
+            "source_file": "full_mesh_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/full_mesh_topology.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "tree_topology_0",
+        "text": "# Tree Topology\n\n## Description\nA tree topology is a hierarchical structure with a root device at the top, branch devices in the middle, and leaf devices at the bottom. No loops or redundant paths exist.\n\n## Characteristics\n- Hierarchical structure: root → branches → leaves\n- Root connects to branch devices\n- Branch devices connect to leaf devices\n- No loops or redundant connections\n- Clear parent-child relationships\n\n## Connection Formula\n- Varies based on branching factor\n- Each branch can have multiple leaves\n- No leaf-to-leaf connections\n\n## Keywords\n- \"tree\"\n- \"hierarchical\"\n- \"root\"\n- \"branches\"\n- \"leaves\"\n- \"as root\"\n- \"as branches\"\n- \"as leaves\"\n\n## Example Patterns\n```\n1 root, 2 branches, 4 leaves:\n  Root → Branch1, Root → Branch2\n  Branch1 → Leaf1, Branch1 → Leaf2\n  Branch2 → Leaf3, Branch2 → Leaf4\n```\n\n## Use Cases\n- Enterprise networks\n- Scalable architectures\n- Clear hierarchy needed",
+        "metadata": {
+            "source_file": "tree_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/tree_topology.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "star_topology_0",
+        "text": "# Star Topology\n\n## Description\nA star topology features a central device (hub/switch/router) with all other devices connected directly to it, radiating outward like spokes on a wheel.\n\n## Characteristics\n- One central device\n- All peripheral devices connect only to the center\n- No direct connections between peripheral devices\n- Central point of failure\n\n## Connection Formula\n- For 1 central + N peripheral devices: Exactly N connections\n- All connections: Central → Peripheral device\n\n## Keywords\n- \"star\"\n- \"radiating from\"\n- \"hub-and-spoke\"\n- \"centralized\"\n- \"central hub\"\n\n## Example Patterns\n```\n1 center + 3 peripherals: C→1, C→2, C→3\n1 switch + 5 servers: S→S1, S→S2, S→S3, S→S4, S→S5\n```\n\n## Use Cases\n- Most common LAN topology\n- Easy to manage and troubleshoot\n- Simple to add/remove devices",
+        "metadata": {
+            "source_file": "star_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/star_topology.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "ring_topology_0",
+        "text": "# Ring/Loop Topology\n\n## Description\nA ring topology connects devices in a circular chain where each device is connected to exactly two neighbors, forming a closed loop.\n\n## Characteristics\n- Each device connects to exactly 2 neighbors\n- The last device connects back to the first device\n- Creates a circular data path\n- No central node\n\n## Connection Formula\n- For N devices: Exactly N connections\n- Connection pattern: Device i → Device (i+1), with Device N → Device 1\n\n## Keywords\n- \"ring\"\n- \"loop\"\n- \"circular\"\n- \"ring configuration\"\n- \"circular chain\"\n\n## Example Patterns\n```\n3 devices: 1→2, 2→3, 3→1\n5 devices: 1→2, 2→3, 3→4, 4→5, 5→1\nN devices: 1→2, 2→3, ..., (N-1)→N, N→1\n```\n\n## Use Cases\n- Token passing networks\n- Fault-tolerant systems (can detect breaks)\n- Equal access networks",
+        "metadata": {
+            "source_file": "ring_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/ring_topology.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "hybrid_topology_0",
+        "text": "# Hybrid/Mixed Topology\n\n## Description\nA hybrid topology combines two or more different topology types to create a complex network that leverages advantages of each topology type.\n\n## Characteristics\n- Combines multiple topology types\n- Can include star, tree, bus, ring elements\n- Flexible and scalable\n- Common in enterprise networks\n\n## Keywords\n- \"hybrid\"\n- \"mixed\"\n- \"heterogeneous\"\n- \"complex\"\n- \"multi-tier\"\n- \"layered\"\n\n## Common Patterns\n- Star-Bus: Multiple star networks connected via bus\n- Star-Ring: Multiple star networks in ring configuration\n- Tree-Star: Tree topology with star configurations at leaves\n- Three-tier: Hierarchical with core, distribution, access layers\n\n## Example Patterns\n```\nThree-tier network:\n  Core: Routers interconnected\n  Distribution: Switches connected to routers\n  Access: End devices connected to switches\n```\n\n## Use Cases\n- Enterprise networks\n- Campus networks\n- Large organizations\n- Complex requirements",
+        "metadata": {
+            "source_file": "hybrid_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/hybrid_topology.md",
+            "chunk_index": 0
+        }
+    },
+    {
+        "chunk_id": "bus_topology_0",
+        "text": "# Bus/Linear Bus Topology\n\n## Description\nA bus topology uses a single backbone (main cable/device) with all other devices connected directly to it. All devices share the same communication medium.\n\n## Characteristics\n- Single central backbone/bus\n- All devices connect directly to the bus\n- One device acts as the bus (router/switch)\n- Simple linear structure\n\n## Connection Formula\n- For 1 bus + N devices: Exactly N connections\n- All connections: Bus → Device\n\n## Keywords\n- \"bus\"\n- \"linear bus\"\n- \"backbone\"\n- \"using [device] and [N] [devices]\"\n\n## Example Patterns\n```\n1 router + 5 PCs: R→PC1, R→PC2, R→PC3, R→PC4, R→PC5\n1 switch + 10 servers: S→S1, S→S2, ..., S→S10\n```\n\n## Use Cases\n- Simple networks\n- Small office setups\n- Legacy systems",
+        "metadata": {
+            "source_file": "bus_topology.md",
+            "source_path": "/home/fiza-wajid/INDA/VisioGns3/NLP1/knowledge_base2/topology_patterns/bus_topology.md",
+            "chunk_index": 0
         }
     }
 ]

@@ -1,0 +1,36 @@
+{
+  "device_type": "hub",
+  "description": "Basic Layer 1 device that broadcasts to all ports",
+  "naming_convention": "hub [number]",
+  "examples": [
+    "hub 1",
+    "hub 2",
+    "hub 10"
+  ],
+  "typical_connections": {
+    "can_connect_to": [
+      "switch",
+      "pc",
+      "laptop",
+      "server"
+    ],
+    "typically_connects_to": [
+      "pc",
+      "laptop",
+      "server"
+    ],
+    "layer": "Layer 1 (Physical Layer)"
+  },
+  "role_in_topology": {
+    "primary": "Access layer (legacy)",
+    "can_be_root": false,
+    "can_be_branch": true,
+    "can_be_leaf": false
+  },
+  "characteristics": [
+    "Legacy device (mostly replaced by switches)",
+    "Broadcasts to all ports",
+    "No intelligence",
+    "Simple connectivity"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "device_type": "switch",
+  "description": "Layer 2 network device that forwards frames within a network",
+  "naming_convention": "switch [number]",
+  "examples": [
+    "switch 1",
+    "switch 2",
+    "switch 10"
+  ],
+  "typical_connections": {
+    "can_connect_to": [
+      "router",
+      "switch",
+      "server",
+      "pc",
+      "laptop",
+      "hub"
+    ],
+    "typically_connects_to": [
+      "router",
+      "server",
+      "pc",
+      "laptop"
+    ],
+    "layer": "Layer 2 (Data Link Layer)"
+  },
+  "role_in_topology": {
+    "primary": "Distribution/Access layer",
+    "can_be_root": true,
+    "can_be_branch": true,
+    "can_be_leaf": false
+  },
+  "characteristics": [
+    "Forwards traffic based on MAC addresses",
+    "Connects devices in same network segment",
+    "Provides multiple ports for end devices",
+    "Common in star topology centers"
+  ]
+}

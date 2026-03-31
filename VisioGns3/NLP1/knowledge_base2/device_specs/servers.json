@@ -1,0 +1,33 @@
+{
+  "device_type": "server",
+  "description": "End device that provides services to other network devices",
+  "naming_convention": "server [number]",
+  "examples": [
+    "server 1",
+    "server 2",
+    "server 10"
+  ],
+  "typical_connections": {
+    "can_connect_to": [
+      "switch",
+      "router",
+      "hub"
+    ],
+    "typically_connects_to": [
+      "switch"
+    ],
+    "layer": "Application Layer (End Device)"
+  },
+  "role_in_topology": {
+    "primary": "Access layer / End device",
+    "can_be_root": false,
+    "can_be_branch": false,
+    "can_be_leaf": true
+  },
+  "characteristics": [
+    "Provides services (web, database, file storage)",
+    "End point in topology",
+    "Usually connects to switches",
+    "Can have redundant connections"
+  ]
+}

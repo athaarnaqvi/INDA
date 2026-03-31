@@ -27,10 +27,24 @@ def save_server_details_to_file(ip, port, file_path):
         file.write(f"{ip}\n{port}\n")
 
 
+# def fetch_templates(ip, port):
+#     url = f"http://{ip}:{port}/v2/templates"
+#     result = subprocess.run(["curl", "-X", "GET", url], capture_output=True, text=True)
+#     return json.loads(result.stdout)
+
+import requests
+
 def fetch_templates(ip, port):
     url = f"http://{ip}:{port}/v2/templates"
-    result = subprocess.run(["curl", "-X", "GET", url], capture_output=True, text=True)
-    return json.loads(result.stdout)
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # raises error if not 200
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"GNS3 API request failed: {e}")
+    except ValueError:
+        raise RuntimeError("Invalid JSON received from GNS3")
 
 
 def save_templates_to_json(templates, output_file):
@@ -88,8 +102,8 @@ def save_templates_to_json(templates, output_file):
 
 def main():
     ip, port = get_gns3_server_details(GNS3_CONF_PATH)
-    if ip == "127.0.0.1":
-        ip = "localhost"
+    if ip == "localhost":
+        ip = "127.0.0.1"
 
     save_server_details_to_file(ip, port, SERVER_DETAILS_FILE)
 

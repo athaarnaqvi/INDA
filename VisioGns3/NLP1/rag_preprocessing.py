@@ -2,7 +2,6 @@ import os
 import json
 from pathlib import Path
 
-# Optional dependency for token-based splitting
 try:
     import tiktoken
     use_tiktoken = True
@@ -13,15 +12,31 @@ except ImportError:
 
 # --- CONFIG --- #
 BASE_DIR = Path(__file__).resolve().parent
-KNOWLEDGE_BASE_DIR = BASE_DIR / "knowledge_base"
+
+# FIX: rag_documents_creation.py writes to knowledge_base2, NOT knowledge_base.
+# Using knowledge_base here caused RAG to run on stale/missing data.
+KNOWLEDGE_BASE_DIR = BASE_DIR / "knowledge_base2"
+
+# Fallback: if knowledge_base2 doesn't exist, try knowledge_base
+if not KNOWLEDGE_BASE_DIR.exists():
+    fallback = BASE_DIR / "knowledge_base"
+    if fallback.exists():
+        print(f"⚠️ knowledge_base2 not found — falling back to {fallback}")
+        KNOWLEDGE_BASE_DIR = fallback
+    else:
+        raise FileNotFoundError(
+            f"Neither 'knowledge_base2' nor 'knowledge_base' found in {BASE_DIR}.\n"
+            f"Run rag_documents_creation.py first to generate the knowledge base."
+        )
+
 OUTPUT_FILE = BASE_DIR / "rag_preprocessed_chunks.json"
 
-CHUNK_SIZE = 300      # token count if using tiktoken (~1000 chars fallback)
-CHUNK_OVERLAP = 50    # overlap between chunks to preserve context
+CHUNK_SIZE = 300
+CHUNK_OVERLAP = 50
 
 
 def read_all_docs(directory: Path):
-    """Recursively read all .md and .json files in the knowledge_base directory."""
+    """Recursively read all .md and .json files in the knowledge base directory."""
     docs = []
     for root, _, files in os.walk(directory):
         for f in files:
@@ -37,7 +52,7 @@ def read_all_docs(directory: Path):
 
 
 def chunk_text(text: str, chunk_size: int, overlap: int):
-    """Split text into overlapping chunks (by tokens if possible, else by characters)."""
+    """Split text into overlapping chunks."""
     if use_tiktoken:
         enc = tiktoken.get_encoding("cl100k_base")
         tokens = enc.encode(text)
@@ -47,7 +62,6 @@ def chunk_text(text: str, chunk_size: int, overlap: int):
             chunks.append(chunk)
         return chunks
     else:
-        # Character-based fallback
         step = chunk_size * 4
         overlap_chars = overlap * 4
         chunks = []
@@ -60,8 +74,14 @@ def preprocess_docs():
     """Read all knowledge base files, chunk them, and store as JSON for embeddings."""
     print(f"🔍 Scanning knowledge base at: {KNOWLEDGE_BASE_DIR}")
     all_docs = read_all_docs(KNOWLEDGE_BASE_DIR)
-    preprocessed = []
 
+    if not all_docs:
+        raise RuntimeError(
+            f"No .md or .json files found in {KNOWLEDGE_BASE_DIR}.\n"
+            f"Run rag_documents_creation.py first."
+        )
+
+    preprocessed = []
     for doc in all_docs:
         chunks = chunk_text(doc["text"], CHUNK_SIZE, CHUNK_OVERLAP)
         for i, chunk in enumerate(chunks):
@@ -76,11 +96,11 @@ def preprocess_docs():
                     }
                 })
 
-    # Save to output JSON
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(preprocessed, f, indent=4, ensure_ascii=False)
 
     print(f"✅ {len(preprocessed)} chunks created and saved to {OUTPUT_FILE}")
+    print(f"   (from {len(all_docs)} source files in {KNOWLEDGE_BASE_DIR})")
 
 
 if __name__ == "__main__":

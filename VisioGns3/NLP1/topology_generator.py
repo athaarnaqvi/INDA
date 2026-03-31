@@ -1,6 +1,6 @@
 import json
 import re
-from typing import Dict
+from typing import Dict, List, Tuple
 
 from rag_pipeline import RAGPipeline
 from prompt_builder import build_prompt
@@ -11,34 +11,24 @@ class TopologyGenerator:
     """
     High-level wrapper around a retrieval-augmented generation (RAG) pipeline for creating network topologies.
 
-    This class performs the following steps:
-    1. Uses RAGPipeline to search a knowledge base for examples relevant to the user's prompt.
-    2. Builds a prompt for the LLM that includes the user's description and the retrieved examples.
-    3. Queries the LLM for a JSON description of the topology.
-    4. Parses and validates the JSON to ensure it matches the expected schema.
+    Steps:
+    1. RAGPipeline retrieves relevant knowledge base examples.
+    2. A structured prompt is built and sent to the LLM.
+    3. The LLM JSON output is parsed, validated, deduplicated, and heuristically completed.
     """
 
     def __init__(self, chroma_path: str, embed_model: str):
         self.rag = RAGPipeline(chroma_path=chroma_path, model_path=embed_model)
 
     # -------------------------------------------------------------------------
-    # Utility functions for JSON extraction and cleaning
+    # JSON extraction and cleaning
     # -------------------------------------------------------------------------
     def _extract_json_text(self, text: str) -> str:
-        """
-        Attempt to extract the first JSON object from a free‑form string.
-
-        The LLM sometimes returns additional prose or markdown. This function
-        searches for a JSON object enclosed in braces and returns the text
-        representing that object. If no JSON is found, a ValueError is raised.
-        """
-        # Strategy 1: Look for fenced JSON code blocks
-        code_block_pattern = r'```(?:json)?\s*(\{.*?\})\s*```'
-        match = re.search(code_block_pattern, text, re.DOTALL)
+        # Strategy 1: fenced code block
+        match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
         if match:
             return match.group(1)
-
-        # Strategy 2: Find first JSON object based on brace counting
+        # Strategy 2: brace counting from first '{'
         start = text.find('{')
         if start == -1:
             raise ValueError("No JSON object found in LLM output.")
@@ -50,111 +40,178 @@ class TopologyGenerator:
                 brace_count -= 1
                 if brace_count == 0:
                     return text[start:i + 1]
-        # If we get here, braces never balanced
         raise ValueError("No complete JSON object found in LLM output.")
 
     def _clean_json_text(self, json_text: str) -> str:
-        """
-        Clean up common JSON formatting issues.
-
-        - Remove trailing commas before closing braces or brackets.
-        - Strip any stray comments or non‑JSON annotations.
-        """
-        # Remove trailing commas such as `, }` or `, ]`
         json_text = re.sub(r',\s*(\}|\])', r'\1', json_text)
-        # Remove simple inline comments (e.g. // comment)
         json_text = re.sub(r'//.*?\n', '\n', json_text)
-        # Remove block comments (/* ... */)
         json_text = re.sub(r'/\*.*?\*/', '', json_text, flags=re.DOTALL)
         return json_text
 
     def _safe_parse(self, text: str) -> Dict:
-        """
-        Attempt to parse a JSON object from the LLM's raw output.
-
-        If parsing fails, try a series of cleanup steps before giving up.
-        """
         try:
             json_text = self._extract_json_text(text)
             json_text = self._clean_json_text(json_text)
             return json.loads(json_text)
         except json.JSONDecodeError as e:
-            # As a last resort, try to repair common issues
             try:
-                # Replace concatenated objects "}{" with "},{"
                 repaired = re.sub(r'}\s*{', '},{', json_text)
                 repaired = repaired.replace('\\n', ' ').replace('\\t', ' ')
                 return json.loads(repaired)
             except Exception:
                 raise RuntimeError(
-                    f"JSON parse failed after cleanup.\n"
-                    f"Error: {e}\n"
-                    f"Cleaned JSON:\n{json_text[:500]}..."
+                    f"JSON parse failed after cleanup.\nError: {e}\nCleaned JSON:\n{json_text[:500]}..."
                 )
 
+    # -------------------------------------------------------------------------
+    # Validation
+    # -------------------------------------------------------------------------
     def _validate_output(self, parsed: Dict) -> Dict:
-        """
-        Validate the LLM's parsed JSON against expected topology schema.
-
-        Ensures 'machines' and 'connections' are lists of the correct types. Warns
-        about references to devices not present in the machines list.
-        """
         if 'machines' not in parsed or 'connections' not in parsed:
-            raise RuntimeError("Invalid topology format: missing 'machines' or 'connections'")
-        # Ensure lists
+            raise RuntimeError("Invalid topology: missing 'machines' or 'connections'")
         if not isinstance(parsed['machines'], list):
             raise RuntimeError("'machines' must be a list")
         if not isinstance(parsed['connections'], list):
             raise RuntimeError("'connections' must be a list")
-        # Validate connections
+
+        machine_set = set(parsed['machines'])
         for idx, conn in enumerate(parsed['connections']):
             if not isinstance(conn, dict):
-                raise RuntimeError(f"Connection {idx} is not a dictionary")
+                raise RuntimeError(f"Connection {idx} is not a dict")
             if 'from' not in conn or 'to' not in conn:
                 raise RuntimeError(f"Connection {idx} missing 'from' or 'to'")
-            # Warn if connection references unknown device
-            if conn['from'] not in parsed['machines']:
-                print(f"Warning: connection 'from' device '{conn['from']}' not in machines list")
-            if conn['to'] not in parsed['machines']:
-                print(f"Warning: connection 'to' device '{conn['to']}' not in machines list")
+            if conn['from'] not in machine_set:
+                print(f"[WARN] 'from' device '{conn['from']}' not in machines list")
+            if conn['to'] not in machine_set:
+                print(f"[WARN] 'to' device '{conn['to']}' not in machines list")
         return parsed
 
-    def generate(self, user_prompt: str, top_k: int = 8) -> Dict:
-        """
-        Generate a topology for the given user_prompt using retrieval‑augmented generation.
+    # -------------------------------------------------------------------------
+    # Deduplication — KEY FIX: removes duplicates added by bad LLM runs or
+    # previous heuristic passes that polluted the context via RAG retrieval.
+    # Treats A→B and B→A as the same undirected edge.
+    # -------------------------------------------------------------------------
+    def _deduplicate_connections(self, connections: List[Dict]) -> List[Dict]:
+        seen: set = set()
+        result = []
+        for conn in connections:
+            # Strip extra keys (e.g. adapter numbers from old schema) — keep only from/to
+            edge = (
+                min(conn['from'], conn['to']),
+                max(conn['from'], conn['to'])
+            )
+            if edge not in seen:
+                seen.add(edge)
+                result.append({"from": conn['from'], "to": conn['to']})
+        return result
 
-        :param user_prompt: Natural language description of the network.
-        :param top_k: Number of documents to retrieve from the knowledge base.
-        :returns: A dictionary with keys 'machines' and 'connections'.
+    # -------------------------------------------------------------------------
+    # Heuristic completion — only fires when the user explicitly states a
+    # structural requirement that the LLM missed.  Uses broad keyword matching
+    # to be robust to paraphrasing.
+    # -------------------------------------------------------------------------
+    def _connection_exists(self, connections: List[Dict], a: str, b: str) -> bool:
+        for c in connections:
+            if (c['from'] == a and c['to'] == b) or (c['from'] == b and c['to'] == a):
+                return True
+        return False
+
+    def _apply_heuristics(self, validated: Dict, user_prompt: str) -> Dict:
+        lower = user_prompt.lower()
+        connections = validated['connections']
+        machines = validated['machines']
+
+        routers = [m for m in machines if m.lower().startswith('router')]
+        switches = [m for m in machines if m.lower().startswith('switch')]
+        non_routers = [m for m in machines if not m.lower().startswith('router')]
+
+        # --- Routers connected to each other (full mesh among routers) ---
+        router_mesh_phrases = [
+            'routers connected to each other',
+            'router connected to router',
+            'routers interconnected',
+            'routers linked to each other',
+            'routers form a ring',          # ring among routers
+        ]
+        if any(p in lower for p in router_mesh_phrases) and len(routers) >= 2:
+            for i in range(len(routers)):
+                for j in range(i + 1, len(routers)):
+                    if not self._connection_exists(connections, routers[i], routers[j]):
+                        connections.append({"from": routers[i], "to": routers[j]})
+                        print(f"[HEURISTIC] Added missing router-router link: {routers[i]} → {routers[j]}")
+
+        # --- "connected to both routers" — every non-router links to every router ---
+        both_router_phrases = [
+            'connected to both routers',
+            'connected to all routers',
+            'each switch connected to both routers',
+            'switches connected to both routers',
+        ]
+        if any(p in lower for p in both_router_phrases) and routers:
+            targets = switches if switches else non_routers  # prefer switches as per typical use
+            for device in targets:
+                for router in routers:
+                    if not self._connection_exists(connections, router, device):
+                        connections.append({"from": router, "to": device})
+                        print(f"[HEURISTIC] Added missing link: {router} → {device}")
+
+        # --- Ring topology among a single device type ---
+        ring_phrases = ['ring', 'loop', 'circular', 'ring configuration', 'ring topology']
+        if any(p in lower for p in ring_phrases):
+            # Determine which group forms the ring
+            ring_group: List[str] = []
+            if 'router' in lower and routers:
+                ring_group = routers
+            elif 'switch' in lower and switches:
+                ring_group = switches
+            else:
+                ring_group = machines  # fall back to all machines
+
+            if len(ring_group) >= 3:
+                for i in range(len(ring_group)):
+                    a = ring_group[i]
+                    b = ring_group[(i + 1) % len(ring_group)]
+                    if not self._connection_exists(connections, a, b):
+                        connections.append({"from": a, "to": b})
+                        print(f"[HEURISTIC] Added ring link: {a} → {b}")
+
+        validated['connections'] = connections
+        return validated
+
+    # -------------------------------------------------------------------------
+    # Main entry point
+    # -------------------------------------------------------------------------
+    def generate(self, user_prompt: str, top_k: int = 5) -> Dict:
         """
+        Generate a topology for the given user_prompt using RAG + LLM.
+
+        top_k is capped at 5 to avoid flooding the LLM with too many examples,
+        which was a key cause of degraded performance on simple topologies after
+        large-topology testing.
+        """
+        # Cap top_k — large context from big-topology examples confuses the model
+        top_k = min(top_k, 5)
+
         print(f"\n[TOPOLOGY GENERATOR] Processing: {user_prompt}")
 
-        # ------------------------------------------------------------------
-        # 1. RAG retrieval and context formatting
-        # ------------------------------------------------------------------
+        # 1. RAG retrieval
         print("[RAG] Searching knowledge base...")
         rag_results = self.rag.search(user_prompt, top_k=top_k)
         context = self.rag.format_context(rag_results)
         retrieved_count = len(rag_results['documents'][0]) if rag_results and 'documents' in rag_results else 0
         print(f"[RAG] Retrieved {retrieved_count} relevant documents")
 
-        # ------------------------------------------------------------------
-        # 2. Build the LLM prompt
-        # ------------------------------------------------------------------
+        # 2. Build prompt
         llm_prompt = build_prompt(user_prompt, context)
         print("[LLM] Sending prompt to language model...")
         print(f"[DEBUG] Prompt length: {len(llm_prompt)} characters")
 
-        # ------------------------------------------------------------------
-        # 3. Query the LLM
-        # ------------------------------------------------------------------
+        # 3. Query LLM
         raw_output = query_llm(llm_prompt)
         print(f"[LLM] Received response ({len(raw_output)} characters)")
         print(f"[DEBUG] First 200 chars: {raw_output[:200]}")
 
-        # ------------------------------------------------------------------
-        # 4. Parse and validate the JSON
-        # ------------------------------------------------------------------
+        # 4. Parse
         try:
             parsed = self._safe_parse(raw_output)
             print("[PARSER] Successfully parsed JSON")
@@ -163,51 +220,25 @@ class TopologyGenerator:
             print(f"[DEBUG] Raw output:\n{raw_output}")
             raise RuntimeError(f"Failed to parse LLM output as JSON: {e}")
 
+        # 5. Validate
         try:
             validated = self._validate_output(parsed)
         except Exception as e:
             print(f"[ERROR] Validation failed: {e}")
             raise RuntimeError(f"Invalid topology structure: {e}")
 
-        # ------------------------------------------------------------------
-        # 5. Optional heuristic post-processing
-        # ------------------------------------------------------------------
-        # As an extra guard, ensure that explicit statements like "routers connected
-        # to each other" or "connected to both routers" are honoured by adding
-        # missing connections *without creating duplicates*. We do not add
-        # symmetrical duplicates if at least one direction exists between a pair.
-        lower_prompt = user_prompt.lower()
+        # 6. Deduplicate BEFORE heuristics (removes any LLM duplicates)
+        before = len(validated['connections'])
+        validated['connections'] = self._deduplicate_connections(validated['connections'])
+        after = len(validated['connections'])
+        if before != after:
+            print(f"[DEDUP] Removed {before - after} duplicate connections")
 
-        # Helper to check if a connection exists in either direction
-        def _connection_exists(a: str, b: str) -> bool:
-            for c in validated['connections']:
-                if (c['from'] == a and c['to'] == b) or (c['from'] == b and c['to'] == a):
-                    return True
-            return False
+        # 7. Apply heuristics to fill structural gaps
+        validated = self._apply_heuristics(validated, user_prompt)
 
-        # If the user explicitly says routers are connected to each other,
-        # ensure at least one connection between every pair of routers. We add
-        # only a single direction (first->second) when none exists.
-        if 'routers connected to each other' in lower_prompt or 'router connected to router' in lower_prompt:
-            routers = [m for m in validated['machines'] if m.lower().startswith('router')]
-            if len(routers) >= 2:
-                for i in range(len(routers)):
-                    for j in range(i + 1, len(routers)):
-                        if not _connection_exists(routers[i], routers[j]):
-                            # Add one connection (routers[i] -> routers[j])
-                            validated['connections'].append({"from": routers[i], "to": routers[j]})
+        # 8. Deduplicate again after heuristics (safety net)
+        validated['connections'] = self._deduplicate_connections(validated['connections'])
 
-        # If a device is "connected to both routers", ensure each non-router has
-        # at least one connection to each router. Do not add duplicates if either
-        # direction already exists.
-        if 'connected to both routers' in lower_prompt:
-            routers = [m for m in validated['machines'] if m.lower().startswith('router')]
-            others = [m for m in validated['machines'] if not m.lower().startswith('router')]
-            for device in others:
-                for router in routers:
-                    if not _connection_exists(router, device):
-                        # Add connection in canonical direction (router -> device)
-                        validated['connections'].append({"from": router, "to": device})
-
-        print(f"[VALIDATOR] Output validated: {len(validated['machines'])} machines, {len(validated['connections'])} connections")
+        print(f"[DONE] {len(validated['machines'])} machines, {len(validated['connections'])} connections")
         return validated

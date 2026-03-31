@@ -4,7 +4,7 @@ from sentence_transformers import SentenceTransformer
 import chromadb
 
 # ---------------- CONFIG ---------------- #
-BASE_DIR = "/home/athaar/INDA/VisioGns3/NLP1"
+BASE_DIR = "/home/fiza-wajid/INDA/VisioGns3/NLP1"
 CHUNKS_JSON = os.path.join(BASE_DIR, "rag_preprocessed_chunks.json")
 CHROMA_DB_DIR = os.path.join(BASE_DIR, "chroma_db")
 COLLECTION_NAME = "network_docs"

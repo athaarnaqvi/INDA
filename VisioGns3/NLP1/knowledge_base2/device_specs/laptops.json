@@ -1,0 +1,34 @@
+{
+  "device_type": "laptop",
+  "description": "Portable computer workstation, end user device",
+  "naming_convention": "laptop [number]",
+  "examples": [
+    "laptop 1",
+    "laptop 2",
+    "laptop 10"
+  ],
+  "typical_connections": {
+    "can_connect_to": [
+      "switch",
+      "hub",
+      "router"
+    ],
+    "typically_connects_to": [
+      "switch",
+      "hub"
+    ],
+    "layer": "Application Layer (End Device)"
+  },
+  "role_in_topology": {
+    "primary": "Access layer / End device",
+    "can_be_root": false,
+    "can_be_branch": false,
+    "can_be_leaf": true
+  },
+  "characteristics": [
+    "Portable end user device",
+    "Client device",
+    "Mobile workstation",
+    "Leaf node in topology"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "device_type": "cloud",
+  "description": "Represents external network, WAN, or Internet connection",
+  "naming_convention": "cloud [number]",
+  "examples": [
+    "cloud 1",
+    "cloud 2",
+    "cloud 10"
+  ],
+  "typical_connections": {
+    "can_connect_to": [
+      "router"
+    ],
+    "typically_connects_to": [
+      "router"
+    ],
+    "layer": "External Network"
+  },
+  "role_in_topology": {
+    "primary": "WAN/Internet entry point",
+    "can_be_root": true,
+    "can_be_branch": false,
+    "can_be_leaf": false
+  },
+  "characteristics": [
+    "Represents Internet or WAN",
+    "External network connection",
+    "Usually connects to edge routers",
+    "Entry/exit point of topology"
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "topology_synonyms": {
+    "ring": [
+      "loop",
+      "circular",
+      "ring configuration",
+      "circular chain",
+      "ring topology"
+    ],
+    "star": [
+      "radiating from",
+      "hub-and-spoke",
+      "centralized",
+      "star topology",
+      "radial"
+    ],
+    "tree": [
+      "hierarchical",
+      "root-branch-leaf",
+      "tree topology",
+      "branching"
+    ],
+    "bus": [
+      "linear bus",
+      "backbone",
+      "bus topology"
+    ],
+    "mesh": [
+      "fully connected",
+      "interconnected",
+      "complete mesh"
+    ],
+    "partial_mesh": [
+      "redundant",
+      "some redundancy",
+      "partial mesh",
+      "partially connected"
+    ],
+    "daisy_chain": [
+      "series",
+      "sequential",
+      "linear",
+      "chained",
+      "daisy-chained",
+      "in series"
+    ],
+    "hybrid": [
+      "mixed",
+      "heterogeneous",
+      "complex",
+      "multi-tier",
+      "combined"
+    ]
+  },
+  "topology_keywords": {
+    "ring": [
+      "ring",
+      "loop",
+      "circular"
+    ],
+    "star": [
+      "radiating",
+      "star",
+      "central"
+    ],
+    "tree": [
+      "tree",
+      "root",
+      "branches",
+      "leaves",
+      "hierarchical"
+    ],
+    "bus": [
+      "bus",
+      "linear bus",
+      "backbone"
+    ],
+    "mesh": [
+      "mesh",
+      "interconnected"
+    ],
+    "partial_mesh": [
+      "partial mesh",
+      "redundant"
+    ],
+    "daisy_chain": [
+      "daisy",
+      "series",
+      "sequential",
+      "chain"
+    ],
+    "hybrid": [
+      "mixed",
+      "heterogeneous",
+      "layered",
+      "multi-tier",
+      "three-tier"
+    ]
+  },
+  "device_type_synonyms": {
+    "router": [
+      "router",
+      "routers",
+      "R"
+    ],
+    "switch": [
+      "switch",
+      "switches",
+      "SW"
+    ],
+    "server": [
+      "server",
+      "servers",
+      "SRV"
+    ],
+    "pc": [
+      "pc",
+      "pcs",
+      "computer",
+      "computers",
+      "workstation",
+      "workstations"
+    ],
+    "laptop": [
+      "laptop",
+      "laptops",
+      "notebook",
+      "notebooks"
+    ],
+    "hub": [
+      "hub",
+      "hubs"
+    ],
+    "cloud": [
+      "cloud",
+      "clouds",
+      "internet",
+      "wan"
+    ]
+  },
+  "connection_phrases": {
+    "sequential": [
+      "in series",
+      "daisy-chained",
+      "chained",
+      "sequentially",
+      "one after another"
+    ],
+    "centralized": [
+      "radiating from",
+      "connected to central",
+      "hub-and-spoke",
+      "emanating from"
+    ],
+    "hierarchical": [
+      "as root",
+      "as branches",
+      "as leaves",
+      "root at",
+      "with root"
+    ],
+    "redundant": [
+      "with redundancy",
+      "redundant paths",
+      "backup connections",
+      "multiple paths"
+    ],
+    "direct": [
+      "directly connected",
+      "point-to-point",
+      "dedicated link"
+    ]
+  },
+  "count_phrases": {
+    "with": [
+      "with",
+      "having",
+      "using",
+      "containing"
+    ],
+    "count": [
+      "X devices",
+      "X [device_type]",
+      "[number] [device_type]"
+    ]
+  },
+  "structure_keywords": {
+    "root": [
+      "root",
+      "top",
+      "head",
+      "main",
+      "primary"
+    ],
+    "branch": [
+      "branch",
+      "branches",
+      "intermediate",
+      "distribution"
+    ],
+    "leaf": [
+      "leaf",
+      "leaves",
+      "endpoint",
+      "end device",
+      "terminal"
+    ],
+    "center": [
+      "center",
+      "central",
+      "hub",
+      "core"
+    ],
+    "peripheral": [
+      "peripheral",
+      "edge",
+      "outer",
+      "remote"
+    ]
+  },
+  "action_verbs": {
+    "create": [
+      "create",
+      "build",
+      "make",
+      "construct",
+      "design",
+      "setup",
+      "configure"
+    ],
+    "connect": [
+      "connect",
+      "link",
+      "attach",
+      "wire",
+      "join",
+      "bridge"
+    ],
+    "prepare": [
+      "prepare",
+      "setup",
+      "arrange",
+      "organize"
+    ]
+  },
+  "quantity_extractors": {
+    "patterns": [
+      "\\d+\\s+(router|switch|server|pc|laptop|hub|cloud)s?",
+      "(router|switch|server|pc|laptop|hub|cloud)\\s+\\d+",
+      "with\\s+\\d+\\s+(router|switch|server|pc|laptop|hub|cloud)s?",
+      "using\\s+\\d+\\s+(router|switch|server|pc|laptop|hub|cloud)s?"
+    ]
+  }
+}
