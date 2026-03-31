@@ -1381,10 +1381,10 @@ class VisioGNS3App(QWidget):
             bl.move(24, h - bl.height() - 20)
 
 
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        if hasattr(self, "_setup_page"):
-            self._reposition_setup_bg()
+    # def resizeEvent(self, event):
+    #     super().resizeEvent(event)
+    #     if hasattr(self, "_setup_page"):
+    #         self._reposition_setup_bg()
 
 
     def complete_setup(self):
@@ -1449,16 +1449,39 @@ class VisioGNS3App(QWidget):
         self._setup_canvas.lower()
         self._setup_scanlines.raise_()
 
+    # def resizeEvent(self, event):
+    #     super().resizeEvent(event)
+    #     page = self.stacked_widget.widget(0)  # setup page
+    #     if hasattr(self, '_setup_canvas'):
+    #         w, h = page.width(), page.height()
+    #         self._setup_canvas.setGeometry(0, 0, w, h)
+    #         self._setup_scanlines.setGeometry(0, 0, w, h)
+    #         self._setup_ring_tl.move(-80, -80)
+    #         self._setup_ring_br.move(w - 220, h - 220)
+    #         self._setup_canvas.lower()
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
-        page = self.stacked_widget.widget(0)  # setup page
         if hasattr(self, '_setup_canvas'):
+            page = self.stacked_widget.widget(0)
             w, h = page.width(), page.height()
             self._setup_canvas.setGeometry(0, 0, w, h)
             self._setup_scanlines.setGeometry(0, 0, w, h)
             self._setup_ring_tl.move(-80, -80)
             self._setup_ring_br.move(w - 220, h - 220)
             self._setup_canvas.lower()
+            if hasattr(self, '_setup_corner_labels'):
+                tl, tr, bl = self._setup_corner_labels
+                tl.move(24, 20)
+                tr.adjustSize()
+                tr.move(w - tr.width() - 24, 20)
+                bl.adjustSize()
+                bl.move(24, h - bl.height() - 20)
+    
+    def showEvent(self, event):
+        super().showEvent(event)
+        if hasattr(self, '_setup_canvas'):
+            self._reposition_setup_bg()
 
     def complete_setup(self):
         ip = self.setup_input_ip.text().strip()
