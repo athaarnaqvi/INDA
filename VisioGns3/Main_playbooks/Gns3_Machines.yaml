@@ -4,21 +4,27 @@
   vars:
     gns3_url: "http://localhost:3080"
     ansible_python_interpreter: /usr/bin/python3
-
   tasks:
-    - name: Create NLP GNS3 project
+    - name: Create a new GNS3 project
       uri:
         url: "{{ gns3_url }}/v2/projects"
         method: POST
         headers:
           Content-Type: "application/json"
-        body:
-          name: "nlp_topology_20260331_140755"
+        body: |
+          {
+            "name": "Final_Testing_2"
+          }
         body_format: json
+        return_content: yes
         status_code: 201
       register: project_result
 
-    - name: Add pc1
+    - name: Debug project creation result
+      debug:
+        var: project_result
+
+    - name: Add N3248TE-ONFrontView41 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -26,18 +32,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc1",
+            "name": "N3248TE-ONFrontView41",
             "x": 100,
             "y": 100,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc10
+    - name: Debug N3248TE-ONFrontView41 creation result
+      debug:
+        var: machine_result
+
+    - name: Add N3248TE-ONFrontView77 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -45,18 +70,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc10",
-            "x": 160,
+            "name": "N3248TE-ONFrontView77",
+            "x": 150,
             "y": 100,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "1f4ea555-fe20-488f-a5c4-7ec9947e876d",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc11
+    - name: Debug N3248TE-ONFrontView77 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S4128F-ONFrontView47 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -64,18 +108,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc11",
-            "x": 220,
+            "name": "S4128F-ONFrontView47",
+            "x": 200,
             "y": 100,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "8f3c730b-e725-47eb-8e8e-b76fe36d4222",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc2
+    - name: Debug S4128F-ONFrontView47 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S5212F-ONFrontView(ACPower)30 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -83,37 +146,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc2",
-            "x": 280,
-            "y": 100,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add pc3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc3",
+            "name": "S5212F-ONFrontView(ACPower)30",
             "x": 100,
-            "y": 160,
+            "y": 150,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "e7988e20-0fbb-424d-b09b-70238e7326cc",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc4
+    - name: Debug S5212F-ONFrontView(ACPower)30 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S5212F-ONFrontView(ACPower)66 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -121,18 +184,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc4",
-            "x": 160,
-            "y": 160,
+            "name": "S5212F-ONFrontView(ACPower)66",
+            "x": 150,
+            "y": 150,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "e7988e20-0fbb-424d-b09b-70238e7326cc",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc5
+    - name: Debug S5212F-ONFrontView(ACPower)66 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S5224F-ONFrontView33 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -140,18 +222,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc5",
-            "x": 220,
-            "y": 160,
+            "name": "S5224F-ONFrontView33",
+            "x": 200,
+            "y": 150,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "167240a6-e2b8-4a00-ac03-b77c35e52b2a",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc6
+    - name: Debug S5224F-ONFrontView33 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S5224F-ONFrontView69 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -159,37 +260,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc6",
-            "x": 280,
-            "y": 160,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add pc7
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc7",
+            "name": "S5224F-ONFrontView69",
             "x": 100,
-            "y": 220,
+            "y": 200,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "167240a6-e2b8-4a00-ac03-b77c35e52b2a",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc8
+    - name: Debug S5224F-ONFrontView69 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S5232F-ONFrontView59 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -197,108 +298,32 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "pc8",
-            "x": 160,
-            "y": 220,
+            "name": "S5232F-ONFrontView59",
+            "x": 150,
+            "y": 200,
             "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "40b480be-d3e6-4e56-8517-3495d37195bb",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add pc9
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "pc9",
-            "x": 220,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "vpcs",
-            "symbol": ":/symbols/vpcs_guest.svg",
-            "template_id": "19021f99-e36f-394d-b4a1-8aaa902ab9cc"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add switch1
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "switch1",
-            "x": 280,
-            "y": 220,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "f719146d-fe03-4f6f-bd24-340adec62bd4"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add switch2
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "switch2",
-            "x": 100,
-            "y": 280,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "f719146d-fe03-4f6f-bd24-340adec62bd4"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add switch3
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "switch3",
-            "x": 160,
-            "y": 280,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "f719146d-fe03-4f6f-bd24-340adec62bd4"
-          }
-        body_format: json
-        status_code: 201
-
-    - name: Add switch4
-      uri:
-        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: |
-          {
-            "name": "switch4",
-            "x": 220,
-            "y": 280,
-            "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "f719146d-fe03-4f6f-bd24-340adec62bd4"
-          }
-        body_format: json
-        status_code: 201
+    - name: Debug S5232F-ONFrontView59 creation result
+      debug:
+        var: machine_result
