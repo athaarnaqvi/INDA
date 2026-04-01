@@ -1,8 +1,3 @@
-N3248TE-ONFrontView41
-N3248TE-ONFrontView77
-S4128F-ONFrontView47
-S5212F-ONFrontView(ACPower)30
-S5212F-ONFrontView(ACPower)66
-S5224F-ONFrontView33
-S5224F-ONFrontView69
-S5232F-ONFrontView59
+pc1
+router1
+router2

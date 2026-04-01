@@ -18,30 +18,58 @@ def normalize_name(name):
     """Remove spaces and convert to lowercase if desired."""
     return name.replace(" ", "")
 
+def is_vpcs(name):
+    name = name.lower()
+    return any(k in name for k in ["vpcs", "pc", "computer", "terminal"])
+
+
 def assign_adapters(connections):
     adapter_counter = {}
     mapped_connections = []
+    vpcs_used = set()   # 🔥 track used VPCS
 
     for conn in connections:
         src = normalize_name(conn["from"])
         dst = normalize_name(conn["to"])
 
-        # Initialize adapter counters if not present
+        # 🚨 Skip if VPCS already used
+        if is_vpcs(src):
+            if src in vpcs_used:
+                print(f"[SKIPPED] {src} already connected (VPCS limit)")
+                continue
+
+        if is_vpcs(dst):
+            if dst in vpcs_used:
+                print(f"[SKIPPED] {dst} already connected (VPCS limit)")
+                continue
+
+        # Initialize counters
         if src not in adapter_counter:
             adapter_counter[src] = 0
         if dst not in adapter_counter:
             adapter_counter[dst] = 0
 
+        # Assign adapters
+        src_adapter = 0 if is_vpcs(src) else adapter_counter[src]
+        dst_adapter = 0 if is_vpcs(dst) else adapter_counter[dst]
+
         mapped_connections.append({
             "from": src,
             "to": dst,
-            "from_adapter_number": adapter_counter[src],
-            "to_adapter_number": adapter_counter[dst]
+            "from_adapter_number": src_adapter,
+            "to_adapter_number": dst_adapter
         })
 
-        # Increment counters after assignment
-        adapter_counter[src] += 1
-        adapter_counter[dst] += 1
+        # Mark VPCS as used
+        if is_vpcs(src):
+            vpcs_used.add(src)
+        else:
+            adapter_counter[src] += 1
+
+        if is_vpcs(dst):
+            vpcs_used.add(dst)
+        else:
+            adapter_counter[dst] += 1
 
     return mapped_connections
 

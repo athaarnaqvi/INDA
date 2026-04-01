@@ -45,7 +45,8 @@ def read_project_name(path):
 def is_switch_or_hub(name):
     return any(k in name.lower() for k in ["switch", "hub", "atm_switch"])
 
-
+def is_vpcs(name):
+    return any(k in name.lower() for k in ["vpcs", "pc", "computer", "terminal"])
 # ─────────────────────────────────────────────
 # Playbook Generator
 # ─────────────────────────────────────────────
@@ -92,12 +93,18 @@ def generate_ansible_playbook(ip, port, project_name, connections):
         fa = conn["from_adapter_number"]
         ta = conn["to_adapter_number"]
 
-        if is_switch_or_hub(frm):
+        # FROM side
+        if is_vpcs(frm):
+            fa_adapter, fa_port = 0, 0
+        elif is_switch_or_hub(frm):
             fa_adapter, fa_port = 0, fa
         else:
             fa_adapter, fa_port = fa, 0
 
-        if is_switch_or_hub(to):
+        # TO side
+        if is_vpcs(to):
+            ta_adapter, ta_port = 0, 0
+        elif is_switch_or_hub(to):
             ta_adapter, ta_port = 0, ta
         else:
             ta_adapter, ta_port = ta, 0
