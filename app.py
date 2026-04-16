@@ -2486,15 +2486,28 @@ QCheckBox::indicator:unchecked:hover {{
         msg = self.chat_input.text().strip()
         if not msg:
             return
-        
+
+        # Reset for a fresh run each time
+        self.automation_completed = False
+        self.assistant_active = False
         self.run_btn.setEnabled(False)
-        
+
         self.add_chat_message("user", msg)
         self.add_chat_message("bot", "🔮 Processing your request...")
         self.chat_input.clear()
         self.chat_input.setEnabled(False)
 
         script_path = os.path.expanduser("~/INDA/VisioGns3/NLP1/run_pipeline.py")
+
+        # Safely disconnect and discard any previous thread
+        if hasattr(self, 'script_runner') and self.script_runner is not None:
+            try:
+                self.script_runner.output_signal.disconnect()
+                self.script_runner.finished_signal.disconnect()
+            except Exception:
+                pass
+            self.script_runner = None
+
         self.script_runner = ScriptRunnerThread(script_path, msg)
         self.script_runner.output_signal.connect(self.handle_script_output)
         self.script_runner.finished_signal.connect(self.on_script_completed)
@@ -2514,10 +2527,14 @@ QCheckBox::indicator:unchecked:hover {{
 
     def on_script_completed(self):
         self.chat_input.setEnabled(True)
-        
+        self.chat_input.setFocus()
+
         if self.automation_completed:
             self.run_btn.setEnabled(True)
             self.add_chat_message("bot", "✅ Ready to run the automation! Click the 🚀 Run button to execute.")
+        else:
+            # Pipeline finished but didn't signal success — still let user try again
+            self.add_chat_message("bot", "⚠️ Processing finished. You can enter a new request.")        
 
     def run_automation(self):
         """Function to handle the Run button click - FIXED VERSION"""
@@ -2557,16 +2574,17 @@ QCheckBox::indicator:unchecked:hover {{
         self.add_chat_message("bot", line)
 
     def on_automation_complete(self, return_code):
-        """Handle automation completion - called via signal"""
-        self.run_btn.setEnabled(True)
-        
-        if return_code == 0:
-            self.add_chat_message("bot", "✅ Automation completed successfully!")
-        else:
-            self.add_chat_message("bot", f"Automation failed with code {return_code}. Check logs above.")
-        
-        # Reset flag for next operation
+        self.run_btn.setEnabled(False)   # hide until next successful pipeline run
         self.automation_completed = False
+        self.assistant_active = False
+
+        if return_code == 0:
+            self.add_chat_message("bot", "✅ Automation completed successfully! You can enter a new request.")
+        else:
+            self.add_chat_message("bot", f"⚠️ Automation exited with code {return_code}. You can enter a new request.")
+
+        self.chat_input.setEnabled(True)
+        self.chat_input.setFocus()
 
     def add_chat_message(self, role, content):
         current = self.chat_display.toHtml()

@@ -116,24 +116,20 @@
         "to": "backup_core_router"
     },
     {
-        "from": "core_router_1",
-        "to": "server_switch"
+        "from": "dhcp_server",
+        "to": "core_router_1"
     },
     {
-        "from": "backup_core_router",
-        "to": "server_switch"
+        "from": "dns_server",
+        "to": "core_router_1"
     },
     {
-        "from": "server_switch",
-        "to": "backup_server"
+        "from": "dns_server",
+        "to": "backup_core_router"
     },
     {
-        "from": "server_switch",
-        "to": "dhcp_server"
-    },
-    {
-        "from": "server_switch",
-        "to": "dns_server"
+        "from": "dhcp_server",
+        "to": "backup_core_router"
     },
     {
         "from": "core_router_1",
