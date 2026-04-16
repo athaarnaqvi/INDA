@@ -30,7 +30,7 @@ CHROMA_PATH = os.path.join(BASE_DIR, "chroma_db")
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 # LLM backend environment variable (e.g. "ollama"). This script will set
 # LLM_BACKEND in the environment so that llm_client knows which backend to use.
-LLM_BACKEND = "ollama"
+LLM_BACKEND = "groq"
 # Number of documents to retrieve from the knowledge base. A larger value can
 # provide the LLM with more examples at the cost of longer prompts.
 TOP_K = 5
@@ -87,17 +87,12 @@ def setup_environment() -> None:
     # Force LLM backend for llm_client
     os.environ["LLM_BACKEND"] = LLM_BACKEND
 
-    # Check for Ollama (if used)
-    if shutil.which("ollama") is None:
-        print("\n[ERROR] Ollama not found in PATH.")
-        print("→ Install Ollama: https://ollama.ai")
-        sys.exit(1)
     # Check for ChromaDB directory
     if not os.path.exists(CHROMA_PATH):
         print(f"\n[ERROR] ChromaDB not found at: {CHROMA_PATH}")
         print("→ Run: python local_embeddings_chromadb.py")
         sys.exit(1)
-    print(f"[SETUP] Using LLM backend: {LLM_BACKEND}")
+    print(f"[SETUP] Using LLM backend: {LLM_BACKEND} (API-based, no local server required)")
     print(f"[SETUP] ChromaDB path: {CHROMA_PATH}")
     print(f"[SETUP] Embedding model: {EMBEDDING_MODEL}")
     print(f"[SETUP] RAG context size: {TOP_K} documents\n")
@@ -144,10 +139,10 @@ def main() -> None:
         print("\n" + "=" * 60)
         print(" Troubleshooting Tips")
         print("=" * 60)
-        print("1. Ensure the LLM backend is running (e.g. run `ollama serve`).")
-        print("2. Check if the target model is installed (e.g. run `ollama list`).")
+        print("1. Ensure your groq_API_KEY is set correctly in .env")
+        print("2. Check internet connection (groq is API-based)")
         print("3. Verify the ChromaDB directory exists: ls -la chroma_db/")
-        print("4. Try a simpler prompt or increase TOP_K for more context.")
+        print("4. If JSON parsing fails, simplify the prompt")
         return
     # Write outputs
     print("\n" + "=" * 60)
