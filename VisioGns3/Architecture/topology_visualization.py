@@ -247,8 +247,6 @@ class TopologyParser:
             return []
 
 
-# Replace the LayoutCalculator class with this:
-
 class LayoutCalculator:
     """Calculates hierarchical layout for nodes based on network topology"""
     
@@ -400,7 +398,7 @@ class LayoutCalculator:
         access_layer = []
         for node_name, node in nodes.items():
             if node_name not in assigned:
-                if node.node_type == 'ethernet_switch' or 'switch' in node_name.lower() or node.node_type == 'qemu':
+                if node.node_type == 'ethernet_switch' or 'switch' in node_name.lower() or node.node_type == 'server':
                     access_layer.append(node_name)
                     assigned.add(node_name)
         if access_layer:
@@ -420,27 +418,27 @@ class LayoutCalculator:
 class SVGGenerator:
     """Generates SVG visualization of the network topology"""
     
-    # Device type to icon/symbol mapping
+    # ---------------------------------------------------------------
+    # FIX 1: Corrected, distinct color palette per device type.
+    # Keys must be exact node_type strings (lowercase) as returned by
+    # GNS3 so the equality check below works reliably.
+    # ---------------------------------------------------------------
     DEVICE_COLORS = {
-        'ethernet_switch': '#87CEEB',
-        'qemu': '#FFB6C1',
-        'router': '#98FB98',
-        'cloud': '#FFE4B5',
-        'nat': '#DDA0DD',
-        'vpcs': '#F0E68C',
-        'firewall': '#FF6347',
-        'hub': '#DEB887',
+        'ethernet_switch': '#4A90D9',   # Steel blue
+        'server':            '#E07B39',   # Warm orange  (VMs / servers)
+        'router':          '#27AE60',   # Forest green
+        'cloud':           '#95A5A6',   # Cool grey
+        'vpcs':            '#F1C40F',   # Amber yellow (end-user PCs)
+        'firewall':        '#C0392B',   # Deep red
     }
-    
+
     DEVICE_ICONS = {
         'ethernet_switch': '🔀',
-        'qemu': '💻',
+        'server': '💻',
         'router': '🔀',
         'cloud': '☁️',
-        'nat': '🔄',
         'vpcs': '🖥️',
         'firewall': '🛡️',
-        'hub': '⚡',
     }
     
     def __init__(self, nodes: Dict[str, Node], connections: List[Connection], 
@@ -486,16 +484,28 @@ class SVGGenerator:
         return width, height
     
     def _get_device_color(self, node_type: str) -> str:
-        """Get color for device type"""
+        """
+        Get color for device type.
+        Uses exact match first, then falls back to substring search.
+        """
+        # FIX 2: Exact match first so 'ethernet_switch' never accidentally
+        # matches a partial key, and every type gets its intended color.
+        nt = node_type.lower()
+        if nt in self.DEVICE_COLORS:
+            return self.DEVICE_COLORS[nt]
+        # Fallback: substring search for partial type strings
         for key, color in self.DEVICE_COLORS.items():
-            if key in node_type.lower():
+            if key in nt:
                 return color
-        return '#CCCCCC'
+        return '#AAAAAA'   # neutral grey for unknown types
     
     def _get_device_icon(self, node_type: str) -> str:
         """Get icon for device type"""
+        nt = node_type.lower()
+        if nt in self.DEVICE_ICONS:
+            return self.DEVICE_ICONS[nt]
         for key, icon in self.DEVICE_ICONS.items():
-            if key in node_type.lower():
+            if key in nt:
                 return icon
         return '◊'
     
@@ -536,7 +546,11 @@ class SVGGenerator:
         return svg
     
     def _create_connection_svg(self, conn: Connection, x_offset: int, y_offset: int) -> str:
-        """Create SVG representation of a connection with better visibility"""
+        """
+        Create SVG representation of a connection line.
+        FIX 3: Port-label rectangles (the small boxes with floating numbers)
+                have been completely removed. Only the line itself is drawn.
+        """
         from_node = self.nodes.get(conn.from_node)
         to_node = self.nodes.get(conn.to_node)
         
@@ -554,43 +568,27 @@ class SVGGenerator:
         dy = to_y - from_y
         distance = math.sqrt(dx*dx + dy*dy)
         
-        if distance < 1:  # Changed from == 0 to < 1 for better handling
+        if distance < 1:
             return ''
         
-        # Use quadratic bezier for curves
-        offset = min(distance * 0.15, 80)  # Cap the curve offset
+        # Use quadratic bezier for a subtle curve
+        offset = min(distance * 0.15, 80)
         ctrl_x = (from_x + to_x) / 2 + offset * (-dy / distance)
         ctrl_y = (from_y + to_y) / 2 + offset * (dx / distance)
-        
-        # Label position
-        label_x = (from_x + to_x) / 2
-        label_y = (from_y + to_y) / 2 - 15
         
         try:
             svg = f'''
     <!-- Connection: {conn.from_node} → {conn.to_node} -->
     <g class="connection" id="conn-{conn.from_node.replace('_', '-')}-to-{conn.to_node.replace('_', '-')}">
-        <!-- Connection line -->
         <path d="M {from_x} {from_y} Q {ctrl_x} {ctrl_y} {to_x} {to_y}"
-              stroke="#666666" stroke-width="2" fill="none" 
+              stroke="#666666" stroke-width="2" fill="none"
               marker-end="url(#arrowhead)" stroke-linecap="round" stroke-linejoin="round" />
-        
-        <!-- Port label -->
-        <rect x="{label_x - 50}" y="{label_y - 12}" width="100" height="20" 
-              fill="white" stroke="#999" stroke-width="1" rx="3" opacity="0.95" />
-        <text x="{label_x}" y="{label_y + 2}" 
-              text-anchor="middle" font-size="8" fill="#333333" font-weight="bold"
-              dominant-baseline="middle">
-            {conn.from_adapter}.{conn.from_port}→{conn.to_adapter}.{conn.to_port}
-        </text>
     </g>
 '''
             return svg
         except Exception as e:
             print(f"      ❌ Exception creating SVG: {e}")
             return ''
-    
-# Find the generate() method in SVGGenerator class and replace it with this:
 
     def generate(self) -> str:
         """Generate complete SVG document"""
@@ -602,7 +600,6 @@ class SVGGenerator:
         
         print(f"  📐 SVG: {width}x{height} | 📍 Nodes: {len(self.nodes)} | 🔗 Connections: {len(self.connections)}")
         
-        # Generate SVG with viewBox for responsiveness
         svg = f'''<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 {width} {height}"
