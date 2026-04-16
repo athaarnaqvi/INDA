@@ -419,27 +419,109 @@ class SVGGenerator:
     """Generates SVG visualization of the network topology"""
     
     # ---------------------------------------------------------------
-    # FIX 1: Corrected, distinct color palette per device type.
-    # Keys must be exact node_type strings (lowercase) as returned by
-    # GNS3 so the equality check below works reliably.
+    # COLOR & ICON LOOKUP
+    #
+    # Root cause of the original bug: GNS3 node_type for real devices
+    # (routers, firewalls, servers) is usually 'qemu' or 'docker', NOT
+    # 'router' / 'firewall' / 'server'.  So matching purely on
+    # node_type caused all three to fall through to the grey default.
+    #
+    # Fix: resolve a "role" from the DEVICE NAME first (which always
+    # contains meaningful keywords like 'router', 'firewall', 'server'),
+    # then fall back to node_type only for truly generic devices such as
+    # 'vpcs' and 'ethernet_switch'.
     # ---------------------------------------------------------------
+
+    # Role → color
     DEVICE_COLORS = {
-        'ethernet_switch': '#4A90D9',   # Steel blue
-        'server':            '#E07B39',   # Warm orange  (VMs / servers)
-        'router':          '#27AE60',   # Forest green
-        'cloud':           '#95A5A6',   # Cool grey
-        'vpcs':            '#F1C40F',   # Amber yellow (end-user PCs)
         'firewall':        '#C0392B',   # Deep red
+        'router':          '#27AE60',   # Forest green
+        'server':          '#E07B39',   # Warm orange
+        'core':            '#16A085',   # Teal
+        'internet':        '#95A5A6',   # Cool grey
+        'cloud':           '#95A5A6',   # Cool grey
+        'dist':            '#2980B9',   # Darker blue  (distribution switches)
+        'ap':              '#8E44AD',   # Purple       (access points)
+        'ethernet_switch': '#4A90D9',   # Steel blue
+        'switch':          '#4A90D9',   # Steel blue
+        'laptop':          '#F39C12',   # Orange-yellow
+        'vpcs':            '#F1C40F',   # Amber yellow
+        'pc':              '#F1C40F',   # Amber yellow
     }
 
+    # Role → emoji icon
     DEVICE_ICONS = {
+        'firewall':        '🛡️',
+        'router':          '📡',
+        'server':          '🗄️',
+        'core':            '⚙️',
+        'internet':        '☁️',
+        'cloud':           '☁️',
+        'dist':            '🔀',
+        'ap':              '📶',
         'ethernet_switch': '🔀',
-        'server': '💻',
-        'router': '🔀',
-        'cloud': '☁️',
-        'vpcs': '🖥️',
-        'firewall': '🛡️',
+        'switch':          '🔀',
+        'laptop':          '💻',
+        'vpcs':            '🖥️',
+        'pc':              '🖥️',
     }
+
+    # Priority-ordered name-fragment → role mappings.
+    # The FIRST match wins — put more-specific patterns first.
+    # This is checked against the lowercase device NAME before
+    # we ever look at node_type.
+    NAME_ROLE_MAP = [
+        ('firewall',  'firewall'),
+        ('internet',  'internet'),
+        ('core',      'core'),
+        ('dist',      'dist'),
+        ('router',    'router'),
+        ('server',    'server'),
+        ('ap',        'ap'),
+        ('switch',    'ethernet_switch'),
+        ('laptop',    'laptop'),
+        ('pc',        'pc'),
+    ]
+
+    def _resolve_role(self, node: Node) -> str:
+        """
+        Determine the display role for a node.
+
+        Strategy:
+          1. Scan the device NAME for known keywords (NAME_ROLE_MAP).
+             This catches routers, firewalls, and servers even when
+             GNS3 stores their node_type as 'qemu' or 'docker'.
+          2. Fall back to node_type for devices whose name gives no hint
+             (e.g. plain 'vpcs', 'ethernet_switch', 'cloud').
+        """
+        name_lower = node.name.lower()
+        for fragment, role in self.NAME_ROLE_MAP:
+            if fragment in name_lower:
+                return role
+
+        # Fall back: use node_type as-is (covers 'vpcs', 'ethernet_switch', etc.)
+        return node.node_type.lower()
+
+    def _get_device_color(self, node: Node) -> str:
+        """Return the fill color for a node."""
+        role = self._resolve_role(node)
+        if role in self.DEVICE_COLORS:
+            return self.DEVICE_COLORS[role]
+        # Last-resort substring scan across all known roles
+        for key, color in self.DEVICE_COLORS.items():
+            if key in role:
+                return color
+        return '#AAAAAA'   # neutral grey for truly unknown types
+
+    def _get_device_icon(self, node: Node) -> str:
+        """Return the emoji icon for a node."""
+        role = self._resolve_role(node)
+        if role in self.DEVICE_ICONS:
+            return self.DEVICE_ICONS[role]
+        for key, icon in self.DEVICE_ICONS.items():
+            if key in role:
+                return icon
+        return '◊'
     
     def __init__(self, nodes: Dict[str, Node], connections: List[Connection], 
                  title: str = "Network Topology", auto_layout: bool = True):
@@ -483,38 +565,13 @@ class SVGGenerator:
         
         return width, height
     
-    def _get_device_color(self, node_type: str) -> str:
-        """
-        Get color for device type.
-        Uses exact match first, then falls back to substring search.
-        """
-        # FIX 2: Exact match first so 'ethernet_switch' never accidentally
-        # matches a partial key, and every type gets its intended color.
-        nt = node_type.lower()
-        if nt in self.DEVICE_COLORS:
-            return self.DEVICE_COLORS[nt]
-        # Fallback: substring search for partial type strings
-        for key, color in self.DEVICE_COLORS.items():
-            if key in nt:
-                return color
-        return '#AAAAAA'   # neutral grey for unknown types
-    
-    def _get_device_icon(self, node_type: str) -> str:
-        """Get icon for device type"""
-        nt = node_type.lower()
-        if nt in self.DEVICE_ICONS:
-            return self.DEVICE_ICONS[nt]
-        for key, icon in self.DEVICE_ICONS.items():
-            if key in nt:
-                return icon
-        return '◊'
-    
     def _create_node_svg(self, node: Node, x_offset: int, y_offset: int) -> str:
         """Create SVG representation of a single node"""
         x = node.x + x_offset
         y = node.y + y_offset
-        color = self._get_device_color(node.node_type)
-        icon = self._get_device_icon(node.node_type)
+        # Use the new unified helpers — both derive role from device name first
+        color = self._get_device_color(node)
+        icon  = self._get_device_icon(node)
         
         # Truncate long names
         display_name = node.name if len(node.name) <= 16 else node.name[:13] + "..."
@@ -548,8 +605,7 @@ class SVGGenerator:
     def _create_connection_svg(self, conn: Connection, x_offset: int, y_offset: int) -> str:
         """
         Create SVG representation of a connection line.
-        FIX 3: Port-label rectangles (the small boxes with floating numbers)
-                have been completely removed. Only the line itself is drawn.
+        Port-label rectangles have been removed. Only the line itself is drawn.
         """
         from_node = self.nodes.get(conn.from_node)
         to_node = self.nodes.get(conn.to_node)

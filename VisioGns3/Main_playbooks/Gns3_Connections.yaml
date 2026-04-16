@@ -5,7 +5,7 @@
 
   vars:
     gns3_server: "http://localhost:3080"
-    project_name: "architecture_topology_20260417_011538"
+    project_name: "architecture_topology_20260417_014113"
 
   tasks:
     - name: Get all projects
