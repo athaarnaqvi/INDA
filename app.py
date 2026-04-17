@@ -1056,11 +1056,11 @@ class VisioGNS3App(QWidget):
                 border: 1px solid rgba(0, 180, 255, 0.18);
             }
         """)
-        card_shadow = QGraphicsDropShadowEffect()
-        card_shadow.setBlurRadius(60)
-        card_shadow.setOffset(0, 16)
-        card_shadow.setColor(QColor(0, 80, 200, 100))
-        setup_container.setGraphicsEffect(card_shadow)
+        # card_shadow = QGraphicsDropShadowEffect()
+        # card_shadow.setBlurRadius(60)
+        # card_shadow.setOffset(0, 16)
+        # card_shadow.setColor(QColor(0, 80, 200, 100))
+        # setup_container.setGraphicsEffect(card_shadow)
 
         setup_layout = QVBoxLayout()
         setup_layout.setContentsMargins(52, 44, 52, 44)
@@ -1287,27 +1287,27 @@ class VisioGNS3App(QWidget):
         wrapper_layout.setContentsMargins(0, 0, 0, 0)
         wrapper_layout.addWidget(setup_container)
 
-        card_shadow = QGraphicsDropShadowEffect()
-        card_shadow.setBlurRadius(60)
-        card_shadow.setOffset(0, 16)
-        card_shadow.setColor(QColor(0, 80, 200, 100))
-        wrapper.setGraphicsEffect(card_shadow)
+        # card_shadow = QGraphicsDropShadowEffect()
+        # card_shadow.setBlurRadius(60)
+        # card_shadow.setOffset(0, 16)
+        # card_shadow.setColor(QColor(0, 80, 200, 100))
+        # wrapper.setGraphicsEffect(card_shadow)
 
         # ── Fade-in — on the card directly (no shadow on same widget) ──
-        self._setup_opacity = QGraphicsOpacityEffect(setup_container)
-        setup_container.setGraphicsEffect(self._setup_opacity)
-        self._setup_opacity.setOpacity(0.0)
-        self._fade_anim = QPropertyAnimation(self._setup_opacity, b"opacity")
-        self._fade_anim.setDuration(900)
-        self._fade_anim.setStartValue(0.0)
-        self._fade_anim.setEndValue(1.0)
-        self._fade_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
-        QTimer.singleShot(120, self._fade_anim.start)
+        # self._setup_opacity = QGraphicsOpacityEffect(setup_container)
+        # setup_container.setGraphicsEffect(self._setup_opacity)
+        # self._setup_opacity.setOpacity(0.0)
+        # self._fade_anim = QPropertyAnimation(self._setup_opacity, b"opacity")
+        # self._fade_anim.setDuration(900)
+        # self._fade_anim.setStartValue(0.0)
+        # self._fade_anim.setEndValue(1.0)
+        # self._fade_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+        # QTimer.singleShot(120, self._fade_anim.start)
 
-        # ── Assemble center row (use wrapper instead of setup_container) ──
         center_row.addStretch(1)  # bigger = pushes card more to the right
+        # setup_container
         center_row.addWidget(wrapper)
-        center_row.addStretch(3)
+        center_row.addStretch(2)
         
 
         layout.addLayout(center_row)
@@ -1348,15 +1348,19 @@ class VisioGNS3App(QWidget):
         self._setup_corner_labels = [tl, tr, bl]
 
         # ── Fade-in on card ───────────────────────────
-        self._setup_opacity = QGraphicsOpacityEffect(setup_container)
-        setup_container.setGraphicsEffect(self._setup_opacity)
-        self._setup_opacity.setOpacity(0.0)
-        self._fade_anim = QPropertyAnimation(self._setup_opacity, b"opacity")
-        self._fade_anim.setDuration(900)
-        self._fade_anim.setStartValue(0.0)
-        self._fade_anim.setEndValue(1.0)
-        self._fade_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
-        QTimer.singleShot(120, self._fade_anim.start)
+        # self._setup_opacity = QGraphicsOpacityEffect(setup_container)
+        # setup_container.setGraphicsEffect(self._setup_opacity)
+        # self._setup_opacity.setOpacity(0.0)
+        # self._fade_anim = QPropertyAnimation(self._setup_opacity, b"opacity")
+        # self._fade_anim.setDuration(900)
+        # self._fade_anim.setStartValue(0.0)
+        # self._fade_anim.setEndValue(1.0)
+        # self._fade_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+        # QTimer.singleShot(120, self._fade_anim.start)
+
+        # center_row.addStretch(1)
+        # center_row.addWidget(wrapper)
+        # center_row.addStretch(3)
 
         # Store page ref for resizeEvent
         self._setup_page = page
