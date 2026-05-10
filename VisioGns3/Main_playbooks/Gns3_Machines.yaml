@@ -12,7 +12,7 @@
         headers:
           Content-Type: "application/json"
         body:
-          name: "architecture_topology_20260510_134831"
+          name: "architecture_topology_20260510_140623"
         body_format: json
         status_code: 201
       register: project_result
@@ -338,7 +338,7 @@
           }
         body_format: json
         status_code: 201
-    - name: Add mail_server
+    - name: Add backup_server
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -346,7 +346,7 @@
           Content-Type: "application/json"
         body: |
           {
-              "name": "mail_server",
+              "name": "backup_server",
               "x": -600,
               "y": -400,
               "compute_id": "local",

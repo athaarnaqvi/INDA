@@ -235,50 +235,56 @@
   },
   {
     "from": "dist_switch_f1",
-    "to": "core_router_1",
-    "from_adapter_number": 4,
-    "to_adapter_number": 0
-  },
-  {
-    "from": "dist_switch_f1",
-    "to": "backup_core_router",
-    "from_adapter_number": 5,
-    "to_adapter_number": 0
-  },
-  {
-    "from": "dist_switch_f1",
     "to": "dist_switch_f2",
-    "from_adapter_number": 6,
+    "from_adapter_number": 4,
     "to_adapter_number": 4
   },
   {
-    "from": "dist_switch_f2",
-    "to": "core_router_1",
+    "from": "dist_switch_f1",
+    "to": "dist_switch_f3",
     "from_adapter_number": 5,
-    "to_adapter_number": 1
-  },
-  {
-    "from": "dist_switch_f2",
-    "to": "backup_core_router",
-    "from_adapter_number": 6,
-    "to_adapter_number": 1
+    "to_adapter_number": 4
   },
   {
     "from": "dist_switch_f2",
     "to": "dist_switch_f3",
+    "from_adapter_number": 5,
+    "to_adapter_number": 5
+  },
+  {
+    "from": "dist_switch_f1",
+    "to": "core_router_1",
+    "from_adapter_number": 6,
+    "to_adapter_number": 0
+  },
+  {
+    "from": "dist_switch_f1",
+    "to": "backup_core_router",
     "from_adapter_number": 7,
-    "to_adapter_number": 4
+    "to_adapter_number": 0
+  },
+  {
+    "from": "dist_switch_f2",
+    "to": "core_router_1",
+    "from_adapter_number": 6,
+    "to_adapter_number": 1
+  },
+  {
+    "from": "dist_switch_f2",
+    "to": "backup_core_router",
+    "from_adapter_number": 7,
+    "to_adapter_number": 1
   },
   {
     "from": "dist_switch_f3",
     "to": "core_router_1",
-    "from_adapter_number": 5,
+    "from_adapter_number": 6,
     "to_adapter_number": 2
   },
   {
     "from": "dist_switch_f3",
     "to": "backup_core_router",
-    "from_adapter_number": 6,
+    "from_adapter_number": 7,
     "to_adapter_number": 2
   },
   {
@@ -295,7 +301,7 @@
   },
   {
     "from": "server_switch",
-    "to": "mail_server",
+    "to": "backup_server",
     "from_adapter_number": 2,
     "to_adapter_number": 0
   },

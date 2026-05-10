@@ -157,27 +157,31 @@
     },
     {
         "from": "dist_switch_f1",
-        "to": "core_router_1"
-    },
-    {
-        "from": "dist_switch_f1",
-        "to": "backup_core_router"
-    },
-    {
-        "from": "dist_switch_f1",
         "to": "dist_switch_f2"
     },
     {
-        "from": "dist_switch_f2",
-        "to": "core_router_1"
-    },
-    {
-        "from": "dist_switch_f2",
-        "to": "backup_core_router"
+        "from": "dist_switch_f1",
+        "to": "dist_switch_f3"
     },
     {
         "from": "dist_switch_f2",
         "to": "dist_switch_f3"
+    },
+    {
+        "from": "dist_switch_f1",
+        "to": "core_router_1"
+    },
+    {
+        "from": "dist_switch_f1",
+        "to": "backup_core_router"
+    },
+    {
+        "from": "dist_switch_f2",
+        "to": "core_router_1"
+    },
+    {
+        "from": "dist_switch_f2",
+        "to": "backup_core_router"
     },
     {
         "from": "dist_switch_f3",
@@ -197,7 +201,7 @@
     },
     {
         "from": "server_switch",
-        "to": "mail_server"
+        "to": "backup_server"
     },
     {
         "from": "server_switch",

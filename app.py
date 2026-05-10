@@ -976,6 +976,7 @@ class SetupPage(QWidget):
             f"background: transparent; color: {color}; "
             f"font-size: 12px; font-weight: 700; letter-spacing: 1px; font-family: monospace;")
 
+
 """
 TopologySelectionDialog
 =======================
@@ -1123,11 +1124,13 @@ class TopologySelectionDialog(QDialog):
         self._pregenerate_previews()
 
         self.setWindowTitle("Select & Preview Network Topology")
-        self.setMinimumSize(1400, 860)
+        self.setMinimumSize(1400, 920)
+        # IMPORTANT: only target QDialog and QLabel at the top level.
+        # Child QFrame / QWidget styles must be set via setStyleSheet() on the
+        # individual widget, NOT through a cascading rule here — otherwise Qt
+        # will apply "QFrame { border … }" to every nested frame/widget too.
         self.setStyleSheet("""
             QDialog { background: #0F172A; }
-            QLabel  { background: transparent; }
-            QScrollArea { border: none; background: transparent; }
         """)
         self._build_ui()
 
@@ -1198,17 +1201,27 @@ class TopologySelectionDialog(QDialog):
         sub.setStyleSheet("color:#94A3B8; font-size:13px;")
         root.addWidget(sub)
 
-        # ── Two-column card area ─────────────────────────────────────────
+        # ── Two-column area: each column = card (no button) + button below ──
         cards_row = QHBoxLayout()
         cards_row.setSpacing(20)
 
-        self._card_frames: List[tuple] = []   # (QFrame, topo_name)
-        self._select_btns: List[tuple] = []   # (QPushButton, topo_name)
+        self._card_frames: List[tuple] = []
+        self._select_btns: List[tuple] = []
         self._web_views:  Dict[str, QWebEngineView] = {}
 
         for entry in self.top2:
             card, btn, webview = self._make_card(entry)
-            cards_row.addWidget(card)
+
+            # Plain transparent wrapper — no border, no background of its own
+            col = QWidget()
+            col.setStyleSheet("background: transparent;")
+            col_layout = QVBoxLayout(col)
+            col_layout.setContentsMargins(0, 0, 0, 0)
+            col_layout.setSpacing(10)
+            col_layout.addWidget(card, stretch=1)
+            col_layout.addWidget(btn)
+
+            cards_row.addWidget(col)
             self._card_frames.append((card, entry["name"]))
             self._select_btns.append((btn, entry["name"]))
             self._web_views[entry["name"]] = webview
@@ -1285,18 +1298,18 @@ class TopologySelectionDialog(QDialog):
     def _make_card(self, entry: Dict):
         """
         Build one topology card.
-        Layout (top-to-bottom):
-          ┌────────────────────────────────┐
-          │ Badge row  (rank + score)      │
-          │ Icon + Name                    │
-          │ Description                    │
-          │ ─────────────────────────────  │
-          │ Pros  |  Cons   (side-by-side) │
-          │ Best for                       │
-          │ ─────────────────────────────  │
-          │ 📊 Network Preview  (SVG)      │  ← NEW
-          │ [Select] button                │
-          └────────────────────────────────┘
+
+        Structural fix notes
+        --------------------
+        • The card QFrame has ONE stylesheet rule (border on QFrame only).
+          No nested QFrame/QWidget children carry a border style — that was
+          causing every child container to get highlighted on selection.
+        • Pros/cons are plain QLabel rows — no wrapping QWidget/QFrame needed.
+        • The webview is given a FIXED height so it cannot overflow its parent.
+        • The Select button is NOT added here — it is added outside the card
+          by _build_ui, below the card in the column wrapper.
+
+        Returns (card QFrame, select QPushButton, QWebEngineView)
         """
         pc        = entry.get("pros_cons", {})
         name      = entry["name"]
@@ -1310,126 +1323,156 @@ class TopologySelectionDialog(QDialog):
         best_for  = pc.get("best_for", "")
 
         # ── Outer card frame ──────────────────────────────────────────
+        # setStyleSheet targets ONLY "QFrame" — not children — because the
+        # rule has no descendant selector.  Sub-widgets use inline styles.
         card = QFrame()
         card.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        # Explicit object name so the stylesheet selector is unambiguous
+        card.setObjectName("topoCard")
         card.setStyleSheet("""
-            QFrame {
-                background:rgba(30,41,59,0.70);
-                border:2px solid rgba(100,116,139,0.25);
-                border-radius:16px;
+            QFrame#topoCard {
+                background: rgba(30, 41, 59, 0.70);
+                border: 2px solid rgba(100, 116, 139, 0.25);
+                border-radius: 16px;
             }
         """)
 
         vbox = QVBoxLayout(card)
-        vbox.setContentsMargins(22, 20, 22, 20)
-        vbox.setSpacing(10)
+        vbox.setContentsMargins(20, 18, 20, 18)
+        vbox.setSpacing(8)
 
-        # ── Badge row ─────────────────────────────────────────────────
+        # ── Badge + score row ─────────────────────────────────────────
         badge_row = QHBoxLayout()
         rank_badge = QLabel(f"  #{rank} Recommended  ")
         rank_badge.setStyleSheet(
-            "color:#22D3EE; font-size:10px; font-weight:700; letter-spacing:2px;"
-            "background:rgba(34,211,238,0.12); border-radius:8px; padding:3px 0;"
+            "color: #22D3EE; font-size: 10px; font-weight: 700;"
+            "letter-spacing: 2px; background: rgba(34,211,238,0.12);"
+            "border-radius: 8px; padding: 3px 0; border: none;"
         )
         badge_row.addWidget(rank_badge)
         badge_row.addStretch()
         score_lbl = QLabel(f"Score: {score}")
-        score_lbl.setStyleSheet("color:#94A3B8; font-size:11px; font-weight:600;")
+        score_lbl.setStyleSheet(
+            "color: #94A3B8; font-size: 11px; font-weight: 600;"
+            "background: transparent; border: none;"
+        )
         badge_row.addWidget(score_lbl)
         vbox.addLayout(badge_row)
 
-        # ── Title ─────────────────────────────────────────────────────
+        # ── Title + description ───────────────────────────────────────
         title_lbl = QLabel(f"{icon}  {disp_name}")
-        title_lbl.setStyleSheet("color:#F8FAFC; font-size:20px; font-weight:800;")
+        title_lbl.setStyleSheet(
+            "color: #F8FAFC; font-size: 19px; font-weight: 800;"
+            "background: transparent; border: none;"
+        )
         vbox.addWidget(title_lbl)
 
         desc_lbl = QLabel(desc)
         desc_lbl.setWordWrap(True)
-        desc_lbl.setStyleSheet("color:#64748B; font-size:12px;")
+        desc_lbl.setStyleSheet(
+            "color: #64748B; font-size: 11px;"
+            "background: transparent; border: none;"
+        )
         vbox.addWidget(desc_lbl)
 
-        # ── Divider ───────────────────────────────────────────────────
+        # ── Thin divider ──────────────────────────────────────────────
         vbox.addWidget(self._divider())
 
-        # ── Pros & Cons side-by-side ──────────────────────────────────
+        # ── Pros & Cons as plain label lists (no nested frames) ───────
+        # Both columns are laid out in a single QHBoxLayout containing
+        # two QVBoxLayouts — no QWidget/QFrame wrappers, so no border bleed.
         pc_row = QHBoxLayout()
-        pc_row.setSpacing(16)
+        pc_row.setSpacing(20)
 
-        # Pros column
         pros_col = QVBoxLayout()
-        pros_col.setSpacing(4)
-        pros_title = QLabel("✅  Pros")
-        pros_title.setStyleSheet("color:#4ADE80; font-size:12px; font-weight:700;")
-        pros_col.addWidget(pros_title)
+        pros_col.setSpacing(3)
+        pros_hdr = QLabel("✅  Pros")
+        pros_hdr.setStyleSheet(
+            "color: #4ADE80; font-size: 12px; font-weight: 700;"
+            "background: transparent; border: none;"
+        )
+        pros_col.addWidget(pros_hdr)
         for p in pros:
-            pl = QLabel(f"  •  {p}")
-            pl.setWordWrap(True)
-            pl.setStyleSheet("color:#CBD5E1; font-size:11px;")
-            pros_col.addWidget(pl)
+            lbl = QLabel(f"  •  {p}")
+            lbl.setWordWrap(True)
+            lbl.setStyleSheet(
+                "color: #CBD5E1; font-size: 11px;"
+                "background: transparent; border: none;"
+            )
+            pros_col.addWidget(lbl)
         pros_col.addStretch()
-        pros_frame = QWidget()
-        pros_frame.setLayout(pros_col)
-        pros_frame.setStyleSheet("background:rgba(74,222,128,0.04); border-radius:8px;")
 
-        # Cons column
         cons_col = QVBoxLayout()
-        cons_col.setSpacing(4)
-        cons_title = QLabel("⚠️  Cons")
-        cons_title.setStyleSheet("color:#FBBF24; font-size:12px; font-weight:700;")
-        cons_col.addWidget(cons_title)
+        cons_col.setSpacing(3)
+        cons_hdr = QLabel("⚠️  Cons")
+        cons_hdr.setStyleSheet(
+            "color: #FBBF24; font-size: 12px; font-weight: 700;"
+            "background: transparent; border: none;"
+        )
+        cons_col.addWidget(cons_hdr)
         for c in cons:
-            cl = QLabel(f"  •  {c}")
-            cl.setWordWrap(True)
-            cl.setStyleSheet("color:#CBD5E1; font-size:11px;")
-            cons_col.addWidget(cl)
+            lbl = QLabel(f"  •  {c}")
+            lbl.setWordWrap(True)
+            lbl.setStyleSheet(
+                "color: #CBD5E1; font-size: 11px;"
+                "background: transparent; border: none;"
+            )
+            cons_col.addWidget(lbl)
         cons_col.addStretch()
-        cons_frame = QWidget()
-        cons_frame.setLayout(cons_col)
-        cons_frame.setStyleSheet("background:rgba(251,191,36,0.04); border-radius:8px;")
 
-        pc_row.addWidget(pros_frame)
-        pc_row.addWidget(cons_frame)
+        pc_row.addLayout(pros_col)
+        pc_row.addLayout(cons_col)
         vbox.addLayout(pc_row)
 
         # ── Best for ──────────────────────────────────────────────────
         best_lbl = QLabel(f"🎯  Best for: {best_for}")
         best_lbl.setWordWrap(True)
-        best_lbl.setStyleSheet("color:#7DD3FC; font-size:11px; font-style:italic;")
+        best_lbl.setStyleSheet(
+            "color: #7DD3FC; font-size: 11px; font-style: italic;"
+            "background: transparent; border: none;"
+        )
         vbox.addWidget(best_lbl)
 
-        # ── Divider ───────────────────────────────────────────────────
+        # ── Thin divider ──────────────────────────────────────────────
         vbox.addWidget(self._divider())
 
-        # ── SVG Preview ───────────────────────────────────────────────
+        # ── Network preview label ─────────────────────────────────────
         preview_lbl = QLabel("📊  Network Preview")
         preview_lbl.setStyleSheet(
-            "color:#94A3B8; font-size:11px; font-weight:700; letter-spacing:1px;"
+            "color: #94A3B8; font-size: 11px; font-weight: 700;"
+            "letter-spacing: 1px; background: transparent; border: none;"
         )
         vbox.addWidget(preview_lbl)
 
+        # ── WebView — FIXED height so it never overflows the card ─────
+        # Do NOT use stretch here.  A fixed pixel height keeps the webview
+        # fully contained regardless of dialog resize.
         webview = QWebEngineView()
-        webview.setMinimumHeight(340)
-        webview.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        # Show a loading placeholder while SVG is being rendered
-        webview.setHtml(_wrap_svg_in_html(""))
-        vbox.addWidget(webview, stretch=1)
+        webview.setFixedHeight(320)
+        webview.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        webview.setHtml(_wrap_svg_in_html(""))   # loading placeholder
+        vbox.addWidget(webview)                   # no stretch= argument
 
-        # ── Select button ─────────────────────────────────────────────
+        # ── Select button is built here but returned for placement ────
+        # It will be added OUTSIDE the card by _build_ui.
         btn = QPushButton(f"Select  {disp_name}")
-        btn.setFixedHeight(42)
+        btn.setFixedHeight(44)
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
         btn.setStyleSheet("""
             QPushButton {
-                background:rgba(34,211,238,0.10); color:#22D3EE;
-                border:1px solid rgba(34,211,238,0.30); border-radius:10px;
-                font-size:13px; font-weight:700;
+                background: rgba(34, 211, 238, 0.10);
+                color: #22D3EE;
+                border: 1px solid rgba(34, 211, 238, 0.30);
+                border-radius: 10px;
+                font-size: 13px;
+                font-weight: 700;
             }
             QPushButton:hover {
-                background:rgba(34,211,238,0.22); border:1px solid #22D3EE;
+                background: rgba(34, 211, 238, 0.22);
+                border: 1px solid #22D3EE;
             }
         """)
         btn.clicked.connect(lambda _, n=name: self._on_select(n))
-        vbox.addWidget(btn)
 
         return card, btn, webview
 
@@ -1465,18 +1508,18 @@ class TopologySelectionDialog(QDialog):
         for frame, name in self._card_frames:
             if name == topology_name:
                 frame.setStyleSheet("""
-                    QFrame {
-                        background:rgba(30,41,59,0.92);
-                        border:2px solid #22D3EE;
-                        border-radius:16px;
+                    QFrame#topoCard {
+                        background: rgba(30, 41, 59, 0.92);
+                        border: 2px solid #22D3EE;
+                        border-radius: 16px;
                     }
                 """)
             else:
                 frame.setStyleSheet("""
-                    QFrame {
-                        background:rgba(30,41,59,0.70);
-                        border:2px solid rgba(100,116,139,0.25);
-                        border-radius:16px;
+                    QFrame#topoCard {
+                        background: rgba(30, 41, 59, 0.70);
+                        border: 2px solid rgba(100, 116, 139, 0.25);
+                        border-radius: 16px;
                     }
                 """)
 

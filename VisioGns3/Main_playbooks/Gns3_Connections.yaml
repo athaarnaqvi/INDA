@@ -5,7 +5,7 @@
 
   vars:
     gns3_server: "http://localhost:3080"
-    project_name: "architecture_topology_20260510_134831"
+    project_name: "architecture_topology_20260510_140623"
 
   tasks:
     - name: Get all projects
@@ -774,7 +774,7 @@
               adapter_number: 0
               port_number: 3
 
-    - name: Connect dist_switch_f1 to core_router_1
+    - name: Connect dist_switch_f1 to dist_switch_f2
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -789,6 +789,63 @@
             - node_id: "{{ node_map['dist_switch_f1'] }}"
               adapter_number: 0
               port_number: 4
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect dist_switch_f1 to dist_switch_f3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['dist_switch_f1'] }}"
+              adapter_number: 0
+              port_number: 5
+            - node_id: "{{ node_map['dist_switch_f3'] }}"
+              adapter_number: 0
+              port_number: 4
+
+    - name: Connect dist_switch_f2 to dist_switch_f3
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['dist_switch_f2'] }}"
+              adapter_number: 0
+              port_number: 5
+            - node_id: "{{ node_map['dist_switch_f3'] }}"
+              adapter_number: 0
+              port_number: 5
+
+    - name: Connect dist_switch_f1 to core_router_1
+      vars:
+        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
+      uri:
+        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        status_code: [200, 201]
+        body:
+          nodes:
+            - node_id: "{{ node_map['dist_switch_f1'] }}"
+              adapter_number: 0
+              port_number: 6
             - node_id: "{{ node_map['core_router_1'] }}"
               adapter_number: 0
               port_number: 0
@@ -807,29 +864,10 @@
           nodes:
             - node_id: "{{ node_map['dist_switch_f1'] }}"
               adapter_number: 0
-              port_number: 5
+              port_number: 7
             - node_id: "{{ node_map['backup_core_router'] }}"
               adapter_number: 0
               port_number: 0
-
-    - name: Connect dist_switch_f1 to dist_switch_f2
-      vars:
-        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-            - node_id: "{{ node_map['dist_switch_f1'] }}"
-              adapter_number: 0
-              port_number: 6
-            - node_id: "{{ node_map['dist_switch_f2'] }}"
-              adapter_number: 0
-              port_number: 4
 
     - name: Connect dist_switch_f2 to core_router_1
       vars:
@@ -845,7 +883,7 @@
           nodes:
             - node_id: "{{ node_map['dist_switch_f2'] }}"
               adapter_number: 0
-              port_number: 5
+              port_number: 6
             - node_id: "{{ node_map['core_router_1'] }}"
               adapter_number: 1
               port_number: 0
@@ -864,29 +902,10 @@
           nodes:
             - node_id: "{{ node_map['dist_switch_f2'] }}"
               adapter_number: 0
-              port_number: 6
+              port_number: 7
             - node_id: "{{ node_map['backup_core_router'] }}"
               adapter_number: 1
               port_number: 0
-
-    - name: Connect dist_switch_f2 to dist_switch_f3
-      vars:
-        node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
-      uri:
-        url: "{{ gns3_server }}/v2/projects/{{ project_id }}/links"
-        method: POST
-        body_format: json
-        headers:
-          Content-Type: application/json
-        status_code: [200, 201]
-        body:
-          nodes:
-            - node_id: "{{ node_map['dist_switch_f2'] }}"
-              adapter_number: 0
-              port_number: 7
-            - node_id: "{{ node_map['dist_switch_f3'] }}"
-              adapter_number: 0
-              port_number: 4
 
     - name: Connect dist_switch_f3 to core_router_1
       vars:
@@ -902,7 +921,7 @@
           nodes:
             - node_id: "{{ node_map['dist_switch_f3'] }}"
               adapter_number: 0
-              port_number: 5
+              port_number: 6
             - node_id: "{{ node_map['core_router_1'] }}"
               adapter_number: 2
               port_number: 0
@@ -921,7 +940,7 @@
           nodes:
             - node_id: "{{ node_map['dist_switch_f3'] }}"
               adapter_number: 0
-              port_number: 6
+              port_number: 7
             - node_id: "{{ node_map['backup_core_router'] }}"
               adapter_number: 2
               port_number: 0
@@ -964,7 +983,7 @@
               adapter_number: 0
               port_number: 1
 
-    - name: Connect server_switch to mail_server
+    - name: Connect server_switch to backup_server
       vars:
         node_map: "{{ gns3_nodes.json | items2dict(key_name='name', value_name='node_id') }}"
       uri:
@@ -979,7 +998,7 @@
             - node_id: "{{ node_map['server_switch'] }}"
               adapter_number: 0
               port_number: 2
-            - node_id: "{{ node_map['mail_server'] }}"
+            - node_id: "{{ node_map['backup_server'] }}"
               adapter_number: 0
               port_number: 0
 
