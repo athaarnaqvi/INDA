@@ -8,6 +8,10 @@
         "to": "access_switch_f1_r1"
     },
     {
+        "from": "pc_f1_r1_u3",
+        "to": "access_switch_f1_r1"
+    },
+    {
         "from": "pc_f1_r2_u1",
         "to": "access_switch_f1_r2"
     },
@@ -16,11 +20,31 @@
         "to": "access_switch_f1_r2"
     },
     {
+        "from": "pc_f1_r2_u3",
+        "to": "access_switch_f1_r2"
+    },
+    {
+        "from": "pc_f1_r3_u1",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "pc_f1_r3_u2",
+        "to": "access_switch_f1_r3"
+    },
+    {
+        "from": "pc_f1_r3_u3",
+        "to": "access_switch_f1_r3"
+    },
+    {
         "from": "pc_f2_r1_u1",
         "to": "access_switch_f2_r1"
     },
     {
         "from": "pc_f2_r1_u2",
+        "to": "access_switch_f2_r1"
+    },
+    {
+        "from": "pc_f2_r1_u3",
         "to": "access_switch_f2_r1"
     },
     {
@@ -32,11 +56,31 @@
         "to": "access_switch_f2_r2"
     },
     {
+        "from": "pc_f2_r2_u3",
+        "to": "access_switch_f2_r2"
+    },
+    {
+        "from": "pc_f2_r3_u1",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "pc_f2_r3_u2",
+        "to": "access_switch_f2_r3"
+    },
+    {
+        "from": "pc_f2_r3_u3",
+        "to": "access_switch_f2_r3"
+    },
+    {
         "from": "pc_f3_r1_u1",
         "to": "access_switch_f3_r1"
     },
     {
         "from": "pc_f3_r1_u2",
+        "to": "access_switch_f3_r1"
+    },
+    {
+        "from": "pc_f3_r1_u3",
         "to": "access_switch_f3_r1"
     },
     {
@@ -48,11 +92,31 @@
         "to": "access_switch_f3_r2"
     },
     {
+        "from": "pc_f3_r2_u3",
+        "to": "access_switch_f3_r2"
+    },
+    {
+        "from": "pc_f3_r3_u1",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "pc_f3_r3_u2",
+        "to": "access_switch_f3_r3"
+    },
+    {
+        "from": "pc_f3_r3_u3",
+        "to": "access_switch_f3_r3"
+    },
+    {
         "from": "access_switch_f1_r1",
         "to": "dist_switch_f1"
     },
     {
         "from": "access_switch_f1_r2",
+        "to": "dist_switch_f1"
+    },
+    {
+        "from": "access_switch_f1_r3",
         "to": "dist_switch_f1"
     },
     {
@@ -64,11 +128,19 @@
         "to": "dist_switch_f2"
     },
     {
+        "from": "access_switch_f2_r3",
+        "to": "dist_switch_f2"
+    },
+    {
         "from": "access_switch_f3_r1",
         "to": "dist_switch_f3"
     },
     {
         "from": "access_switch_f3_r2",
+        "to": "dist_switch_f3"
+    },
+    {
+        "from": "access_switch_f3_r3",
         "to": "dist_switch_f3"
     },
     {
@@ -116,20 +188,24 @@
         "to": "backup_core_router"
     },
     {
-        "from": "dhcp_server",
-        "to": "core_router_1"
+        "from": "core_router_1",
+        "to": "server_switch"
     },
     {
-        "from": "dns_server",
-        "to": "core_router_1"
+        "from": "backup_core_router",
+        "to": "server_switch"
     },
     {
-        "from": "dns_server",
-        "to": "backup_core_router"
+        "from": "server_switch",
+        "to": "mail_server"
     },
     {
-        "from": "dhcp_server",
-        "to": "backup_core_router"
+        "from": "server_switch",
+        "to": "dhcp_server"
+    },
+    {
+        "from": "server_switch",
+        "to": "dns_server"
     },
     {
         "from": "core_router_1",

@@ -1,15 +1,18 @@
+from __future__ import annotations
 import sys
 import os
 import subprocess
 import traceback
 import math
 import random
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
+from PyQt6.QtWidgets import (QApplication, QWidget, QDialog, QVBoxLayout, QHBoxLayout,
                               QPushButton, QLabel, QLineEdit, QTextEdit,
                               QFileDialog, QMessageBox, QFrame, QStackedWidget,
-                              QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox, QScrollArea, QGraphicsOpacityEffect)
+                              QGraphicsDropShadowEffect, QSpinBox, QComboBox, QCheckBox, QScrollArea, QGraphicsOpacityEffect, QSizePolicy)
 from PyQt6.QtGui import QPalette, QColor, QFont, QPainter, QBrush, QRadialGradient, QPen, QPainterPath, QLinearGradient
 from PyQt6.QtCore import QSize, Qt, QPropertyAnimation, QThread, pyqtSignal, QTimer, pyqtProperty, QObject,QEasingCurve,QRectF, QPointF, QRectF, QRect
+from typing import List, Dict, Any
+from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 # GNS3 Config File Path
 GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
@@ -972,6 +975,541 @@ class SetupPage(QWidget):
         self.status_lbl.setStyleSheet(
             f"background: transparent; color: {color}; "
             f"font-size: 12px; font-weight: 700; letter-spacing: 1px; font-family: monospace;")
+
+"""
+TopologySelectionDialog
+=======================
+Shows the top-2 recommended topologies side-by-side.
+Each card contains:
+  • Rank / score badge
+  • Pros & cons list
+  • Live SVG network-diagram preview (generated in-memory, no disk I/O)
+
+The user can inspect both previews and then click "Deploy <topology>" to confirm.
+
+Usage (from app.py / start_architecture_engine):
+    dlg = TopologySelectionDialog(conn_engine.top2, conn_engine, machines, parent=self)
+    if dlg.exec() == QDialog.DialogCode.Accepted:
+        chosen = dlg.chosen_topology          # e.g. "star"
+        connections = dlg.chosen_connections  # list of {"from":…,"to":…} dicts
+"""
+
+# ---------------------------------------------------------------------------
+# Re-use the SVG machinery that already exists in the project
+# ---------------------------------------------------------------------------
+try:
+    from VisioGns3.Architecture.topology_visualization import SVGGenerator, Node as TVNode, Connection as TVConnection, LayoutCalculator
+    _HAS_VIZ = True
+except ImportError:
+    _HAS_VIZ = False
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _build_nodes_from_machines(machine_list: List[str]) -> Dict[str, "TVNode"]:
+    """
+    Convert a flat list of machine names (from ArchitectureEngine.machines)
+    into a dict of TVNode objects that SVGGenerator can consume.
+    Positions are set to 0,0 — SVGGenerator's auto-layout will fix them.
+    """
+    nodes: Dict[str, TVNode] = {}
+    for name in machine_list:
+        nl = name.lower()
+        if "router" in nl or "core" in nl:
+            ntype = "router"
+        elif "firewall" in nl:
+            ntype = "firewall"
+        elif "internet" in nl or "cloud" in nl:
+            ntype = "cloud"
+        elif "switch" in nl:
+            ntype = "ethernet_switch"
+        elif "server" in nl:
+            ntype = "server"
+        elif "ap" in nl:
+            ntype = "access_point"
+        elif "laptop" in nl:
+            ntype = "vpcs"
+        else:
+            ntype = "vpcs"
+        nodes[name] = TVNode(
+            name=name, node_type=ntype,
+            x=0.0, y=0.0, symbol="", template_id=""
+        )
+    return nodes
+
+
+def _build_tv_connections(raw_connections: List[Dict]) -> List["TVConnection"]:
+    """Convert raw {"from":…,"to":…} dicts to TVConnection objects."""
+    result = []
+    for c in raw_connections:
+        result.append(TVConnection(
+            from_node=c["from"],
+            to_node=c["to"],
+        ))
+    return result
+
+
+def _generate_preview_svg(machine_list: List[str], raw_connections: List[Dict],
+                           title: str) -> str:
+    """
+    Build an SVG string for the given topology.
+    Returns an empty string on any failure.
+    """
+    if not _HAS_VIZ:
+        return ""
+    try:
+        nodes = _build_nodes_from_machines(machine_list)
+        tv_conns = _build_tv_connections(raw_connections)
+        # Filter connections to only those whose endpoints exist in nodes
+        tv_conns = [c for c in tv_conns
+                    if c.from_node in nodes and c.to_node in nodes]
+        gen = SVGGenerator(nodes, tv_conns, title=title, auto_layout=True)
+        return gen.generate()
+    except Exception as exc:
+        return f"<!-- SVG generation failed: {exc} -->"
+
+
+def _wrap_svg_in_html(svg: str) -> str:
+    """Wrap raw SVG in a minimal responsive HTML page for QWebEngineView."""
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
+  html, body {{ width:100%; height:100%; background:#0F172A; overflow:auto; }}
+  body {{ display:flex; justify-content:center; align-items:flex-start; padding:12px; }}
+  #wrap {{ background:#1E293B; border:1px solid #334155; border-radius:6px;
+           box-shadow:0 2px 12px rgba(0,0,0,0.5); }}
+  svg {{ display:block; width:100%; height:auto; }}
+</style>
+</head>
+<body>
+  <div id="wrap">{svg if svg else '<p style="color:#94A3B8;padding:20px">Preview unavailable</p>'}</div>
+</body>
+</html>"""
+
+
+# ---------------------------------------------------------------------------
+# Main dialog
+# ---------------------------------------------------------------------------
+
+class TopologySelectionDialog(QDialog):
+    """
+    Two-column dialog: each column = one topology card with
+    pros/cons + live SVG preview.  User picks one, then deploys.
+
+    Parameters
+    ----------
+    top2          : list of 2 dicts from ArchitectureConnections.choose_top2_topologies()
+    conn_engine   : ArchitectureConnections instance (used to generate preview connections)
+    machine_list  : list[str] — engine.machines (already generated before this dialog opens)
+    parent        : Qt parent widget
+    """
+
+    def __init__(self, top2: List[Dict], conn_engine=None,
+                 machine_list: List[str] = None, parent=None):
+        super().__init__(parent)
+        self.top2 = top2
+        self.conn_engine = conn_engine
+        self.machine_list = machine_list or []
+        self.chosen_topology: str = top2[0]["name"]
+        self.chosen_connections: List[Dict] = []
+
+        # Pre-generate connections + SVGs for both topologies
+        self._preview_data: Dict[str, Dict] = {}
+        self._pregenerate_previews()
+
+        self.setWindowTitle("Select & Preview Network Topology")
+        self.setMinimumSize(1400, 860)
+        self.setStyleSheet("""
+            QDialog { background: #0F172A; }
+            QLabel  { background: transparent; }
+            QScrollArea { border: none; background: transparent; }
+        """)
+        self._build_ui()
+
+    # ------------------------------------------------------------------
+    # Pre-generation
+    # ------------------------------------------------------------------
+
+    def _pregenerate_previews(self):
+        """
+        For each of the top-2 topologies, generate connections in-memory
+        and build an SVG preview string.  Nothing is written to disk.
+        """
+        if self.conn_engine is None:
+            return
+
+        for entry in self.top2:
+            topo_name = entry["name"]
+            try:
+                # Clone the engine's internal state for this topology
+                import copy
+                engine_copy = copy.copy(self.conn_engine)
+                engine_copy.connections = []
+                engine_copy.topology = topo_name
+
+                engine_copy._generate_connections()
+                raw_conns = list(engine_copy.connections)
+
+                # Build SVG
+                svg = _generate_preview_svg(
+                    self.machine_list, raw_conns,
+                    title=f"{topo_name.upper()} Topology Preview"
+                )
+                self._preview_data[topo_name] = {
+                    "connections": raw_conns,
+                    "svg": svg,
+                }
+            except Exception as exc:
+                self._preview_data[topo_name] = {
+                    "connections": [],
+                    "svg": f"<!-- preview error: {exc} -->",
+                }
+
+        # Default chosen connections = rank-1 topology
+        default = self.top2[0]["name"]
+        self.chosen_connections = self._preview_data.get(default, {}).get("connections", [])
+
+    # ------------------------------------------------------------------
+    # UI
+    # ------------------------------------------------------------------
+
+    def _build_ui(self):
+        root = QVBoxLayout(self)
+        root.setContentsMargins(28, 24, 28, 24)
+        root.setSpacing(16)
+
+        # ── Header ──────────────────────────────────────────────────────
+        hdr = QLabel("🏗️  Choose Your Network Topology")
+        hdr.setStyleSheet(
+            "color:#F8FAFC; font-size:22px; font-weight:800; letter-spacing:0.5px;"
+        )
+        root.addWidget(hdr)
+
+        sub = QLabel(
+            "Both topologies are shown below with pros & cons and a live network preview. "
+            "Select the one that best fits your requirements."
+        )
+        sub.setWordWrap(True)
+        sub.setStyleSheet("color:#94A3B8; font-size:13px;")
+        root.addWidget(sub)
+
+        # ── Two-column card area ─────────────────────────────────────────
+        cards_row = QHBoxLayout()
+        cards_row.setSpacing(20)
+
+        self._card_frames: List[tuple] = []   # (QFrame, topo_name)
+        self._select_btns: List[tuple] = []   # (QPushButton, topo_name)
+        self._web_views:  Dict[str, QWebEngineView] = {}
+
+        for entry in self.top2:
+            card, btn, webview = self._make_card(entry)
+            cards_row.addWidget(card)
+            self._card_frames.append((card, entry["name"]))
+            self._select_btns.append((btn, entry["name"]))
+            self._web_views[entry["name"]] = webview
+
+        root.addLayout(cards_row, stretch=1)
+
+        # Load SVGs slightly after the dialog is shown (WebEngine needs a moment)
+        QTimer.singleShot(300, self._load_svg_previews)
+
+        # ── Divider ──────────────────────────────────────────────────────
+        div = QFrame()
+        div.setFixedHeight(1)
+        div.setStyleSheet(
+            "background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
+            "stop:0 transparent,stop:0.3 rgba(100,116,139,0.4),"
+            "stop:0.7 rgba(100,116,139,0.4),stop:1 transparent);"
+        )
+        root.addWidget(div)
+
+        # ── Bottom bar ───────────────────────────────────────────────────
+        bar = QHBoxLayout()
+
+        self._confirm_lbl = QLabel(
+            f"Selected: <b>{self._display(self.chosen_topology)}</b>"
+        )
+        self._confirm_lbl.setStyleSheet("color:#22D3EE; font-size:13px;")
+        bar.addWidget(self._confirm_lbl)
+        bar.addStretch()
+
+        cancel_btn = QPushButton("✕  Cancel")
+        cancel_btn.setFixedHeight(44)
+        cancel_btn.setStyleSheet("""
+            QPushButton {
+                background:rgba(248,113,113,0.1); color:#F87171;
+                border:1px solid rgba(248,113,113,0.3); border-radius:10px;
+                font-size:13px; font-weight:700; padding:0 20px;
+            }
+            QPushButton:hover { background:rgba(248,113,113,0.22); }
+        """)
+        cancel_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        cancel_btn.clicked.connect(self.reject)
+        bar.addWidget(cancel_btn)
+
+        self._deploy_btn = QPushButton(
+            f"✅  Deploy  {self._icon(self.chosen_topology)}"
+            f"  {self._display(self.chosen_topology)}"
+        )
+        self._deploy_btn.setFixedHeight(44)
+        self._deploy_btn.setStyleSheet("""
+            QPushButton {
+                background:qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                    stop:0 #0891B2,stop:1 #06B6D4);
+                color:#FFFFFF; border:none; border-radius:10px;
+                font-size:14px; font-weight:700; padding:0 28px;
+            }
+            QPushButton:hover {
+                background:qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                    stop:0 #0E7490,stop:1 #0891B2);
+            }
+        """)
+        self._deploy_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._deploy_btn.clicked.connect(self.accept)
+        bar.addWidget(self._deploy_btn)
+
+        root.addLayout(bar)
+
+        # Apply initial highlight
+        self._highlight(self.chosen_topology)
+
+    # ------------------------------------------------------------------
+    # Card builder
+    # ------------------------------------------------------------------
+
+    def _make_card(self, entry: Dict):
+        """
+        Build one topology card.
+        Layout (top-to-bottom):
+          ┌────────────────────────────────┐
+          │ Badge row  (rank + score)      │
+          │ Icon + Name                    │
+          │ Description                    │
+          │ ─────────────────────────────  │
+          │ Pros  |  Cons   (side-by-side) │
+          │ Best for                       │
+          │ ─────────────────────────────  │
+          │ 📊 Network Preview  (SVG)      │  ← NEW
+          │ [Select] button                │
+          └────────────────────────────────┘
+        """
+        pc        = entry.get("pros_cons", {})
+        name      = entry["name"]
+        rank      = entry["rank"]
+        score     = entry["score"]
+        icon      = pc.get("icon", "◈")
+        disp_name = pc.get("display_name", name.title())
+        desc      = pc.get("description", "")
+        pros      = pc.get("pros", [])
+        cons      = pc.get("cons", [])
+        best_for  = pc.get("best_for", "")
+
+        # ── Outer card frame ──────────────────────────────────────────
+        card = QFrame()
+        card.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        card.setStyleSheet("""
+            QFrame {
+                background:rgba(30,41,59,0.70);
+                border:2px solid rgba(100,116,139,0.25);
+                border-radius:16px;
+            }
+        """)
+
+        vbox = QVBoxLayout(card)
+        vbox.setContentsMargins(22, 20, 22, 20)
+        vbox.setSpacing(10)
+
+        # ── Badge row ─────────────────────────────────────────────────
+        badge_row = QHBoxLayout()
+        rank_badge = QLabel(f"  #{rank} Recommended  ")
+        rank_badge.setStyleSheet(
+            "color:#22D3EE; font-size:10px; font-weight:700; letter-spacing:2px;"
+            "background:rgba(34,211,238,0.12); border-radius:8px; padding:3px 0;"
+        )
+        badge_row.addWidget(rank_badge)
+        badge_row.addStretch()
+        score_lbl = QLabel(f"Score: {score}")
+        score_lbl.setStyleSheet("color:#94A3B8; font-size:11px; font-weight:600;")
+        badge_row.addWidget(score_lbl)
+        vbox.addLayout(badge_row)
+
+        # ── Title ─────────────────────────────────────────────────────
+        title_lbl = QLabel(f"{icon}  {disp_name}")
+        title_lbl.setStyleSheet("color:#F8FAFC; font-size:20px; font-weight:800;")
+        vbox.addWidget(title_lbl)
+
+        desc_lbl = QLabel(desc)
+        desc_lbl.setWordWrap(True)
+        desc_lbl.setStyleSheet("color:#64748B; font-size:12px;")
+        vbox.addWidget(desc_lbl)
+
+        # ── Divider ───────────────────────────────────────────────────
+        vbox.addWidget(self._divider())
+
+        # ── Pros & Cons side-by-side ──────────────────────────────────
+        pc_row = QHBoxLayout()
+        pc_row.setSpacing(16)
+
+        # Pros column
+        pros_col = QVBoxLayout()
+        pros_col.setSpacing(4)
+        pros_title = QLabel("✅  Pros")
+        pros_title.setStyleSheet("color:#4ADE80; font-size:12px; font-weight:700;")
+        pros_col.addWidget(pros_title)
+        for p in pros:
+            pl = QLabel(f"  •  {p}")
+            pl.setWordWrap(True)
+            pl.setStyleSheet("color:#CBD5E1; font-size:11px;")
+            pros_col.addWidget(pl)
+        pros_col.addStretch()
+        pros_frame = QWidget()
+        pros_frame.setLayout(pros_col)
+        pros_frame.setStyleSheet("background:rgba(74,222,128,0.04); border-radius:8px;")
+
+        # Cons column
+        cons_col = QVBoxLayout()
+        cons_col.setSpacing(4)
+        cons_title = QLabel("⚠️  Cons")
+        cons_title.setStyleSheet("color:#FBBF24; font-size:12px; font-weight:700;")
+        cons_col.addWidget(cons_title)
+        for c in cons:
+            cl = QLabel(f"  •  {c}")
+            cl.setWordWrap(True)
+            cl.setStyleSheet("color:#CBD5E1; font-size:11px;")
+            cons_col.addWidget(cl)
+        cons_col.addStretch()
+        cons_frame = QWidget()
+        cons_frame.setLayout(cons_col)
+        cons_frame.setStyleSheet("background:rgba(251,191,36,0.04); border-radius:8px;")
+
+        pc_row.addWidget(pros_frame)
+        pc_row.addWidget(cons_frame)
+        vbox.addLayout(pc_row)
+
+        # ── Best for ──────────────────────────────────────────────────
+        best_lbl = QLabel(f"🎯  Best for: {best_for}")
+        best_lbl.setWordWrap(True)
+        best_lbl.setStyleSheet("color:#7DD3FC; font-size:11px; font-style:italic;")
+        vbox.addWidget(best_lbl)
+
+        # ── Divider ───────────────────────────────────────────────────
+        vbox.addWidget(self._divider())
+
+        # ── SVG Preview ───────────────────────────────────────────────
+        preview_lbl = QLabel("📊  Network Preview")
+        preview_lbl.setStyleSheet(
+            "color:#94A3B8; font-size:11px; font-weight:700; letter-spacing:1px;"
+        )
+        vbox.addWidget(preview_lbl)
+
+        webview = QWebEngineView()
+        webview.setMinimumHeight(340)
+        webview.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        # Show a loading placeholder while SVG is being rendered
+        webview.setHtml(_wrap_svg_in_html(""))
+        vbox.addWidget(webview, stretch=1)
+
+        # ── Select button ─────────────────────────────────────────────
+        btn = QPushButton(f"Select  {disp_name}")
+        btn.setFixedHeight(42)
+        btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn.setStyleSheet("""
+            QPushButton {
+                background:rgba(34,211,238,0.10); color:#22D3EE;
+                border:1px solid rgba(34,211,238,0.30); border-radius:10px;
+                font-size:13px; font-weight:700;
+            }
+            QPushButton:hover {
+                background:rgba(34,211,238,0.22); border:1px solid #22D3EE;
+            }
+        """)
+        btn.clicked.connect(lambda _, n=name: self._on_select(n))
+        vbox.addWidget(btn)
+
+        return card, btn, webview
+
+    # ------------------------------------------------------------------
+    # Load SVG previews into web views
+    # ------------------------------------------------------------------
+
+    def _load_svg_previews(self):
+        """Called via QTimer after dialog is visible — loads SVG into web views."""
+        for topo_name, webview in self._web_views.items():
+            svg = self._preview_data.get(topo_name, {}).get("svg", "")
+            webview.setHtml(_wrap_svg_in_html(svg))
+
+    # ------------------------------------------------------------------
+    # Interaction
+    # ------------------------------------------------------------------
+
+    def _on_select(self, topology_name: str):
+        self.chosen_topology   = topology_name
+        self.chosen_connections = self._preview_data.get(
+            topology_name, {}
+        ).get("connections", [])
+        self._highlight(topology_name)
+        self._confirm_lbl.setText(
+            f"Selected: <b>{self._display(topology_name)}</b>"
+        )
+        self._deploy_btn.setText(
+            f"✅  Deploy  {self._icon(topology_name)}"
+            f"  {self._display(topology_name)}"
+        )
+
+    def _highlight(self, topology_name: str):
+        for frame, name in self._card_frames:
+            if name == topology_name:
+                frame.setStyleSheet("""
+                    QFrame {
+                        background:rgba(30,41,59,0.92);
+                        border:2px solid #22D3EE;
+                        border-radius:16px;
+                    }
+                """)
+            else:
+                frame.setStyleSheet("""
+                    QFrame {
+                        background:rgba(30,41,59,0.70);
+                        border:2px solid rgba(100,116,139,0.25);
+                        border-radius:16px;
+                    }
+                """)
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _divider() -> QFrame:
+        div = QFrame()
+        div.setFixedHeight(1)
+        div.setStyleSheet("background:rgba(100,116,139,0.20);")
+        return div
+
+    def _display(self, name: str) -> str:
+        try:
+            from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
+        except ImportError:
+            try:
+                from generate_connections_architecture import TOPOLOGY_PROS_CONS
+            except ImportError:
+                return name.title()
+        return TOPOLOGY_PROS_CONS.get(name, {}).get("display_name", name.title())
+
+    def _icon(self, name: str) -> str:
+        try:
+            from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
+        except ImportError:
+            try:
+                from generate_connections_architecture import TOPOLOGY_PROS_CONS
+            except ImportError:
+                return "◈"
+        return TOPOLOGY_PROS_CONS.get(name, {}).get("icon", "◈")
 
 class VisioGNS3App(QWidget):
     def __init__(self):
@@ -1950,6 +2488,39 @@ class VisioGNS3App(QWidget):
 
         c_layout.addWidget(start_btn)
 
+        # ── AP Placement Download Button ─────────────────────────────────────
+        self.ap_download_btn = QPushButton("📥  Download AP Placement Plan")
+        self.ap_download_btn.setMinimumHeight(50)
+        self.ap_download_btn.setVisible(False)          # hidden until engine runs
+        self.ap_download_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(34, 211, 238, 0.08);
+                color: #22D3EE;
+                border: 1px solid rgba(34, 211, 238, 0.35);
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }
+            QPushButton:hover {
+                background: rgba(34, 211, 238, 0.18);
+                border: 1px solid #22D3EE;
+            }
+            QPushButton:pressed {
+                background: rgba(34, 211, 238, 0.30);
+            }
+            QPushButton:disabled {
+                background: rgba(100, 116, 139, 0.08);
+                color: #475569;
+                border: 1px solid rgba(100, 116, 139, 0.2);
+            }
+        """)
+        self.ap_download_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.ap_download_btn.clicked.connect(self._download_ap_placement)
+        self.add_shadow(self.ap_download_btn)
+        c_layout.addWidget(self.ap_download_btn)
+
+
         # ── Terminal Output Panel ──────────────────────────────────────────
         terminal_header = QHBoxLayout()
 
@@ -2205,22 +2776,33 @@ QCheckBox::indicator:unchecked:hover {{
         self._arch_log("\n🔧  [1/4]  Generating device list...", "#60A5FA")
         try:
             from VisioGns3.Architecture.generate_machine_names_architecture import ArchitectureEngine
-
+ 
             gui_dir  = os.path.dirname(os.path.abspath(__file__))
             visio_dir = os.path.join(gui_dir, "VisioGns3")
             out_dir   = os.path.join(visio_dir, "Generated_files")
             os.makedirs(out_dir, exist_ok=True)
             out_path  = os.path.join(out_dir, "machine_names.txt")
-
+ 
             engine = ArchitectureEngine(floors, rooms, users, width, unit,
                                         building_type, firewall_enabled)
             engine.servers = selected_servers
             if selected_servers:
                 engine.add_servers()
-
+ 
             machines = engine.run(out_path)
             self._arch_log(f"   ✅  {len(machines)} devices written → {out_path}", "#4ADE80")
-
+ 
+            # ── AP placement plan ────────────────────────────────────────────
+            self._ap_placement_path = os.path.join(out_dir, "ap_placement_plan.txt")
+            engine.generate_ap_placement_file(self._ap_placement_path)
+            cols, rows, aps_needed, radius = engine._compute_ap_grid()
+            self._arch_log(
+                f"   ✅  AP placement plan: {aps_needed} AP(s)/floor "
+                f"in a {cols}×{rows} grid → {self._ap_placement_path}",
+                "#4ADE80"
+            )
+            self.ap_download_btn.setVisible(True)
+ 
         except Exception as e:
             self._arch_log(f"   ❌  Device generation failed: {e}", "#F87171")
             self.arch_status_dot.setStyleSheet(
@@ -2228,27 +2810,62 @@ QCheckBox::indicator:unchecked:hover {{
             )
             return
 
-        # ── Step 2: Generate connections ─────────────────────────────────
-        self._arch_log("\n🔧  [2/4]  Generating connections...", "#60A5FA")
+        # ── Step 2: Generate connections + topology selection ────────────────
+        self._arch_log("\\n🔧  [2/4]  Scoring topologies...", "#60A5FA")
         try:
             from VisioGns3.Architecture.generate_connections_architecture import ArchitectureConnections
-
+ 
             conn_engine = ArchitectureConnections(
                 floors, rooms, users, engine.width_m,
                 building_type, firewall_enabled, selected_servers,
                 cost_priority, speed_priority, reliability_priority
             )
             pre_conn_path = os.path.join(visio_dir, "Generated_files", "pre_Connections.json")
-            connections   = conn_engine.run(pre_conn_path)
-            self._arch_log(f"   ✅  Topology: {conn_engine.topology.upper()}", "#4ADE80")
-            self._arch_log(f"   ✅  {len(connections)} connections written → {pre_conn_path}", "#4ADE80")
+ 
+            # Log the two candidates
+            for entry in conn_engine.top2:
+                pc   = entry["pros_cons"]
+                icon = pc.get("icon", "◈")
+                dname = pc.get("display_name", entry["name"].title())
+                self._arch_log(
+                    f"   #{entry['rank']}  {icon}  {dname}  "
+                    f"(score {entry['score']})",
+                    "#60A5FA"
+                )
+ 
+            # ── Topology selection dialog ────────────────────────────────
+            dlg = TopologySelectionDialog(
+                conn_engine.top2,
+                conn_engine=conn_engine,          # ← NEW: needed to generate previews
+                machine_list=engine.machines,     # ← NEW: the list from Step 1
+                parent=self,
+            )
+            if dlg.exec() != QDialog.DialogCode.Accepted:
+                self._arch_log(
+                    "\\n⚠️  Topology selection cancelled by user.", "#FBBF24"
+                )
+                self.arch_status_dot.setStyleSheet(
+                    "color: #FBBF24; font-size: 18px; background: transparent;"
+                )
+                return
+ 
+            chosen      = dlg.chosen_topology
+            connections = dlg.chosen_connections   # already generated, no re-work
 
+            # Just write the file
+            import json
+            with open(pre_conn_path, "w") as f:
+                json.dump(connections, f, indent=4)
+
+            self._arch_log(f"   ✅  {len(connections)} connections written → {pre_conn_path}", "#4ADE80")
+ 
         except Exception as e:
             self._arch_log(f"   ❌  Connection generation failed: {e}", "#F87171")
             self.arch_status_dot.setStyleSheet(
                 "color: #F87171; font-size: 18px; background: transparent;"
             )
             return
+
 
         # ── Step 3: Run automation shell script ──────────────────────────
         self._arch_log("\n🔧  [3/4]  Running automation script...", "#60A5FA")
@@ -2303,6 +2920,33 @@ QCheckBox::indicator:unchecked:hover {{
             "color: #F87171; font-size: 18px; background: transparent;"
         )
 
+    def _download_ap_placement(self):
+        """Open a Save-As dialog so the user can store ap_placement_plan.txt."""
+        src = getattr(self, "_ap_placement_path", None)
+        if not src or not os.path.exists(src):
+            QMessageBox.warning(self, "File Not Found",
+                                "AP placement file has not been generated yet.")
+            return
+ 
+        dest, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save AP Placement Plan",
+            os.path.join(os.path.expanduser("~"), "ap_placement_plan.txt"),
+            "Text Files (*.txt);;All Files (*)"
+        )
+        if not dest:
+            return          # user cancelled
+ 
+        try:
+            import shutil
+            shutil.copy2(src, dest)
+            QMessageBox.information(
+                self,
+                "Saved",
+                f"AP placement plan saved to:\n{dest}"
+            )
+        except Exception as e:
+            QMessageBox.critical(self, "Save Failed", str(e))
 
     def create_chatbot_page(self):
         page = QWidget()
