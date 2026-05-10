@@ -1535,23 +1535,11 @@ class TopologySelectionDialog(QDialog):
         return div
 
     def _display(self, name: str) -> str:
-        try:
-            from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
-        except ImportError:
-            try:
-                from generate_connections_architecture import TOPOLOGY_PROS_CONS
-            except ImportError:
-                return name.title()
+        from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS 
         return TOPOLOGY_PROS_CONS.get(name, {}).get("display_name", name.title())
 
     def _icon(self, name: str) -> str:
-        try:
-            from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
-        except ImportError:
-            try:
-                from generate_connections_architecture import TOPOLOGY_PROS_CONS
-            except ImportError:
-                return "◈"
+        from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
         return TOPOLOGY_PROS_CONS.get(name, {}).get("icon", "◈")
 
 class VisioGNS3App(QWidget):
@@ -2503,7 +2491,7 @@ class VisioGNS3App(QWidget):
         ))
         stats_row_layout.addWidget(make_flat_card(
             "🕐", "LAST OPENED",
-            (stats["last_opened_name"][:16]
+            (stats["last_opened_name"]
             if stats["last_opened_name"] != "—" else "—"),
             sub="most recently opened",
         ))
