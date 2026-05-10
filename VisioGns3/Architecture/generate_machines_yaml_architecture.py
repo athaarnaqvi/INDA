@@ -109,6 +109,10 @@ def generate_project_name():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     return f"architecture_topology_{timestamp}"
 
+def read_project_name(path):
+    with open(path, "r") as f:
+        return f.read().strip()
+
 def normalize_name(name):
     name = re.sub(r"ONFrontView.*$", "", name)
     name = re.sub(r"[^a-zA-Z0-9]", "", name).lower()
@@ -151,10 +155,11 @@ def group_machines_by_floor(machines):
 # ----------------------------------------------------
 
 def generate_yaml(ip, port, machines, templates):
-    project_name = generate_project_name()
-    with open(VSDX_PATH_FILE, "w") as f:
-        f.write(project_name)
+    # project_name = generate_project_name()
+    # with open(VSDX_PATH_FILE, "w") as f:
+    #     f.write(project_name)
 
+    project_name = read_project_name(VSDX_PATH_FILE)
     floors = group_machines_by_floor(machines)
     floors_per_row = 2
     floor_spacing_x = 700

@@ -1,8 +1,3 @@
-core_router_1
-dhcp_server
-dns_server
-internet_cloud
-dist_switch_f1
-access_switch_f1_r1
-pc_f1_r1_u1
-ap_f1_1
+router1
+router2
+switch1

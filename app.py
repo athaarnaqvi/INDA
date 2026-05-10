@@ -1535,11 +1535,23 @@ class TopologySelectionDialog(QDialog):
         return div
 
     def _display(self, name: str) -> str:
-        from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS 
+        try:
+            from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
+        except ImportError:
+            try:
+                from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
+            except ImportError:
+                return name.title()
         return TOPOLOGY_PROS_CONS.get(name, {}).get("display_name", name.title())
 
     def _icon(self, name: str) -> str:
-        from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
+        try:
+            from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
+        except ImportError:
+            try:
+                from VisioGns3.Architecture.generate_connections_architecture import TOPOLOGY_PROS_CONS
+            except ImportError:
+                return "◈"
         return TOPOLOGY_PROS_CONS.get(name, {}).get("icon", "◈")
 
 class VisioGNS3App(QWidget):
@@ -2491,7 +2503,7 @@ class VisioGNS3App(QWidget):
         ))
         stats_row_layout.addWidget(make_flat_card(
             "🕐", "LAST OPENED",
-            (stats["last_opened_name"]
+            (stats["last_opened_name"][:]
             if stats["last_opened_name"] != "—" else "—"),
             sub="most recently opened",
         ))
@@ -2825,7 +2837,118 @@ class VisioGNS3App(QWidget):
         card.setLayout(layout)
         card.mousePressEvent = lambda e: callback()
         return card
+    def _validate_arch_project_name(self):
+        arch_proj_name = self.arch_project_name_input.text().strip()
 
+        # Empty check
+        if not arch_proj_name:
+            QMessageBox.warning(self, "Project Name Required",
+                                "Please enter a project name before confirming.")
+            return
+
+        # Server duplicate check
+        if self.server_ip and self.server_port:
+            try:
+                import urllib.request, json as _json
+                existing_names = []
+                for path in ["/v2/projects", "/api/v2/projects"]:
+                    try:
+                        url = f"http://{self.server_ip}:{self.server_port}{path}"
+                        with urllib.request.urlopen(
+                            urllib.request.Request(url, headers={"Accept": "application/json"}),
+                            timeout=3
+                        ) as resp:
+                            projects = _json.loads(resp.read().decode())
+                        if isinstance(projects, list):
+                            existing_names = [p.get("name", "") for p in projects]
+                            break
+                    except Exception:
+                        continue
+
+                if arch_proj_name in existing_names:
+                    QMessageBox.warning(
+                        self,
+                        "Project Name Already Exists",
+                        f"A project named '{arch_proj_name}' already exists on the GNS3 server.\n\n"
+                        f"Please choose a different name."
+                    )
+                    self.arch_project_name_input.setFocus()
+                    self.arch_project_name_input.selectAll()
+                    self._set_arch_proj_status("taken")
+                    return
+
+            except Exception:
+                pass  # Server unreachable — skip check
+
+        # All good
+        self._set_arch_proj_status("ok")
+
+        # Save to file
+        vsdx_path = os.path.join(
+            os.path.expanduser("~"), "INDA", "VisioGns3", "vsdx_path.txt"
+        )
+        os.makedirs(os.path.dirname(vsdx_path), exist_ok=True)
+        with open(vsdx_path, "w") as f:
+            f.write(arch_proj_name)
+        self._arch_log(f"📁  Project name confirmed & saved: {arch_proj_name}", "#4ADE80")
+
+    def _set_arch_proj_status(self, state: str):
+        """Updates the small status label next to the architecture project name field."""
+        if state == "ok":
+            self.arch_proj_status.setText("✔  Name confirmed")
+            self.arch_proj_status.setStyleSheet(
+                "color: #4ADE80; font-size: 12px; font-weight: 700;"
+                "background: transparent; border: none;"
+            )
+            self.arch_proj_ok_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(74, 222, 128, 0.15);
+                    color: #4ADE80;
+                    border: 1px solid rgba(74, 222, 128, 0.45);
+                    border-radius: 10px;
+                    font-size: 13px;
+                    font-weight: 700;
+                }
+                QPushButton:hover {
+                    background: rgba(74, 222, 128, 0.28);
+                }
+            """)
+        elif state == "taken":
+            self.arch_proj_status.setText("✘  Name already taken")
+            self.arch_proj_status.setStyleSheet(
+                "color: #F87171; font-size: 12px; font-weight: 700;"
+                "background: transparent; border: none;"
+            )
+            self.arch_proj_ok_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(248, 113, 113, 0.12);
+                    color: #F87171;
+                    border: 1px solid rgba(248, 113, 113, 0.35);
+                    border-radius: 10px;
+                    font-size: 13px;
+                    font-weight: 700;
+                }
+                QPushButton:hover {
+                    background: rgba(248, 113, 113, 0.25);
+                }
+            """)
+        else:  # reset
+            self.arch_proj_status.setText("")
+            self.arch_proj_status.setStyleSheet("background: transparent; border: none;")
+            self.arch_proj_ok_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(34, 211, 238, 0.10);
+                    color: #22D3EE;
+                    border: 1px solid rgba(34, 211, 238, 0.30);
+                    border-radius: 10px;
+                    font-size: 13px;
+                    font-weight: 700;
+                }
+                QPushButton:hover {
+                    background: rgba(34, 211, 238, 0.22);
+                    border: 1px solid #22D3EE;
+                }
+            """)
     def create_architecture_page(self):
         page = QWidget()
         page.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0F172A, stop:1 #1E293B);")
@@ -2895,7 +3018,67 @@ class VisioGNS3App(QWidget):
 
         form_layout.addWidget(form_title)
         form_layout.addWidget(form_desc)
+        # ── Project Name ──────────────────────────────────────────────
+        arch_proj_row = QHBoxLayout()
+        arch_proj_label = QLabel("📁  Project Name")
+        arch_proj_label.setStyleSheet(
+            "color: #CBD5E1; font-size: 14px; font-weight: 600; background: transparent;"
+        )
+        arch_proj_label.setFixedWidth(160)
 
+        self.arch_project_name_input = QLineEdit()
+        self.arch_project_name_input.setPlaceholderText("Enter project name (e.g. OfficeNetwork)")
+        self.arch_project_name_input.setMinimumHeight(46)
+        self.arch_project_name_input.setStyleSheet("""
+            QLineEdit {
+                background: rgba(15, 23, 42, 0.8);
+                color: #F8FAFC;
+                border: 2px solid rgba(100, 116, 139, 0.3);
+                border-radius: 10px;
+                padding: 0 14px;
+                font-size: 15px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #22D3EE;
+            }
+        """)
+        self.arch_proj_ok_btn = QPushButton("OK")
+        self.arch_proj_ok_btn.setFixedHeight(46)
+        self.arch_proj_ok_btn.setFixedWidth(70)
+        self.arch_proj_ok_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.arch_proj_ok_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(34, 211, 238, 0.10);
+                color: #22D3EE;
+                border: 1px solid rgba(34, 211, 238, 0.30);
+                border-radius: 10px;
+                font-size: 13px;
+                font-weight: 700;
+            }
+            QPushButton:hover {
+                background: rgba(34, 211, 238, 0.22);
+                border: 1px solid #22D3EE;
+            }
+            QPushButton:pressed {
+                background: rgba(34, 211, 238, 0.38);
+            }
+        """)
+        self.arch_proj_ok_btn.clicked.connect(self._validate_arch_project_name)
+
+        self.arch_proj_status = QLabel("")
+        self.arch_proj_status.setStyleSheet(
+            "background: transparent; border: none; font-size: 12px; font-weight: 700;"
+        )
+
+        arch_proj_row.addWidget(arch_proj_label)
+        arch_proj_row.addWidget(self.arch_project_name_input)
+        self.arch_project_name_input.textChanged.connect(
+            lambda: self._set_arch_proj_status("reset")
+        )
+        arch_proj_row.addWidget(self.arch_proj_ok_btn)
+        form_layout.addLayout(arch_proj_row)
+        form_layout.addWidget(self.arch_proj_status)
+        # ─────────────────────────────────────────────────────────────
         # Divider
         divider = QFrame()
         divider.setFrameShape(QFrame.Shape.HLine)
@@ -3358,6 +3541,64 @@ QCheckBox::indicator:unchecked:hover {{
         self._arch_log("  🚀  Architecture Abstraction Engine  —  Starting")
         self._arch_log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
+        # Save project name
+        # Save project name
+        arch_proj_name = self.arch_project_name_input.text().strip()
+        if not arch_proj_name:
+            self._arch_log("❌  Please enter a Project Name before starting.", "#F87171")
+            self.arch_status_dot.setStyleSheet(
+                "color: #F87171; font-size: 18px; background: transparent;"
+            )
+            return
+
+        if "confirmed" not in self.arch_proj_status.text():
+            self._arch_log(
+                "❌  Click OK next to the project name to confirm it is unique before starting.",
+                "#F87171"
+            )
+            self.arch_status_dot.setStyleSheet(
+                "color: #F87171; font-size: 18px; background: transparent;"
+            )
+            return
+
+        # Check if project already exists on the GNS3 server
+        if self.server_ip and self.server_port:
+            try:
+                import urllib.request, json as _json
+                for path in ["/v2/projects", "/api/v2/projects"]:
+                    try:
+                        url = f"http://{self.server_ip}:{self.server_port}{path}"
+                        with urllib.request.urlopen(
+                            urllib.request.Request(url, headers={"Accept": "application/json"}),
+                            timeout=3
+                        ) as resp:
+                            projects = _json.loads(resp.read().decode())
+                        if isinstance(projects, list):
+                            existing_names = [p.get("name", "") for p in projects]
+                            if arch_proj_name in existing_names:
+                                self._arch_log(
+                                    f"❌  A project named '{arch_proj_name}' already exists "
+                                    f"on the GNS3 server. Please choose a different name.",
+                                    "#F87171"
+                                )
+                                self.arch_status_dot.setStyleSheet(
+                                    "color: #F87171; font-size: 18px; background: transparent;"
+                                )
+                                return
+                            break
+                    except Exception:
+                        continue
+            except Exception:
+                pass  # If server unreachable, skip the check and proceed
+
+        vsdx_path = os.path.join(
+            os.path.expanduser("~"), "INDA", "VisioGns3", "vsdx_path.txt"
+        )
+        os.makedirs(os.path.dirname(vsdx_path), exist_ok=True)
+        with open(vsdx_path, "w") as f:
+            f.write(arch_proj_name)
+        self._arch_log(f"📁  Project name saved: {arch_proj_name}", "#60A5FA")
+        
         # ── Validation ───────────────────────────────────────────────────
         errors = []
 
@@ -3615,6 +3856,107 @@ QCheckBox::indicator:unchecked:hover {{
         except Exception as e:
             QMessageBox.critical(self, "Save Failed", str(e))
 
+    def _validate_chatbot_project_name(self):
+        proj_name = self.chatbot_project_name_input.text().strip()
+        self.chatbot_project_name_input.textChanged.connect(
+            lambda: self._set_chatbot_proj_status("reset")
+        )
+        # Empty check
+        if not proj_name:
+            QMessageBox.warning(self, "Project Name Required",
+                                "Please enter a project name before confirming.")
+            return
+
+        # Server duplicate check
+        if self.server_ip and self.server_port:
+            try:
+                import urllib.request, json as _json
+                existing_names = []
+                for path in ["/v2/projects", "/api/v2/projects"]:
+                    try:
+                        url = f"http://{self.server_ip}:{self.server_port}{path}"
+                        with urllib.request.urlopen(
+                            urllib.request.Request(url, headers={"Accept": "application/json"}),
+                            timeout=3
+                        ) as resp:
+                            projects = _json.loads(resp.read().decode())
+                        if isinstance(projects, list):
+                            existing_names = [p.get("name", "") for p in projects]
+                            break
+                    except Exception:
+                        continue
+
+                if proj_name in existing_names:
+                    QMessageBox.warning(
+                        self,
+                        "Project Name Already Exists",
+                        f"A project named '{proj_name}' already exists on the GNS3 server.\n\n"
+                        f"Please choose a different name."
+                    )
+                    self.chatbot_project_name_input.setFocus()
+                    self.chatbot_project_name_input.selectAll()
+                    self._set_chatbot_proj_status("taken")
+                    return
+
+            except Exception:
+                pass  # Server unreachable — skip check
+
+        # All good
+        self._set_chatbot_proj_status("ok")
+
+        # Save to file
+        vsdx_path = os.path.join(
+            os.path.expanduser("~"), "INDA", "VisioGns3", "vsdx_path.txt"
+        )
+        os.makedirs(os.path.dirname(vsdx_path), exist_ok=True)
+        with open(vsdx_path, "w") as f:
+            f.write(proj_name)
+
+    def _set_chatbot_proj_status(self, state: str):
+        """Updates the small status label next to the chatbot project name field."""
+        if state == "ok":
+            self.chatbot_proj_status.setText("✔  Name confirmed")
+            self.chatbot_proj_status.setStyleSheet(
+                "color: #4ADE80; font-size: 12px; font-weight: 700;"
+                "background: transparent; border: none;"
+            )
+            self.chatbot_proj_ok_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(74, 222, 128, 0.15);
+                    color: #4ADE80;
+                    border: 1px solid rgba(74, 222, 128, 0.45);
+                    border-radius: 10px;
+                    font-size: 13px;
+                    font-weight: 700;
+                }
+                QPushButton:hover {
+                    background: rgba(74, 222, 128, 0.28);
+                }
+            """)
+        elif state == "taken":
+            self.chatbot_proj_status.setText("✘  Name already taken")
+            self.chatbot_proj_status.setStyleSheet(
+                "color: #F87171; font-size: 12px; font-weight: 700;"
+                "background: transparent; border: none;"
+            )
+            self.chatbot_proj_ok_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(248, 113, 113, 0.12);
+                    color: #F87171;
+                    border: 1px solid rgba(248, 113, 113, 0.35);
+                    border-radius: 10px;
+                    font-size: 13px;
+                    font-weight: 700;
+                }
+                QPushButton:hover {
+                    background: rgba(248, 113, 113, 0.25);
+                }
+            """)
+        else:
+            self.chatbot_proj_status.setText("")
+            self.chatbot_proj_status.setStyleSheet("background: transparent; border: none;")
+
+
     def create_chatbot_page(self):
         page = QWidget()
         page.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0F172A, stop:1 #1E293B);")
@@ -3671,6 +4013,68 @@ QCheckBox::indicator:unchecked:hover {{
         c_layout = QVBoxLayout()
         c_layout.setContentsMargins(50, 30, 50, 40)
         c_layout.setSpacing(24)
+
+         # ── Project Name ──────────────────────────────────────────────
+        proj_name_layout = QHBoxLayout()
+        proj_name_label = QLabel("📁  Project Name")
+        proj_name_label.setStyleSheet(
+            "color: #CBD5E1; font-size: 14px; font-weight: 600; background: transparent;"
+        )
+        proj_name_label.setFixedWidth(140)
+
+        self.chatbot_project_name_input = QLineEdit()
+        self.chatbot_project_name_input.setPlaceholderText("Enter project name (e.g. MyNetwork)")
+        self.chatbot_project_name_input.setMinimumHeight(44)
+        self.chatbot_project_name_input.setStyleSheet("""
+            QLineEdit {
+                background: rgba(15, 23, 42, 0.6);
+                color: #F8FAFC;
+                border: 1px solid rgba(100, 116, 139, 0.3);
+                border-radius: 10px;
+                padding: 0 16px;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #60A5FA;
+            }
+        """)
+        self.chatbot_proj_ok_btn = QPushButton("OK")
+        self.chatbot_proj_ok_btn.setFixedHeight(44)
+        self.chatbot_proj_ok_btn.setFixedWidth(70)
+        self.chatbot_proj_ok_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.chatbot_proj_ok_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(96, 165, 250, 0.12);
+                color: #60A5FA;
+                border: 1px solid rgba(96, 165, 250, 0.35);
+                border-radius: 10px;
+                font-size: 13px;
+                font-weight: 700;
+            }
+            QPushButton:hover {
+                background: rgba(96, 165, 250, 0.25);
+                border: 1px solid #60A5FA;
+            }
+            QPushButton:pressed {
+                background: rgba(96, 165, 250, 0.40);
+            }
+            QPushButton:disabled {
+                background: rgba(100, 116, 139, 0.08);
+                color: #475569;
+                border: 1px solid rgba(100, 116, 139, 0.2);
+            }
+        """)
+        self.chatbot_proj_ok_btn.clicked.connect(self._validate_chatbot_project_name)
+
+        self.chatbot_proj_status = QLabel("")
+        self.chatbot_proj_status.setStyleSheet("background: transparent; border: none;")
+
+        proj_name_layout.addWidget(proj_name_label)
+        proj_name_layout.addWidget(self.chatbot_project_name_input)
+        proj_name_layout.addWidget(self.chatbot_proj_ok_btn)
+        c_layout.addLayout(proj_name_layout)
+        c_layout.addWidget(self.chatbot_proj_status)
+        # ─────────────────────────────────────────────────────────────
 
         self.chat_display = QTextEdit()
         self.chat_display.setReadOnly(True)
@@ -3801,6 +4205,27 @@ QCheckBox::indicator:unchecked:hover {{
         msg = self.chat_input.text().strip()
         if not msg:
             return
+        # Save project name to vsdx_path.txt
+        proj_name = self.chatbot_project_name_input.text().strip()
+        if not proj_name:
+            self.add_chat_message("bot", "⚠️ Please enter a Project Name before sending.")
+            return
+
+        # Ensure the OK button was clicked and confirmed green
+        confirmed_text = self.chatbot_proj_status.text()
+        if "confirmed" not in confirmed_text:
+            self.add_chat_message(
+                "bot",
+                "⚠️ Please click <b>OK</b> next to the project name to confirm it is unique before sending."
+            )
+            return
+        
+        vsdx_path = os.path.join(
+            os.path.expanduser("~"), "INDA", "VisioGns3", "vsdx_path.txt"
+        )
+        os.makedirs(os.path.dirname(vsdx_path), exist_ok=True)
+        with open(vsdx_path, "w") as f:
+            f.write(proj_name)
 
         # Reset for a fresh run each time
         self.automation_completed = False

@@ -67,6 +67,10 @@ def generate_project_name():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     return f"nlp_topology_{timestamp}"
 
+def read_project_name(path):
+    with open(path, "r") as f:
+        return f.read().strip()
+    
 def normalize_name(name):
     name = re.sub(r"ONFrontView.*$", "", name)
     name = re.sub(r"[^a-zA-Z0-9]", "", name).lower()
@@ -97,12 +101,12 @@ def nearest_square(n):
 # ----------------------------------------------------
 
 def generate_yaml(ip, port, machines, templates):
-    project_name = generate_project_name()
-    with open(VSDX_PATH_FILE, "w") as f:
-        f.write(project_name)
+    # project_name = generate_project_name()
+    # with open(VSDX_PATH_FILE, "w") as f:
+    #     f.write(project_name)
 
-    print(f"[INFO] NLP project name stored → {VSDX_PATH_FILE}")
-    
+    # print(f"[INFO] NLP project name stored → {VSDX_PATH_FILE}")
+    project_name = read_project_name(VSDX_PATH_FILE)
     yaml_content = f"""
 - hosts: localhost
   gather_facts: no

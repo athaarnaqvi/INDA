@@ -5,38 +5,38 @@
   USER INPUT
   ------------------------------------------------------
   Building type    : Office
-  Width entered    : 100.0 Square Meters
-  Interpretation   : floor area = 100.0 sq m
-  Side length      : sqrt(100.0) = 10.0000 m
+  Width entered    : 50.0 Feet
+  Interpretation   : building width (one side) = 50.0 ft
+  Conversion       : 50.0 ft  x  0.3048  =  15.2400 m
   Floors           : 1
   Rooms per floor  : 1
   Users per room   : 1
 
   CONVERTED FLOOR DIMENSIONS
   ------------------------------------------------------
-  Floor side       : 10.0000 m
-  Floor area       : 10.0000 m  x  10.0000 m  =  100.00 sq m
+  Floor side       : 15.2400 m
+  Floor area       : 15.2400 m  x  15.2400 m  =  232.26 sq m
 
   ACCESS POINT SPECIFICATION
   ------------------------------------------------------
   Coverage radius  : 12 m
   Coverage diam.   : 24 m  (signal spans 24 m from wall to wall)
   Grid layout      : 1 column(s)  x  1 row(s)  =  1 AP(s) per floor
-  Cell width       : 10.0000 / 1 = 10.0000 m
-  Cell height      : 10.0000 / 1 = 10.0000 m
+  Cell width       : 15.2400 / 1 = 15.2400 m
+  Cell height      : 15.2400 / 1 = 15.2400 m
 
   COVERAGE PROOF  (cell side <= AP diameter guarantees full coverage)
   ------------------------------------------------------
-  Horizontal : 10.0000 m  <=  24 m ?  OK  full coverage
-  Vertical   : 10.0000 m  <=  24 m ?  OK  full coverage
+  Horizontal : 15.2400 m  <=  24 m ?  OK  full coverage
+  Vertical   : 15.2400 m  <=  24 m ?  OK  full coverage
 
   COORDINATE SYSTEM
   ------------------------------------------------------
   Origin (0, 0) = bottom-left corner of the floor
   X = horizontal distance from West wall  (metres)
   Y = vertical   distance from South wall (metres)
-  Floor spans   X : 0  ->  10.00 m
-                Y : 0  ->  10.00 m
+  Floor spans   X : 0  ->  15.24 m
+                Y : 0  ->  15.24 m
 
 ====================================================================
 
@@ -44,7 +44,7 @@
   --------------------------------------------------------------
   AP Name                    Col   Row     X (m)     Y (m)   Radius
   --------------------------------------------------------------
-  ap_f1_1                      1     1      5.00      5.00     12 m
+  ap_f1_1                      1     1      7.62      7.62     12 m
 
 ====================================================================
   END OF PLACEMENT PLAN
