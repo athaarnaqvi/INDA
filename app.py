@@ -2116,52 +2116,688 @@ class VisioGNS3App(QWidget):
                 }
             """)
 
+    def _open_gns3_project(self, project_id: str, project_name: str):
+        import urllib.request, json, subprocess, webbrowser
+
+        if not project_id:
+            QMessageBox.warning(self, "No Project ID",
+                                "This project has no ID and cannot be opened.")
+            return
+
+        reply = QMessageBox.question(
+            self,
+            "Open Project",
+            f"Open project '{project_name}' in GNS3?\n\n"
+            f"This will send an open request to the GNS3 server and\n"
+            f"open the GNS3 web UI in your browser.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes,
+        )
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
+        errors = []
+
+        # Step 1: POST /v2/projects/{id}/open  to tell the server to load it
+        for path in [
+            f"/v2/projects/{project_id}/open",
+            f"/api/v2/projects/{project_id}/open",
+        ]:
+            try:
+                url = f"http://{self.server_ip}:{self.server_port}{path}"
+                req = urllib.request.Request(
+                    url,
+                    data=b"{}",
+                    headers={
+                        "Content-Type": "application/json",
+                        "Accept":        "application/json",
+                    },
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=4) as resp:
+                    resp.read()
+                errors = []   # success — clear errors
+                break
+            except urllib.error.HTTPError as e:
+                body = ""
+                try:
+                    body = e.read().decode()
+                except Exception:
+                    pass
+                # 409 = already open — that's fine
+                if e.code == 409:
+                    break
+                errors.append(f"HTTP {e.code}: {body[:120]}")
+            except Exception as e:
+                errors.append(str(e))
+
+        if errors:
+            QMessageBox.warning(
+                self, "Server Warning",
+                f"Could not open project on server:\n{errors[-1]}\n\n"
+                f"Will still try to open the GNS3 UI."
+            )
+
+        # Step 2: Open GNS3 web UI in the browser at that project
+        web_url = (
+            f"http://{self.server_ip}:{self.server_port}"
+            f"/#/project/{project_id}"
+        )
+        try:
+            webbrowser.open(web_url)
+        except Exception as e:
+            QMessageBox.warning(self, "Browser Error", f"Could not open browser:\n{e}")
+            return
+
+        # Step 3: Try to also launch the GNS3 desktop GUI if installed
+        try:
+            subprocess.Popen(
+                ["gns3", "--server", f"{self.server_ip}:{self.server_port}"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except FileNotFoundError:
+            pass  # GNS3 desktop not in PATH — web UI is enough
+        except Exception:
+            pass
+
+        # Refresh dashboard after a short delay so status pills update
+        QTimer.singleShot(1500, self._refresh_dashboard_stats)
+
+    def _fetch_gns3_stats(self):
+        import urllib.request, json, socket
+        result = {
+            "online": False,
+            "projects": [],
+            "open_count": 0,
+            "closed_count": 0,
+            "last_opened_name": "—",
+            "error": "",
+        }
+        if not self.server_ip or not self.server_port:
+            result["error"] = "No server configured"
+            return result
+        try:
+            # First do a raw TCP ping to confirm the port is open
+            sock = socket.create_connection(
+                (self.server_ip, int(self.server_port)), timeout=2
+            )
+            sock.close()
+        except Exception as e:
+            result["error"] = f"TCP unreachable: {e}"
+            return result
+
+        # GNS3 2.2 uses /v2/projects
+        for path in ["/v2/projects", "/api/v2/projects"]:
+            try:
+                url = f"http://{self.server_ip}:{self.server_port}{path}"
+                req = urllib.request.Request(
+                    url,
+                    headers={"Accept": "application/json"},
+                )
+                with urllib.request.urlopen(req, timeout=3) as resp:
+                    raw = resp.read().decode()
+                projects = json.loads(raw)
+                if not isinstance(projects, list):
+                    continue
+                result["online"]   = True
+                result["projects"] = projects
+                open_p   = [p for p in projects if p.get("status") == "opened"]
+                closed_p = [p for p in projects if p.get("status") != "opened"]
+                result["open_count"]   = len(open_p)
+                result["closed_count"] = len(closed_p)
+                if open_p:
+                    result["last_opened_name"] = open_p[0].get("name", "—")
+                elif projects:
+                    result["last_opened_name"] = projects[0].get("name", "—")
+                return result
+            except Exception as e:
+                result["error"] = str(e)
+                continue
+        return result
+    
+    def _read_last_topology_meta(self):
+        """
+        Reads machine_names.txt and pre_Connections.json from the Generated_files folder
+        to show a quick summary on the dashboard.
+        Returns dict with: machines_count, conn_count, topology, timestamp_str
+        """
+        import json, datetime
+        gui_dir  = os.path.dirname(os.path.abspath(__file__))
+        gen_dir  = os.path.join(gui_dir, "VisioGns3", "Generated_files")
+        machines_file = os.path.join(gen_dir, "machine_names.txt")
+        conns_file    = os.path.join(gen_dir, "pre_Connections.json")
+
+        meta = {"machines_count": 0, "conn_count": 0, "topology": "—", "timestamp_str": "—"}
+
+        try:
+            if os.path.exists(machines_file):
+                with open(machines_file) as f:
+                    lines = [l.strip() for l in f if l.strip()]
+                meta["machines_count"] = len(lines)
+                ts = os.path.getmtime(machines_file)
+                dt = datetime.datetime.fromtimestamp(ts)
+                delta = datetime.datetime.now() - dt
+                mins = int(delta.total_seconds() // 60)
+                if mins < 60:
+                    meta["timestamp_str"] = f"{mins} min ago"
+                elif mins < 1440:
+                    meta["timestamp_str"] = f"{mins // 60}h ago"
+                else:
+                    meta["timestamp_str"] = dt.strftime("%d %b")
+        except Exception:
+            pass
+
+        try:
+            if os.path.exists(conns_file):
+                with open(conns_file) as f:
+                    conns = json.load(f)
+                meta["conn_count"] = len(conns)
+        except Exception:
+            pass
+
+        return meta 
+
     def create_landing_page(self):
         page = QWidget()
-        page.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0F172A, stop:1 #1E293B);")
-        
-        main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(60, 50, 60, 50)
-        main_layout.setSpacing(40)
+        page.setStyleSheet(
+            "background: qlineargradient(x1:0,y1:0,x2:1,y2:1,"
+            "stop:0 #0F172A,stop:1 #1E293B);"
+        )
+        root = QVBoxLayout(page)
+        root.setContentsMargins(0, 0, 0, 0)
+        root.setSpacing(0)
 
-        title = QLabel("INDA Dashboard")
-        title.setStyleSheet("color: #F8FAFC; font-size: 42px; font-weight: 800; background: transparent;")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # ── CARD style (used for every panel and stat card) ──────────────
+        CARD_SS = """
+            QFrame {
+                background: rgba(22,32,52,0.85);
+                border: 1px solid rgba(34,211,238,0.18);
+                border-radius: 16px;
+            }
+        """
+        # Label helper — no background, no border, no border-radius
+        def L(text, style=""):
+            w = QLabel(text)
+            w.setStyleSheet(style +
+                " background:transparent; border:none; border-radius:0;")
+            w.setWordWrap(True)
+            return w
 
-        subtitle = QLabel("Choose your workflow")
-        subtitle.setStyleSheet("color: #94A3B8; font-size: 17px; font-weight: 500; background: transparent;")
-        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # ════════════════════════════════════════════
+        # NAV HEADER
+        # ════════════════════════════════════════════
+        header = QFrame()
+        header.setFixedHeight(64)
+        header.setStyleSheet("""
+            QFrame {
+                background: rgba(10,15,30,0.98);
+                border-bottom: 1px solid rgba(34,211,238,0.12);
+                border-radius: 0;
+            }
+        """)
+        hl = QHBoxLayout(header)
+        hl.setContentsMargins(32, 0, 32, 0)
+        hl.setSpacing(4)
 
-        main_layout.addStretch(1)
-        main_layout.addWidget(title)
-        main_layout.addWidget(subtitle)
-        main_layout.addSpacing(20)
+        logo = QLabel("IN<span style='color:#22D3EE'>DA</span>")
+        logo.setTextFormat(Qt.TextFormat.RichText)
+        logo.setStyleSheet(
+            "color:#FFFFFF; font-size:17px; font-weight:900;"
+            "letter-spacing:6px; background:transparent; border:none;"
+        )
+        hl.addWidget(logo)
+        hl.addSpacing(20)
 
-        cards_container = QWidget()
-        cards_container.setStyleSheet("background: transparent;")
-        cards_layout = QHBoxLayout()
-        cards_layout.setSpacing(24)
-        cards_layout.setContentsMargins(0, 0, 0, 0)
-        
-        cards_layout.addWidget(self.create_card("🤖", "Instruction Orchestrator",
-                                            "Natural language topology generation", "#3B82F6", self.show_chatbot_page))
-        cards_layout.addWidget(self.create_card("📊", "Topology Interpreter",
-                                            "Upload Visio/XML/SVG files", "#8B5CF6", self.show_console_page))
-        cards_layout.addWidget(self.create_card("🏢", "Architecture Abstraction Engine",
-                                            "Design from building parameters", "#06B6D4", self.show_architecture_page))
-        
-        cards_container.setLayout(cards_layout)
-        
-        center_layout = QHBoxLayout()
-        center_layout.addStretch()
-        center_layout.addWidget(cards_container)
-        center_layout.addStretch()
-        
-        main_layout.addLayout(center_layout)
-        main_layout.addStretch(2)
-        
-        page.setLayout(main_layout)
+        NAV_ON = """
+            QPushButton {
+                background: rgba(34,211,238,0.12);
+                color: #22D3EE;
+                border: 1px solid rgba(34,211,238,0.22);
+                border-radius: 8px;
+                font-size: 12px; font-weight: 700;
+                padding: 0 14px; letter-spacing: 0.5px;
+            }
+        """
+        NAV_OFF = """
+            QPushButton {
+                background: transparent; color: #64748B;
+                border: none; border-radius: 8px;
+                font-size: 12px; font-weight: 700;
+                padding: 0 14px; letter-spacing: 0.5px;
+            }
+            QPushButton:hover {
+                background: rgba(34,211,238,0.08); color: #22D3EE;
+            }
+        """
+        for label, style, cb in [
+            ("Dashboard",                NAV_ON,  None),
+            ("Instruction Orchestrator", NAV_OFF, self.show_chatbot_page),
+            ("Topology Interpreter",     NAV_OFF, self.show_console_page),
+            ("Architecture Engine",      NAV_OFF, self.show_architecture_page),
+        ]:
+            btn = QPushButton(label)
+            btn.setFixedHeight(36)
+            btn.setStyleSheet(style)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            if cb:
+                btn.clicked.connect(cb)
+            hl.addWidget(btn)
+
+        hl.addStretch()
+
+        # Server badge labels (updated after stats fetch below)
+        self._landing_server_dot   = QLabel("●")
+        self._landing_server_label = QLabel(
+            f"GNS3  {self.server_ip}:{self.server_port}"
+        )
+        self._landing_server_dot.setStyleSheet(
+            "color:#475569; font-size:13px; background:transparent; border:none;"
+        )
+        self._landing_server_label.setStyleSheet(
+            "color:#64748B; font-size:11px; font-weight:700;"
+            "letter-spacing:1px; background:transparent; border:none;"
+        )
+        srv_badge = QFrame()
+        srv_badge.setStyleSheet("""
+            QFrame {
+                background: rgba(15,25,40,0.7);
+                border: 1px solid rgba(100,116,139,0.18);
+                border-radius: 20px;
+            }
+        """)
+        sbl = QHBoxLayout(srv_badge)
+        sbl.setContentsMargins(14, 5, 14, 5)
+        sbl.setSpacing(7)
+        sbl.addWidget(self._landing_server_dot)
+        sbl.addWidget(self._landing_server_label)
+        hl.addWidget(srv_badge)
+        root.addWidget(header)
+
+        # ════════════════════════════════════════════
+        # SCROLLABLE BODY
+        # ════════════════════════════════════════════
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setStyleSheet("background:transparent; border:none;")
+        body = QWidget()
+        body.setStyleSheet("background:transparent;")
+        bl = QVBoxLayout(body)
+        bl.setContentsMargins(40, 32, 40, 40)
+        bl.setSpacing(0)
+
+        # Title + refresh row
+        tr = QHBoxLayout()
+        tc = QVBoxLayout()
+        tc.setSpacing(3)
+        tc.addWidget(L("Dashboard",
+            "color:#F8FAFC; font-size:26px; font-weight:800;"))
+        tc.addWidget(L("GNS3 server overview & quick access",
+            "color:#475569; font-size:13px;"))
+        refresh_btn = QPushButton("↻  Refresh")
+        refresh_btn.setFixedHeight(36)
+        refresh_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(34,211,238,0.07); color: #22D3EE;
+                border: 1px solid rgba(34,211,238,0.18); border-radius: 10px;
+                font-size: 12px; font-weight: 700; padding: 0 16px;
+            }
+            QPushButton:hover {
+                background: rgba(34,211,238,0.15); border-color: #22D3EE;
+            }
+        """)
+        refresh_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        refresh_btn.clicked.connect(self._refresh_dashboard_stats)
+        tr.addLayout(tc)
+        tr.addStretch()
+        tr.addWidget(refresh_btn)
+        bl.addLayout(tr)
+        bl.addSpacing(22)
+
+        # ── Fetch live data ──────────────────────────────
+        stats = self._fetch_gns3_stats()
+        topo  = self._read_last_topology_meta()
+
+        online_color = "#4ADE80" if stats["online"] else "#F87171"
+        self._landing_server_dot.setStyleSheet(
+            f"color:{online_color}; font-size:13px; background:transparent; border:none;"
+        )
+
+        # ════════════════════════════════════════════
+        # STAT CARDS — one QFrame, direct QVBoxLayout children only
+        # ════════════════════════════════════════════
+        stats_row_layout = QHBoxLayout()
+        stats_row_layout.setSpacing(14)
+
+        def make_flat_card(emoji, label, value, sub="", sub_color="#475569"):
+            """
+            One QFrame. Children added directly to its QVBoxLayout.
+            No nested QWidget / QFrame / QHBoxLayout at all.
+            """
+            card = QFrame()
+            card.setMinimumHeight(116)
+            card.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            card.setStyleSheet(CARD_SS)
+            cl = QVBoxLayout(card)
+            cl.setContentsMargins(22, 18, 22, 18)
+            cl.setSpacing(5)
+            cl.addWidget(L(emoji, "font-size:20px;"))
+            cl.addWidget(L(label,
+                "color:#475569; font-size:10px; font-weight:800; letter-spacing:2.5px;"))
+            fs = "26px" if len(str(value)) <= 6 else "16px"
+            cl.addWidget(L(str(value),
+                f"color:#F8FAFC; font-size:{fs}; font-weight:800; line-height:1;"))
+            if sub:
+                cl.addWidget(L(sub, f"color:{sub_color}; font-size:11px;"))
+            cl.addStretch()
+            return card
+
+        total = len(stats["projects"])
+        stats_row_layout.addWidget(make_flat_card(
+            "📁", "TOTAL PROJECTS", str(total),
+            sub="across all topologies",
+        ))
+        stats_row_layout.addWidget(make_flat_card(
+            "⚡", "OPEN PROJECTS", str(stats["open_count"]),
+            sub=f"{stats['closed_count']} closed",
+        ))
+        stats_row_layout.addWidget(make_flat_card(
+            "🕐", "LAST OPENED",
+            (stats["last_opened_name"][:16]
+            if stats["last_opened_name"] != "—" else "—"),
+            sub="most recently opened",
+        ))
+
+        # GNS3 status card — dot and text on the same line via a single rich-text label
+        srv_card = QFrame()
+        srv_card.setMinimumHeight(116)
+        srv_card.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        srv_card.setStyleSheet(CARD_SS)
+        scl = QVBoxLayout(srv_card)
+        scl.setContentsMargins(22, 18, 22, 18)
+        scl.setSpacing(5)
+        scl.addWidget(L("🖧", "font-size:20px;"))
+        scl.addWidget(L("GNS3 SERVER STATUS",
+            "color:#475569; font-size:10px; font-weight:800; letter-spacing:2.5px;"))
+        # Use a single RichText label so dot+word share one widget — no nested layout
+        srv_status_lbl = QLabel(
+            f"<span style='color:{online_color}; font-size:16px;'>●</span>"
+            f"&nbsp;&nbsp;"
+            f"<span style='color:{online_color}; font-size:17px; font-weight:800;'>"
+            f"{'ONLINE' if stats['online'] else 'OFFLINE'}</span>"
+        )
+        srv_status_lbl.setTextFormat(Qt.TextFormat.RichText)
+        srv_status_lbl.setStyleSheet("background:transparent; border:none; border-radius:0;")
+        scl.addWidget(srv_status_lbl)
+        addr_txt = (f"{self.server_ip}:{self.server_port} · "
+                    f"{'responding' if stats['online'] else 'unreachable'}")
+        if stats.get("error") and not stats["online"]:
+            addr_txt += f"\n{stats['error'][:60]}"
+        scl.addWidget(L(addr_txt, "color:#475569; font-size:10px;"))
+        scl.addStretch()
+        stats_row_layout.addWidget(srv_card)
+
+        bl.addLayout(stats_row_layout)
+        bl.addSpacing(20)
+
+        # ════════════════════════════════════════════
+        # BOTTOM PANELS
+        # ════════════════════════════════════════════
+        panels_row = QHBoxLayout()
+        panels_row.setSpacing(18)
+
+        # ── Left: last topology preview ──────────────
+        topo_panel = QFrame()
+        topo_panel.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        topo_panel.setStyleSheet(CARD_SS)
+        tpl = QVBoxLayout(topo_panel)
+        tpl.setContentsMargins(22, 20, 22, 20)
+        tpl.setSpacing(12)
+        tpl.addWidget(L("LAST TOPOLOGY PREVIEW",
+            "color:#475569; font-size:10px; font-weight:800; letter-spacing:2px;"))
+
+        preview_text = (
+            f"  Machines : {topo['machines_count']}\n"
+            f"  Links    : {topo['conn_count']}\n"
+            f"  When     : {topo['timestamp_str']}"
+            if topo["machines_count"] > 0
+            else "  No topology generated yet.\n  Run the Architecture Engine."
+        )
+        term = QTextEdit()
+        term.setReadOnly(True)
+        term.setFixedHeight(116)
+        term.setPlainText(preview_text)
+        term.setStyleSheet("""
+            QTextEdit {
+                background: #080D18;
+                color: #A8FF78;
+                border: 1px solid rgba(34,211,238,0.08);
+                border-radius: 10px;
+                padding: 12px 14px;
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+            }
+        """)
+        tpl.addWidget(term)
+
+        tags_row = QHBoxLayout()
+        tags_row.setSpacing(8)
+        for tag_text in [f"{topo['machines_count']} Devices",
+                        f"{topo['conn_count']} Links",
+                        topo["timestamp_str"]]:
+            tg = QLabel(tag_text)
+            tg.setStyleSheet(
+                "color:#22D3EE; background:rgba(34,211,238,0.07);"
+                "border:1px solid rgba(34,211,238,0.15); border-radius:8px;"
+                "font-size:10px; font-weight:800; padding:3px 10px; letter-spacing:.5px;"
+            )
+            tags_row.addWidget(tg)
+        tags_row.addStretch()
+        tpl.addLayout(tags_row)
+        tpl.addStretch()
+
+        # ── Right: ALL projects, scrollable ──────────
+        proj_panel = QFrame()
+        proj_panel.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        proj_panel.setStyleSheet(CARD_SS)
+        ppl = QVBoxLayout(proj_panel)
+        ppl.setContentsMargins(22, 20, 22, 20)
+        ppl.setSpacing(10)
+
+        ph = QHBoxLayout()
+        ph.addWidget(L("ALL GNS3 PROJECTS",
+            "color:#475569; font-size:10px; font-weight:800; letter-spacing:2px;"))
+        ph.addStretch()
+        ph.addWidget(L(f"{total} total",
+            "color:#475569; font-size:10px; font-weight:700;"))
+        ppl.addLayout(ph)
+
+        proj_scroll_area = QScrollArea()
+        proj_scroll_area.setWidgetResizable(True)
+        proj_scroll_area.setFixedHeight(220)
+        proj_scroll_area.setStyleSheet("""
+            QScrollArea { background: transparent; border: none; }
+            QScrollBar:vertical {
+                background: rgba(30,41,59,0.3); width: 5px; border-radius: 3px;
+            }
+            QScrollBar::handle:vertical {
+                background: rgba(34,211,238,0.25); border-radius: 3px;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
+        """)
+
+        proj_container = QWidget()
+        proj_container.setStyleSheet("background:transparent;")
+        pcl = QVBoxLayout(proj_container)
+        pcl.setContentsMargins(0, 0, 4, 0)
+        pcl.setSpacing(7)
+
+        all_projects = stats["projects"]
+        if not all_projects:
+            err_msg = stats.get("error", "No projects or server unreachable.")
+            pcl.addWidget(L(
+                f"No projects found.\n{err_msg}",
+                "color:#475569; font-size:12px;"
+            ))
+        else:
+            for proj in all_projects:
+                pname   = proj.get("name", "Unnamed")
+                pid     = proj.get("project_id", "")
+                is_open = proj.get("status") == "opened"
+
+                # Each row is a QFrame with ONE QHBoxLayout — no nested frames
+                row = QFrame()
+                row.setStyleSheet("""
+                    QFrame {
+                        background: rgba(10,18,35,0.6);
+                        border: 1px solid rgba(100,116,139,0.1);
+                        border-radius: 10px;
+                    }
+                    QFrame:hover {
+                        border: 1px solid rgba(34,211,238,0.35);
+                        background: rgba(10,18,35,0.9);
+                    }
+                """)
+                row.setCursor(Qt.CursorShape.PointingHandCursor)
+
+                rl = QHBoxLayout(row)
+                rl.setContentsMargins(12, 8, 12, 8)
+                rl.setSpacing(10)
+
+                # Icon — plain QLabel, no wrapper
+                icon_l = QLabel("⚡" if is_open else "📁")
+                icon_l.setStyleSheet("font-size:14px; background:transparent; border:none;")
+
+                # Name — plain QLabel, no wrapper
+                name_l = QLabel(pname)
+                name_l.setStyleSheet(
+                    "color:#CBD5E1; font-size:13px; font-weight:600;"
+                    "background:transparent; border:none;"
+                )
+                name_l.setMaximumWidth(240)
+
+                # Status pill — plain QLabel, no wrapper
+                status_l = QLabel("OPEN" if is_open else "CLOSED")
+                status_l.setStyleSheet(
+                    ("color:#4ADE80; background:rgba(74,222,128,0.1);"
+                    "border:1px solid rgba(74,222,128,0.22);"
+                    if is_open else
+                    "color:#64748B; background:rgba(100,116,139,0.1);"
+                    "border:1px solid rgba(100,116,139,0.18);")
+                    + "border-radius:20px; font-size:9px; font-weight:800;"
+                    "padding:2px 8px; letter-spacing:.5px;"
+                )
+
+                # Open button — plain QPushButton, no wrapper
+                open_btn = QPushButton("Open ↗")
+                open_btn.setFixedHeight(24)
+                open_btn.setFixedWidth(66)
+                open_btn.setStyleSheet("""
+                    QPushButton {
+                        background: transparent; color: #22D3EE;
+                        border: none; font-size: 11px; font-weight: 800;
+                        padding: 0; letter-spacing: .5px;
+                    }
+                    QPushButton:hover { color: #67E8F9; }
+                """)
+                open_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+                open_btn.clicked.connect(
+                    lambda _checked, _id=pid, _n=pname:
+                        self._open_gns3_project(_id, _n)
+                )
+
+                rl.addWidget(icon_l)
+                rl.addWidget(name_l)
+                rl.addStretch()
+                rl.addWidget(status_l)
+                rl.addWidget(open_btn)
+
+                row.mousePressEvent = (
+                    lambda _e, _id=pid, _n=pname:
+                        self._open_gns3_project(_id, _n)
+                )
+
+                pcl.addWidget(row)
+
+        pcl.addStretch()
+        proj_scroll_area.setWidget(proj_container)
+        ppl.addWidget(proj_scroll_area)
+
+        panels_row.addWidget(topo_panel, 45)
+        panels_row.addWidget(proj_panel, 55)
+        bl.addLayout(panels_row)
+        bl.addSpacing(24)
+
+        # ════════════════════════════════════════════
+        # WORKFLOW CARDS
+        # ════════════════════════════════════════════
+        bl.addWidget(L("Workflows",
+            "color:#475569; font-size:10px; font-weight:800; letter-spacing:3px;"))
+        bl.addSpacing(10)
+
+        wf_row = QHBoxLayout()
+        wf_row.setSpacing(14)
+
+        for emoji, title, desc, color, cb in [
+            ("🤖", "Instruction Orchestrator",
+            "Natural language topology generation", "#3B82F6", self.show_chatbot_page),
+            ("📊", "Topology Interpreter",
+            "Upload Visio / XML / SVG files",       "#8B5CF6", self.show_console_page),
+            ("🏢", "Architecture Engine",
+            "Design from building parameters",       "#06B6D4", self.show_architecture_page),
+        ]:
+            wcard = QFrame()
+            wcard.setMinimumHeight(168)
+            wcard.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            wcard.setStyleSheet(f"""
+                QFrame {{
+                    background: rgba(22,32,52,0.85);
+                    border: 1px solid rgba(34,211,238,0.18);
+                    border-radius: 16px;
+                }}
+                QFrame:hover {{
+                    background: rgba(22,32,52,1);
+                    border: 1px solid {color};
+                }}
+            """)
+            wcard.setCursor(Qt.CursorShape.PointingHandCursor)
+            wcard.mousePressEvent = lambda _e, _cb=cb: _cb()
+
+            wl = QVBoxLayout(wcard)
+            wl.setContentsMargins(22, 20, 22, 20)
+            wl.setSpacing(7)
+            wl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+            for text, style in [
+                (emoji, "font-size:28px;"),
+                (title, "color:#E2E8F0; font-size:14px; font-weight:700;"),
+                (desc,  "color:#475569; font-size:12px;"),
+                ("→",   f"color:{color}; font-size:20px;"),
+            ]:
+                lb = QLabel(text)
+                lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                lb.setWordWrap(True)
+                lb.setStyleSheet(style + " background:transparent; border:none;")
+                wl.addWidget(lb)
+
+            wf_row.addWidget(wcard)
+
+        bl.addLayout(wf_row)
+        bl.addStretch()
+
+        scroll.setWidget(body)
+        root.addWidget(scroll)
+        self._landing_page_ref = page
         return page
+
+    def _refresh_dashboard_stats(self):
+        new_page = self.create_landing_page()
+        old_idx  = self.stacked_widget.indexOf(self.landing_page)
+        self.stacked_widget.removeWidget(self.landing_page)
+        self.landing_page.deleteLater()
+        self.landing_page = new_page
+        self.stacked_widget.insertWidget(old_idx, new_page)
+        self.stacked_widget.setCurrentIndex(old_idx)
 
     def create_card(self, emoji, title, desc, color, callback):
         card = QFrame()
@@ -3449,6 +4085,8 @@ QCheckBox::indicator:unchecked:hover {{
 
     def show_landing_page(self):
         self.stacked_widget.setCurrentIndex(1)
+        # Refresh stats every time dashboard is shown (non-blocking, fast)
+        QTimer.singleShot(50, self._refresh_dashboard_stats)
 
     def show_console_page(self):
         self.stacked_widget.setCurrentIndex(2)
