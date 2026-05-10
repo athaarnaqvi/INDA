@@ -2493,20 +2493,31 @@ class VisioGNS3App(QWidget):
             return card
 
         total = len(stats["projects"])
-        stats_row_layout.addWidget(make_flat_card(
-            "📁", "TOTAL PROJECTS", str(total),
-            sub="across all topologies",
-        ))
-        stats_row_layout.addWidget(make_flat_card(
-            "⚡", "OPEN PROJECTS", str(stats["open_count"]),
-            sub=f"{stats['closed_count']} closed",
-        ))
-        stats_row_layout.addWidget(make_flat_card(
-            "🕐", "LAST OPENED",
-            (stats["last_opened_name"][:]
-            if stats["last_opened_name"] != "—" else "—"),
-            sub="most recently opened",
-        ))
+        stats_row_layout.addWidget(
+            make_flat_card(
+                "📁", "TOTAL PROJECTS", str(total),
+                sub="across all topologies",
+            ),
+            
+        )
+
+        stats_row_layout.addWidget(
+            make_flat_card(
+                "⚡", "OPEN PROJECTS", str(stats["open_count"]),
+                sub=f"{stats['closed_count']} closed",
+            ),
+            
+        )
+
+        stats_row_layout.addWidget(
+            make_flat_card(
+                "🕐", "LAST OPENED",
+                (stats["last_opened_name"]
+                if stats["last_opened_name"] != "—" else "—"),
+                sub="most recently opened",
+            ),
+            
+        )
 
         # GNS3 status card — dot and text on the same line via a single rich-text label
         srv_card = QFrame()
@@ -2569,10 +2580,10 @@ class VisioGNS3App(QWidget):
         term.setPlainText(preview_text)
         term.setStyleSheet("""
             QTextEdit {
-                background: #080D18;
-                color: #A8FF78;
-                border: 1px solid rgba(34,211,238,0.08);
-                border-radius: 10px;
+                background: rgba(8,16,28,0.8);
+                color: #FFFFFF;
+                border: 1px solid rgba(56,189,248,0.1);
+                border-radius: 8px;
                 padding: 12px 14px;
                 font-family: 'Courier New', monospace;
                 font-size: 12px;
