@@ -3,7 +3,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/router.svg",
-        "template_id": "158704ed-0665-4328-a56b-880b1733b70d",
+        "template_id": "2ba077ef-894f-4575-9e6d-2c2fb6e423f4",
         "first_port_name": "mgmt 1/1/1",
         "port_name_format": "eth 1/1/{port1}",
         "properties": {
@@ -14,6 +14,196 @@
             "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
             "hda_disk_interface": "sata",
             "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S4000-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "43d3eba2-77bd-4cd4-a791-ce45fdb162c7",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S4128F-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "8bd7bb42-23f1-471d-bc39-d39ddd6384a2",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S5212F-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "50c8c2ba-700b-4d8e-a8b8-031b6e6b2052",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S5224F-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "920bc895-2f70-43c6-84d6-ea81e5658c75",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S5232F-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "5e39da8c-7cff-41a3-94ac-17d343cd7d3a",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S5248F-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "7864a6a9-8712-46e5-8fff-63938c532bbd",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S6000-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "1675344e-ff2f-46a3-b122-53790ce35105",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Dell OS10 S6010-10.5.5.5.105": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/router.svg",
+        "template_id": "3902b74c-8ae2-4059-9ad6-76a1a26c5eb3",
+        "first_port_name": "mgmt 1/1/1",
+        "port_name_format": "eth 1/1/{port1}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+            "hda_disk_interface": "sata",
+            "ram": 4096,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "qemu-system-x86_64": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": ":/symbols/qemu_guest.svg",
+        "template_id": "59026b5b-1250-42e3-8592-967260d8b782",
+        "first_port_name": "",
+        "port_name_format": "Ethernet{0}",
+        "properties": {
+            "adapter_type": "e1000",
+            "adapters": 1,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "/home/fiza-wajid/GNS3/images/QEMU/ubuntu-server.qcow2",
+            "hda_disk_interface": "ide",
+            "ram": 256,
+            "qemu_path": "/bin/qemu-system-x86_64",
+            "replicate_network_connection_state": true
+        }
+    },
+    "Alpine Linux Virt 3.18.4": {
+        "compute_id": "local",
+        "node_type": "qemu",
+        "symbol": "alpine-virt-qemu.svg",
+        "template_id": "a33adb08-eb78-4118-a364-f825ef34e289",
+        "first_port_name": "",
+        "port_name_format": "eth{0}",
+        "properties": {
+            "adapter_type": "virtio-net-pci",
+            "adapters": 10,
+            "console_type": "telnet",
+            "cpus": 1,
+            "hda_disk_image": "alpine-virt-3.18.4.qcow2",
+            "hda_disk_interface": "virtio",
+            "ram": 128,
             "qemu_path": "/usr/bin/qemu-system-x86_64",
             "replicate_network_connection_state": true
         }
@@ -22,7 +212,7 @@
         "compute_id": "local",
         "node_type": "qemu",
         "symbol": ":/symbols/firewall.svg",
-        "template_id": "b2e0ff5c-375a-434a-ab3a-2e987a84f81d",
+        "template_id": "1bec6640-305d-4c28-adbb-5f54d4603245",
         "first_port_name": "",
         "port_name_format": "em{0}",
         "properties": {
@@ -37,30 +227,11 @@
             "replicate_network_connection_state": true
         }
     },
-    "Alpine Linux Virt 3.18.4": {
-        "compute_id": "local",
-        "node_type": "qemu",
-        "symbol": ":/symbols/qemu_guest.svg",
-        "template_id": "3a18653d-2ea5-4c08-8d4c-cd2478f741fd",
-        "first_port_name": "",
-        "port_name_format": "Ethernet{0}",
-        "properties": {
-            "adapter_type": "e1000",
-            "adapters": 10,
-            "console_type": "telnet",
-            "cpus": 1,
-            "hda_disk_image": "/home/athaar/GNS3/images/QEMU/alpine-virt-3.18.4.qcow2",
-            "hda_disk_interface": "ide",
-            "ram": 256,
-            "qemu_path": "/bin/qemu-system-x86_64",
-            "replicate_network_connection_state": true
-        }
-    },
     "Ethernet Switch": {
         "compute_id": "local",
         "node_type": "ethernet_switch",
         "symbol": ":/symbols/ethernet_switch.svg",
-        "template_id": "f36f5b73-5ee1-48e4-b8e4-45e9b8d3f68e"
+        "template_id": "3fe9a6ef-1b4c-4c6e-9aae-f33a651ddf17"
     },
     "Cloud": {
         "compute_id": "local",

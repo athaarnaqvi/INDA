@@ -4,21 +4,27 @@
   vars:
     gns3_url: "http://localhost:3080"
     ansible_python_interpreter: /usr/bin/python3
-
   tasks:
-    - name: Create NLP GNS3 project
+    - name: Create a new GNS3 project
       uri:
         url: "{{ gns3_url }}/v2/projects"
         method: POST
         headers:
           Content-Type: "application/json"
-        body:
-          name: "testingforprojname3"
+        body: |
+          {
+            "name": "Final_Testing"
+          }
         body_format: json
+        return_content: yes
         status_code: 201
       register: project_result
 
-    - name: Add router1
+    - name: Debug project creation result
+      debug:
+        var: project_result
+
+    - name: Add N3248TE-ONFrontView88 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -26,21 +32,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "router1",
+            "name": "N3248TE-ONFrontView88",
             "x": 100,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "158704ed-0665-4328-a56b-880b1733b70d",
+            "template_id": "2ba077ef-894f-4575-9e6d-2c2fb6e423f4",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
-            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "ram": 4096, "qemu_path": "/usr/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add router2
+    - name: Debug N3248TE-ONFrontView88 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S4128F-ONFrontView94 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -48,21 +70,37 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "router2",
-            "x": 160,
+            "name": "S4128F-ONFrontView94",
+            "x": 150,
             "y": 100,
             "compute_id": "local",
             "node_type": "qemu",
             "symbol": ":/symbols/router.svg",
-            "template_id": "158704ed-0665-4328-a56b-880b1733b70d",
+            "template_id": "8bd7bb42-23f1-471d-bc39-d39ddd6384a2",
             "first_port_name": "mgmt 1/1/1",
             "port_name_format": "eth 1/1/{port1}",
-            "properties": {"adapter_type": "e1000", "adapters": 10, "console_type": "telnet", "cpus": 1, "hda_disk_image": "OS10-Disk-1.0.0.vmdk", "hda_disk_interface": "sata", "ram": 4096, "qemu_path": "/usr/bin/qemu-system-x86_64", "replicate_network_connection_state": true}
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
 
-    - name: Add switch1
+    - name: Debug S4128F-ONFrontView94 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S5212F-ONFrontView(ACPower)72 to the project
       uri:
         url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
         method: POST
@@ -70,13 +108,70 @@
           Content-Type: "application/json"
         body: |
           {
-            "name": "switch1",
+            "name": "S5212F-ONFrontView(ACPower)72",
             "x": 100,
-            "y": 160,
+            "y": 150,
             "compute_id": "local",
-            "node_type": "ethernet_switch",
-            "symbol": ":/symbols/ethernet_switch.svg",
-            "template_id": "f36f5b73-5ee1-48e4-b8e4-45e9b8d3f68e"
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "50c8c2ba-700b-4d8e-a8b8-031b6e6b2052",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
           }
         body_format: json
+        return_content: yes
         status_code: 201
+      register: machine_result
+
+    - name: Debug S5212F-ONFrontView(ACPower)72 creation result
+      debug:
+        var: machine_result
+
+    - name: Add S5224F-ONFrontView75 to the project
+      uri:
+        url: "{{ gns3_url }}/v2/projects/{{ project_result.json.project_id }}/nodes"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "name": "S5224F-ONFrontView75",
+            "x": 150,
+            "y": 150,
+            "compute_id": "local",
+            "node_type": "qemu",
+            "symbol": ":/symbols/router.svg",
+            "template_id": "920bc895-2f70-43c6-84d6-ea81e5658c75",
+            "first_port_name": "mgmt 1/1/1",
+            "port_name_format": "eth 1/1/{port1}",
+            "properties": {
+              "adapter_type": "e1000",
+              "adapters": 10,
+              "console_type": "telnet",
+              "cpus": 1,
+              "hda_disk_image": "OS10-Disk-1.0.0.vmdk",
+              "hda_disk_interface": "sata",
+              "ram": 4096,
+              "qemu_path": "/bin/qemu-system-x86_64",
+              "replicate_network_connection_state": true
+            }
+          }
+        body_format: json
+        return_content: yes
+        status_code: 201
+      register: machine_result
+
+    - name: Debug S5224F-ONFrontView75 creation result
+      debug:
+        var: machine_result

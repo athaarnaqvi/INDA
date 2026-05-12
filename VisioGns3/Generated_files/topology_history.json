@@ -1,0 +1,38 @@
+[
+  {
+    "timestamp": "2026-05-10T18:04:04.059316",
+    "connection_count": 41
+  },
+  {
+    "timestamp": "2026-05-10T18:14:57.340386",
+    "connection_count": 2
+  },
+  {
+    "timestamp": "2026-05-10T18:15:51.271216",
+    "connection_count": 2
+  },
+  {
+    "timestamp": "2026-05-12T10:04:03.192574",
+    "connection_count": 2
+  },
+  {
+    "timestamp": "2026-05-12T10:06:01.521797",
+    "connection_count": 27
+  },
+  {
+    "timestamp": "2026-05-12T10:06:54.553507",
+    "connection_count": 27
+  },
+  {
+    "timestamp": "2026-05-12T10:07:58.687375",
+    "connection_count": 27
+  },
+  {
+    "timestamp": "2026-05-12T10:11:10.234814",
+    "connection_count": 23
+  },
+  {
+    "timestamp": "2026-05-12T10:17:31.653560",
+    "connection_count": 23
+  }
+]

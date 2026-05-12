@@ -8,9 +8,9 @@
   Width entered    : 50.0 Feet
   Interpretation   : building width (one side) = 50.0 ft
   Conversion       : 50.0 ft  x  0.3048  =  15.2400 m
-  Floors           : 1
-  Rooms per floor  : 1
-  Users per room   : 1
+  Floors           : 2
+  Rooms per floor  : 2
+  Users per room   : 2
 
   CONVERTED FLOOR DIMENSIONS
   ------------------------------------------------------
@@ -45,6 +45,13 @@
   AP Name                    Col   Row     X (m)     Y (m)   Radius
   --------------------------------------------------------------
   ap_f1_1                      1     1      7.62      7.62     12 m
+
+
+  FLOOR 2
+  --------------------------------------------------------------
+  AP Name                    Col   Row     X (m)     Y (m)   Radius
+  --------------------------------------------------------------
+  ap_f2_1                      1     1      7.62      7.62     12 m
 
 ====================================================================
   END OF PLACEMENT PLAN

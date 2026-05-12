@@ -17,6 +17,24 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 # GNS3 Config File Path
 GNS3_CONF_PATH = os.path.expanduser("~/.config/GNS3/2.2/gns3_server.conf")
 
+
+def _log_topology_history(connections: list, out_dir: str):
+    """Append a timestamped entry to topology_history.json after each generation."""
+    import json, datetime
+    history_path = os.path.join(out_dir, "topology_history.json")
+    try:
+        with open(history_path) as f:
+            history = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        history = []
+    
+    history.append({
+        "timestamp": datetime.datetime.now().isoformat(),
+        "connection_count": len(connections)
+    })
+    with open(history_path, "w") as f:
+        json.dump(history, f, indent=2)
+
 class ToggleSwitch(QCheckBox):
     def __init__(self, parent=None, width=60, height=28):
         super().__init__(parent)
@@ -2304,6 +2322,7 @@ class VisioGNS3App(QWidget):
             "background: qlineargradient(x1:0,y1:0,x2:1,y2:1,"
             "stop:0 #0F172A,stop:1 #1E293B);"
         )
+        self._read_topology_history()
         root = QVBoxLayout(page)
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(0)
@@ -2549,6 +2568,29 @@ class VisioGNS3App(QWidget):
         stats_row_layout.addWidget(srv_card)
 
         bl.addLayout(stats_row_layout)
+        bl.addSpacing(20)
+
+        # ── Topology complexity chart panel ───────────
+        history = self._read_topology_history()
+        chart_panel = QFrame()
+        chart_panel.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        chart_panel.setMinimumHeight(260)
+        chart_panel.setStyleSheet(CARD_SS)
+        chart_layout = QVBoxLayout(chart_panel)
+        chart_layout.setContentsMargins(22, 18, 22, 18)
+        chart_layout.setSpacing(12)
+
+        chart_header = QHBoxLayout()
+        chart_header.addWidget(L("TOPOLOGY COMPLEXITY OVER TIME",
+            "color:#475569; font-size:10px; font-weight:800; letter-spacing:2px;"))
+        chart_header.addStretch()
+        chart_header.addWidget(L(f"{len(history)} runs",
+            "color:#38BDF8; font-size:10px; font-weight:700;"))
+        chart_layout.addLayout(chart_header)
+
+        chart_view = self._create_complexity_chart_widget(history)
+        chart_layout.addWidget(chart_view)
+        bl.addWidget(chart_panel)
         bl.addSpacing(20)
 
         # ════════════════════════════════════════════
@@ -2902,6 +2944,114 @@ class VisioGNS3App(QWidget):
         with open(vsdx_path, "w") as f:
             f.write(arch_proj_name)
         self._arch_log(f"📁  Project name confirmed & saved: {arch_proj_name}", "#4ADE80")
+
+
+    def _create_complexity_chart_widget(self, history: list) -> QWebEngineView:
+        """Returns a QWebEngineView with the topology complexity chart."""
+        import json
+        
+        if history:
+            labels = [entry["timestamp"][:16].replace("T", " ") for entry in history]
+            data   = [entry["connection_count"] for entry in history]
+        else:
+            # Demo data so the chart doesn't show empty on first launch
+            labels = ["No data yet"]
+            data   = [0]
+
+        labels_js = json.dumps(labels)
+        data_js   = json.dumps(data)
+
+        html = f"""<!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <style>
+    * {{ margin:0; padding:0; box-sizing:border-box; }}
+    html, body {{ background: transparent; width:100%; height:100%; }}
+    body {{ padding: 4px 0; }}
+    #wrap {{ position: relative; width: 100%; height: 200px; }}
+    </style>
+    </head>
+    <body>
+    <div id="wrap">
+    <canvas id="cx" role="img" aria-label="Line chart of topology complexity over time, showing number of connections per generated topology.">Topology complexity history: {len(history)} entries.</canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script>
+    const labels = {labels_js};
+    const data   = {data_js};
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    new Chart(document.getElementById('cx'), {{
+    type: 'line',
+    data: {{
+        labels,
+        datasets: [{{
+        label: 'Connections',
+        data,
+        borderColor:     '#38BDF8',
+        backgroundColor: 'rgba(56,189,248,0.12)',
+        pointBackgroundColor: '#0EA5E9',
+        pointBorderColor:    '#38BDF8',
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        borderWidth: 2.5,
+        fill: true,
+        tension: 0.4,
+        }}]
+    }},
+    options: {{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {{
+        legend: {{ display: false }},
+        tooltip: {{
+            backgroundColor: '#0F172A',
+            borderColor: '#38BDF8',
+            borderWidth: 1,
+            titleColor: '#7DD3FC',
+            bodyColor: '#E2E8F0',
+            padding: 10,
+            callbacks: {{
+            label: ctx => `${{ctx.parsed.y}} connections`
+            }}
+        }}
+        }},
+        scales: {{
+        x: {{
+            ticks: {{
+            color: '#475569',
+            font: {{ size: 10 }},
+            maxRotation: 30,
+            autoSkip: true,
+            maxTicksLimit: 6,
+            }},
+            grid: {{ color: 'rgba(71,85,105,0.2)' }},
+            border: {{ color: 'rgba(71,85,105,0.3)' }}
+        }},
+        y: {{
+            beginAtZero: true,
+            ticks: {{
+            color: '#475569',
+            font: {{ size: 10 }},
+            stepSize: 1,
+            }},
+            grid: {{ color: 'rgba(71,85,105,0.2)' }},
+            border: {{ color: 'rgba(71,85,105,0.3)' }}
+        }}
+        }}
+    }}
+    }});
+    </script>
+    </body>
+    </html>"""
+
+        view = QWebEngineView()
+        view.setFixedHeight(220)
+        view.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        view.setStyleSheet("background: transparent;")
+        view.setHtml(html)
+        return view
 
     def _set_arch_proj_status(self, state: str):
         """Updates the small status label next to the architecture project name field."""
@@ -3775,6 +3925,7 @@ QCheckBox::indicator:unchecked:hover {{
             import json
             with open(pre_conn_path, "w") as f:
                 json.dump(connections, f, indent=4)
+                _log_topology_history(connections, os.path.join(visio_dir, "Generated_files"))
 
             self._arch_log(f"   ✅  {len(connections)} connections written → {pre_conn_path}", "#4ADE80")
  
@@ -4331,6 +4482,22 @@ QCheckBox::indicator:unchecked:hover {{
 
         if return_code == 0:
             self.add_chat_message("bot", "✅ Automation completed successfully! You can enter a new request.")
+            # Log topology to history and refresh dashboard graph
+            try:
+                gui_dir = os.path.dirname(os.path.abspath(__file__))
+                visio_dir = os.path.join(gui_dir, "VisioGns3")
+                gen_files = os.path.join(visio_dir, "Generated_files")
+                pre_conn_path = os.path.join(gen_files, "pre_Connections.json")
+                
+                if os.path.exists(pre_conn_path):
+                    import json
+                    with open(pre_conn_path) as f:
+                        connections = json.load(f)
+                    _log_topology_history(connections, gen_files)
+                    # Refresh the dashboard to show updated graph
+                    QTimer.singleShot(500, self._refresh_dashboard_stats)
+            except Exception as e:
+                pass  # Silently skip if history logging fails
         else:
             self.add_chat_message("bot", f"⚠️ Automation exited with code {return_code}. You can enter a new request.")
 
@@ -4569,12 +4736,39 @@ QCheckBox::indicator:unchecked:hover {{
         self.worker.finished_signal.connect(self.on_topology_automation_finished)
         self.worker.start()
 
+    def _read_topology_history(self):
+        import json
+        gui_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(gui_dir, "VisioGns3", "Generated_files", "topology_history.json")
+        try:
+            with open(path) as f:
+                return json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return []
+
     def update_output(self, text):
         self.output_text.append(text)
         self.output_text.ensureCursorVisible()
 
     def on_topology_automation_finished(self):
         self.output_text.append("\n✅ Completed!")
+        # Log topology to history and refresh dashboard graph
+        try:
+            gui_dir = os.path.dirname(os.path.abspath(__file__))
+            visio_dir = os.path.join(gui_dir, "VisioGns3")
+            gen_files = os.path.join(visio_dir, "Generated_files")
+            pre_conn_path = os.path.join(gen_files, "pre_Connections.json")
+            
+            if os.path.exists(pre_conn_path):
+                import json
+                with open(pre_conn_path) as f:
+                    connections = json.load(f)
+                _log_topology_history(connections, gen_files)
+                # Refresh the dashboard to show updated graph
+                QTimer.singleShot(500, self._refresh_dashboard_stats)
+        except Exception as e:
+            pass  # Silently skip if history logging fails
+        
         self.file_label.setText("No file selected")
         self.file_label.setStyleSheet("color: #94A3B8;")
         self.automation_completed = True

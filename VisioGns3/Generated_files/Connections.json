@@ -1,14 +1,38 @@
 [
-  {
-    "from": "router1",
-    "to": "switch1",
-    "from_adapter_number": 0,
-    "to_adapter_number": 0
-  },
-  {
-    "from": "router2",
-    "to": "switch1",
-    "from_adapter_number": 0,
-    "to_adapter_number": 1
-  }
+    {
+        "from": "S4128F-ONFrontView94",
+        "to": "S5212F-ONFrontView(ACPower)72",
+        "from_adapter_number": 0,
+        "to_adapter_number": 0
+    },
+    {
+        "from": "N3248TE-ONFrontView88",
+        "to": "S5224F-ONFrontView75",
+        "from_adapter_number": 0,
+        "to_adapter_number": 0
+    },
+    {
+        "from": "N3248TE-ONFrontView88",
+        "to": "S5212F-ONFrontView(ACPower)72",
+        "from_adapter_number": 1,
+        "to_adapter_number": 1
+    },
+    {
+        "from": "N3248TE-ONFrontView88",
+        "to": "S4128F-ONFrontView94",
+        "from_adapter_number": 2,
+        "to_adapter_number": 1
+    },
+    {
+        "from": "S4128F-ONFrontView94",
+        "to": "S5224F-ONFrontView75",
+        "from_adapter_number": 2,
+        "to_adapter_number": 1
+    },
+    {
+        "from": "S5212F-ONFrontView(ACPower)72",
+        "to": "S5224F-ONFrontView75",
+        "from_adapter_number": 2,
+        "to_adapter_number": 2
+    }
 ]
